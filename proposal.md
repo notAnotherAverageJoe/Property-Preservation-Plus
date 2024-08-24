@@ -46,3 +46,14 @@
 7. What kinds of issues might you run into with your API?
 
    Working with latitude and longitude could be a potential issue, since this is not something people often work with. Also the limitations the API's place on how are out one can look with a free version of it maybe lead to some shortcomings. I will research each of the options to see which offers the most vital weather information.
+
+8. What functionality will your app include?
+
+   It will accept properties, units, tenants, and have maintenance requests and fullfillment. This information will be used to showcase the overall profitability of a property help manage rent space and keep maintenance focused on preventative care.
+
+9. What will the user flow look like?
+
+10. What features make your site more than a CRUD app? What are your stretch
+    goals?
+    The information given goes beyond a simple create a cupcake or img and edit then delete, this system will monitor property health based on income and expenses.
+    Would like to get to a emergency txt or email system to tenants that warns of bad weather.
