@@ -1,3 +1,15 @@
+-- psql -U your_username -d your_database
+--\i /path/to/your/schema.sql
+
+
+CREATE TABLE Companies (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     company_id INT REFERENCES Companies(id),
@@ -9,28 +21,16 @@ CREATE TABLE Users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
-CREATE TABLE Companies (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    address TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-
 CREATE TABLE Roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE
 );
-
 
 CREATE TABLE UserRoles (
     user_id INT REFERENCES Users(id),
     role_id INT REFERENCES Roles(id),
     PRIMARY KEY (user_id, role_id)
 );
-
 
 CREATE TABLE Properties (
     id SERIAL PRIMARY KEY,
@@ -40,7 +40,6 @@ CREATE TABLE Properties (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 CREATE TABLE Units (
     id SERIAL PRIMARY KEY,
@@ -52,7 +51,6 @@ CREATE TABLE Units (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE Tenants (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -62,7 +60,6 @@ CREATE TABLE Tenants (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 CREATE TABLE Leases (
     id SERIAL PRIMARY KEY,
@@ -76,7 +73,6 @@ CREATE TABLE Leases (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE MaintenanceRequests (
     id SERIAL PRIMARY KEY,
     unit_id INT REFERENCES Units(id),
@@ -86,7 +82,6 @@ CREATE TABLE MaintenanceRequests (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 CREATE TABLE FinancialTransactions (
     id SERIAL PRIMARY KEY,
