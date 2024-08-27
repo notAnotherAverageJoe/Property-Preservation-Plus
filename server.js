@@ -6,6 +6,7 @@ const companyRoutes = require("./routes/companyRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
 const unitRoutes = require("./routes/unitRoutes");
 const tenantRoutes = require("./routes/tenantRoutes");
+const leaseRoutes = require("./routes/leaseRoutes");
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -20,6 +21,8 @@ app.use("/api", propertyRoutes);
 app.use("/api", unitRoutes);
 // Tenant routes
 app.use("/api", tenantRoutes);
+// Lease routes
+app.use("/api", leaseRoutes);
 
 // Start the server
 app.listen(port, () => {
