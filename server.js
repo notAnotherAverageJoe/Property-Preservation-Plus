@@ -5,18 +5,21 @@ const userRoutes = require("./routes/userRoutes");
 const companyRoutes = require("./routes/companyRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
 const unitRoutes = require("./routes/unitRoutes");
+const tenantRoutes = require("./routes/tenantRoutes");
 
-// Middleware to parse JSON bodies
+// Middleware to parse JSON
 app.use(express.json());
 
 // user routes
 app.use("/api", userRoutes);
 // Company routes
 app.use("/api", companyRoutes);
-// Proprty routes
+// Property routes
 app.use("/api", propertyRoutes);
 // Unit routes
 app.use("/api", unitRoutes);
+// Tenant routes
+app.use("/api", tenantRoutes);
 
 // Start the server
 app.listen(port, () => {
