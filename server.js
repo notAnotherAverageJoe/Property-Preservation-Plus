@@ -9,6 +9,8 @@ const tenantRoutes = require("./routes/tenantRoutes");
 const leaseRoutes = require("./routes/leaseRoutes");
 const maintenanceRoutes = require("./routes/maintenanceRoutes");
 const financialRoutes = require("./routes/financialRoutes");
+const roleRoutes = require("./routes/roleRoutes");
+const userRoleRoutes = require("./routes/userRoleRoutes");
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -29,6 +31,11 @@ app.use("/api", leaseRoutes);
 app.use("/api", maintenanceRoutes);
 // Financial transaction routes
 app.use("/api", financialRoutes);
+// Role routes
+app.use("/api", roleRoutes);
+// User role routes
+app.use("/api", userRoleRoutes);
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
