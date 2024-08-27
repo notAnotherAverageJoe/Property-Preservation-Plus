@@ -23,10 +23,10 @@ const getUserById = async (id) => {
 // Function to create a new user
 const createUser = async (userData) => {
   try {
-    const { firstName, lastName, email, passwordHash } = userData;
+    const { companyId, firstName, lastName, email, passwordHash } = userData;
     const result = await pool.query(
-      "INSERT INTO Users (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *",
-      [firstName, lastName, email, passwordHash]
+      "INSERT INTO Users (company_id, first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [companyId, firstName, lastName, email, passwordHash]
     );
     return result.rows[0];
   } catch (error) {
