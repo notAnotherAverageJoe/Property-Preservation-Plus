@@ -1,39 +1,49 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import React, { useState } from "react";
+import { login } from "../utils/authService"; // Adjust the path as needed
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { handleLogin } = useContext(AuthContext);
+  const [error, setError] = useState("");
 
-  const onSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await handleLogin({ email, password });
-      // Redirect or show a success message
-    } catch (error) {
-      console.error("Login failed", error);
+      const data = await login({ email, password });
+      // Handle successful login
+      console.log("Login successful:", data);
+    } catch (err) {
+      setError("Login failed");
+      console.error(err);
     }
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      {error && <p>{error}</p>}
+    </div>
   );
 };
 

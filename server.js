@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
+const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const companyRoutes = require("./routes/companyRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
@@ -15,6 +16,14 @@ const authRoutes = require("./routes/authRoutes");
 
 // Middleware to parse JSON
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Replace with your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // user routes
 app.use("/api", userRoutes);
