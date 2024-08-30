@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
+import CreateCompany from "./components/CreateCompany";
 import withAuth from "./components/withAuth"; // Import the HOC
 import Navbar from "./components/Navbar";
 import "./components/Navbar.css";
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/create-company" element={<CreateCompany />} />
         <Route path="/dashboard" element={<ProtectedDashboard />} />{" "}
       </Routes>
     </Router>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext"; // Import the useAuth hook
+import { useAuth } from "../contexts/AuthContext";
 
 function withAuth(Component) {
   return function AuthenticatedComponent(props) {

@@ -1,13 +1,15 @@
-// Dashboard.js
+// Dashboard.js or wherever appropriate
 import React from "react";
+import { Link } from "react-router-dom";
 
-const Dashboard = () => {
+function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <p>Welcome to the dashboard. You are logged in!</p>
+      <Link to="/create-company">Create a New Company</Link>
+      {/* Other dashboard content */}
     </div>
   );
-};
+}
 
 export default Dashboard;
