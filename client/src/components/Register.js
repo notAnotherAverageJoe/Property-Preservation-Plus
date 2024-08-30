@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { register } from "../utils/authService";
 
 function Register() {
@@ -9,6 +10,8 @@ function Register() {
     password: "",
   });
 
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -18,7 +21,8 @@ function Register() {
     try {
       const response = await register(formData);
       console.log(response);
-      // Handle successful registration (e.g., redirect to login)
+      // Redirect to login page on successful registration
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed", error);
       // Display error message to the user
