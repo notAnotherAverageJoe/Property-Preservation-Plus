@@ -7,10 +7,13 @@ function CreateCompany() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("token"); // Get token from localStorage
+
       const response = await fetch("http://localhost:3000/api/companies", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in headers
         },
         body: JSON.stringify({ name, address }),
       });
