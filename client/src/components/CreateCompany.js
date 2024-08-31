@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CreateCompany() {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,10 +28,8 @@ function CreateCompany() {
       const data = await response.json();
       console.log("Company created:", data);
 
-      // At this point, the backend should handle updating the user's company_id
-      // No need to do it manually on the frontend
-
-      // Handle successful creation (e.g., redirect or show success message)
+      // Redirect to the dashboard after successful creation
+      navigate("/dashboard");
     } catch (error) {
       console.error("Failed to create company", error);
     }

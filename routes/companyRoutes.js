@@ -31,6 +31,33 @@ router.post("/companies", authenticate, async (req, res) => {
   }
 });
 
+router.get("/user/company", authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Get user's company_id
+    const user = await db.query("SELECT company_id FROM Users WHERE id = $1", [
+      userId,
+    ]);
+
+    if (!user.rows[0].company_id) {
+      return res
+        .status(404)
+        .json({ error: "User does not belong to any company" });
+    }
+
+    // Get company details
+    const company = await db.query("SELECT * FROM Companies WHERE id = $1", [
+      user.rows[0].company_id,
+    ]);
+
+    res.json(company.rows[0]);
+  } catch (error) {
+    console.error("Failed to fetch company data", error);
+    res.status(500).json({ error: "Failed to fetch company data" });
+  }
+});
+
 // Route to update an existing company
 router.put("/companies/:id", authenticate, companyController.updateCompany);
 
