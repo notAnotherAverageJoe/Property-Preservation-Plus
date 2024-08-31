@@ -9,6 +9,7 @@ function CreateCompany() {
     try {
       const token = localStorage.getItem("token"); // Get token from localStorage
 
+      // Create the company
       const response = await fetch("http://localhost:3000/api/companies", {
         method: "POST",
         headers: {
@@ -24,6 +25,10 @@ function CreateCompany() {
 
       const data = await response.json();
       console.log("Company created:", data);
+
+      // At this point, the backend should handle updating the user's company_id
+      // No need to do it manually on the frontend
+
       // Handle successful creation (e.g., redirect or show success message)
     } catch (error) {
       console.error("Failed to create company", error);

@@ -11,6 +11,7 @@ import "./components/Navbar.css";
 
 // Wrap the Dashboard component with the withAuth HOC
 const ProtectedDashboard = withAuth(Dashboard);
+const ProtectedCreateCompany = withAuth(CreateCompany);
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/create-company" element={<CreateCompany />} />
+        <Route path="/create-company" element={<ProtectedCreateCompany />} />
         <Route path="/dashboard" element={<ProtectedDashboard />} />{" "}
       </Routes>
     </Router>

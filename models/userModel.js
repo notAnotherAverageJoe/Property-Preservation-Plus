@@ -33,14 +33,13 @@ const createUser = async (userData) => {
     throw new Error("Error creating user: " + error.message);
   }
 };
-
-// Function to update a user
+// Function to update a user, including company_id
 const updateUser = async (id, userData) => {
   try {
-    const { firstName, lastName, email, passwordHash } = userData;
+    const { firstName, lastName, email, passwordHash, companyId } = userData;
     const result = await pool.query(
-      "UPDATE Users SET first_name = $1, last_name = $2, email = $3, password_hash = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5 RETURNING *",
-      [firstName, lastName, email, passwordHash, id]
+      "UPDATE Users SET first_name = $1, last_name = $2, email = $3, password_hash = $4, company_id = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING *",
+      [firstName, lastName, email, passwordHash, companyId, id]
     );
     return result.rows[0];
   } catch (error) {
