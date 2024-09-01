@@ -1,7 +1,8 @@
+// routes/propertyRoutes.js
 const express = require("express");
 const router = express.Router();
 const propertyController = require("../controllers/propertyController");
-const authenticate = require("../middleware/authenticate"); // Middleware to handle authentication
+const authenticate = require("../middleware/authenticate");
 
 // Route to create a new property
 router.post("/properties", authenticate, propertyController.createProperty);
