@@ -2,8 +2,8 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-function withAuth(Component) {
-  return function AuthenticatedComponent(props) {
+const withAuth = (Component) => {
+  return (props) => {
     const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated) {
@@ -12,6 +12,6 @@ function withAuth(Component) {
 
     return <Component {...props} />;
   };
-}
+};
 
 export default withAuth;

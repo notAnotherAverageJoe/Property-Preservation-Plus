@@ -1,4 +1,4 @@
-// middleware/authenticate.js
+// authenticate.js
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
     if (err)
       return res.status(401).json({ error: "Failed to authenticate token" });
 
+    console.log("Decoded Token:", decoded); // Add this line
     req.user = decoded;
     next();
   });

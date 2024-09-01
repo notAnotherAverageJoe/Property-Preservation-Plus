@@ -8,10 +8,9 @@ function CreateCompany() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const token = localStorage.getItem("token"); // Get token from localStorage
+    const token = localStorage.getItem("token"); // Get token from localStorage
 
-      // Create the company
+    try {
       const response = await fetch("http://localhost:3000/api/companies", {
         method: "POST",
         headers: {
@@ -28,7 +27,13 @@ function CreateCompany() {
       const data = await response.json();
       console.log("Company created:", data);
 
-      // Redirect to the dashboard after successful creation
+      // Update localStorage with new companyId
+      localStorage.setItem("companyId", data.companyId);
+      console.log(
+        "Updated companyId in localStorage:",
+        localStorage.getItem("companyId")
+      );
+
       navigate("/dashboard");
     } catch (error) {
       console.error("Failed to create company", error);

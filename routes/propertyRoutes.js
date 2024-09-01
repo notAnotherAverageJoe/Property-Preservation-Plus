@@ -1,20 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const propertyController = require("../controllers/propertyController");
-
-// Route to get all properties
-router.get("/properties", propertyController.getAllProperties);
-
-// Route to get a property by ID
-router.get("/properties/:id", propertyController.getPropertyById);
+const authenticate = require("../middleware/authenticate"); // Middleware to handle authentication
 
 // Route to create a new property
-router.post("/properties", propertyController.createProperty);
+router.post("/properties", authenticate, propertyController.createProperty);
+
+// Route to get all properties for the authenticated user's company
+router.get("/properties", authenticate, propertyController.getProperties);
 
 // Route to update a property
-router.put("/properties/:id", propertyController.updateProperty);
+router.put("/properties/:id", authenticate, propertyController.updateProperty);
 
 // Route to delete a property
-router.delete("/properties/:id", propertyController.deleteProperty);
+router.delete(
+  "/properties/:id",
+  authenticate,
+  propertyController.deleteProperty
+);
 
 module.exports = router;

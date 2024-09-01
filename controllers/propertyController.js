@@ -1,91 +1,98 @@
-const propertyModel = require("../models/propertyModel");
+const db = require("../config/db"); // Assuming you have a db.js for database queries
 
-// Function to handle getting all properties
-const getAllProperties = async (req, res) => {
-  try {
-    const properties = await propertyModel.getAllProperties();
-    res.status(200).json(properties);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error retrieving properties",
-      error: error.message,
-    });
-  }
-};
+const propertyController = {
+  createProperty: async (req, res) => {
+    const { name, address } = req.body;
 
-// Function to handle getting a property by ID
-const getPropertyById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const property = await propertyModel.getPropertyById(id);
-    if (property) {
-      res.status(200).json(property);
-    } else {
-      res.status(404).json({ message: "Property not found" });
+    try {
+      // Use company_id from the authenticated user's session or token
+      const company_id = req.user.company_id;
+
+      const newProperty = await db.query(
+        "INSERT INTO Properties (name, address, company_id) VALUES ($1, $2, $3) RETURNING *",
+        [name, address, company_id]
+      );
+
+      res.json(newProperty.rows[0]);
+    } catch (error) {
+      console.error("Error creating property", error);
+      res.status(500).json({ error: "Failed to create property" });
     }
-  } catch (error) {
-    res.status(500).json({
-      message: "Error retrieving property",
-      error: error.message,
-    });
-  }
-};
+  },
 
-// Function to handle creating a new property
-const createProperty = async (req, res) => {
-  try {
-    const propertyData = req.body;
-    const newProperty = await propertyModel.createProperty(propertyData);
-    res.status(201).json(newProperty);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error creating property",
-      error: error.message,
-    });
-  }
-};
+  getProperties: async (req, res) => {
+    try {
+      const company_id = req.user.company_id;
 
-// Function to handle updating a property
-const updateProperty = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const propertyData = req.body;
-    const updatedProperty = await propertyModel.updateProperty(
-      id,
-      propertyData
-    );
-    if (updatedProperty) {
-      res.status(200).json(updatedProperty);
-    } else {
-      res.status(404).json({ message: "Property not found" });
+      const properties = await db.query(
+        "SELECT * FROM Properties WHERE company_id = $1",
+        [company_id]
+      );
+
+      res.json(properties.rows);
+    } catch (error) {
+      console.error("Error fetching properties", error);
+      res.status(500).json({ error: "Failed to fetch properties" });
     }
-  } catch (error) {
-    res.status(500).json({
-      message: "Error updating property",
-      error: error.message,
-    });
-  }
-};
+  },
 
-// Function to handle deleting a property
-const deleteProperty = async (req, res) => {
-  try {
+  updateProperty: async (req, res) => {
     const { id } = req.params;
-    await propertyModel.deleteProperty(id);
-    res.status(200).json({ message: "Property deleted successfully" });
-  } catch (error) {
-    res.status(500).json({
-      message: "Error deleting property",
-      error: error.message,
-    });
-  }
+    const { name, address } = req.body;
+
+    try {
+      const company_id = req.user.company_id;
+
+      // Ensure the property belongs to the user's company
+      const property = await db.query(
+        "SELECT * FROM Properties WHERE id = $1 AND company_id = $2",
+        [id, company_id]
+      );
+
+      if (property.rows.length === 0) {
+        return res
+          .status(403)
+          .json({ error: "Unauthorized to update this property" });
+      }
+
+      const updatedProperty = await db.query(
+        "UPDATE Properties SET name = $1, address = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $3 RETURNING *",
+        [name, address, id]
+      );
+
+      res.json(updatedProperty.rows[0]);
+    } catch (error) {
+      console.error("Error updating property", error);
+      res.status(500).json({ error: "Failed to update property" });
+    }
+  },
+
+  deleteProperty: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const company_id = req.user.company_id;
+
+      // Ensure the property belongs to the user's company
+      const property = await db.query(
+        "SELECT * FROM Properties WHERE id = $1 AND company_id = $2",
+        [id, company_id]
+      );
+
+      if (property.rows.length === 0) {
+        return res
+          .status(403)
+          .json({ error: "Unauthorized to delete this property" });
+      }
+
+      await db.query("DELETE FROM Properties WHERE id = $1", [id]);
+
+      res.json({ message: "Property deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting property", error);
+      res.status(500).json({ error: "Failed to delete property" });
+    }
+  },
 };
 
-// Export functions
-module.exports = {
-  getAllProperties,
-  getPropertyById,
-  createProperty,
-  updateProperty,
-  deleteProperty,
-};
+module.exports = propertyController;

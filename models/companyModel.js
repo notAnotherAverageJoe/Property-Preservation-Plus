@@ -59,6 +59,14 @@ const deleteCompany = async (id) => {
     throw new Error("Error deleting company: " + error.message);
   }
 };
+// Method to update company_id for a user
+const updateUserCompanyId = async (userId, companyId) => {
+  const result = await db.query(
+    "UPDATE Users SET company_id = $1 WHERE id = $2 RETURNING *",
+    [companyId, userId]
+  );
+  return result.rows[0];
+};
 
 module.exports = {
   getAllCompanies,
@@ -66,4 +74,5 @@ module.exports = {
   createCompany,
   updateCompany,
   deleteCompany,
+  updateUserCompanyId,
 };

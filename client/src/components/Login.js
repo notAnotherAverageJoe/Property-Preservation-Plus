@@ -1,7 +1,7 @@
 // Login.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext"; // Import the useAuth hook
+import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 
 const Login = () => {
@@ -21,13 +21,13 @@ const Login = () => {
           password,
         }
       );
+
       if (response.data.token) {
-        login(response.data.token); // Save the token and update auth state
-        navigate("/dashboard"); // Redirect to dashboard after login
+        login(response.data.token); // Save token and update auth state
+        navigate("/dashboard"); // Redirect to dashboard
       }
     } catch (error) {
       console.error("Login failed", error);
-      // Handle error (e.g., show a message to the user)
     }
   };
 

@@ -1,6 +1,6 @@
+const jwt = require("jsonwebtoken");
 const companyModel = require("../models/companyModel");
 
-// Controller to get all companies
 const getAllCompanies = async (req, res) => {
   try {
     const companies = await companyModel.getAllCompanies();
@@ -12,7 +12,6 @@ const getAllCompanies = async (req, res) => {
   }
 };
 
-// Controller to get a company by ID
 const getCompanyById = async (req, res) => {
   try {
     const company = await companyModel.getCompanyById(req.params.id);
@@ -28,11 +27,18 @@ const getCompanyById = async (req, res) => {
   }
 };
 
-// Controller to create a new company
 const createCompany = async (req, res) => {
   try {
     const newCompany = await companyModel.createCompany(req.body);
-    res.status(201).json(newCompany);
+    // Link company to user
+    await companyModel.updateUserCompanyId(req.user.id, newCompany.id);
+    // Generate token with updated company_id
+    const newToken = jwt.sign(
+      { id: req.user.id, company_id: newCompany.id },
+      process.env.SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+    res.status(201).json({ companyId: newCompany.id, newToken });
   } catch (error) {
     res
       .status(500)
@@ -40,26 +46,26 @@ const createCompany = async (req, res) => {
   }
 };
 
-// Controller to update a company
 const updateCompany = async (req, res) => {
+  const { companyId } = req.body;
+  const userId = req.user.id;
+
   try {
-    const updatedCompany = await companyModel.updateCompany(
-      req.params.id,
-      req.body
+    // Update company ID for the user
+    await companyModel.updateUserCompanyId(userId, companyId);
+    // Generate a new token with updated companyId
+    const newToken = jwt.sign(
+      { id: userId, company_id: companyId },
+      process.env.SECRET_KEY,
+      { expiresIn: "1h" }
     );
-    if (updatedCompany) {
-      res.json(updatedCompany);
-    } else {
-      res.status(404).json({ message: "Company not found" });
-    }
+    res.json({ newToken });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating company", error: error.message });
+    console.error("Failed to update company", error);
+    res.status(500).json({ error: "Failed to update company" });
   }
 };
 
-// Controller to delete a company
 const deleteCompany = async (req, res) => {
   try {
     const result = await companyModel.deleteCompany(req.params.id);

@@ -39,6 +39,7 @@ function Dashboard() {
     <div>
       <h1>Dashboard</h1>
       <Link to="/create-company">Create a New Company</Link>
+      <Link to="/create-property">Create a New Property</Link>
 
       {/* Render company data if it exists */}
       {company ? (

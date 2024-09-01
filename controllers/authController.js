@@ -4,7 +4,7 @@ const pool = require("../config/db"); // Ensure this is your database connection
 
 // Register User
 const registerUser = async (req, res) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { first_name, last_name, email, password, company_id } = req.body;
 
   try {
     // Check if the user already exists
@@ -22,15 +22,15 @@ const registerUser = async (req, res) => {
 
     // Create new user
     const { rows: newUsers } = await pool.query(
-      "INSERT INTO Users (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *",
-      [first_name, last_name, email, hashedPassword]
+      "INSERT INTO Users (first_name, last_name, email, password_hash, company_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [first_name, last_name, email, hashedPassword, company_id]
     );
 
     const newUser = newUsers[0];
 
     // Create and return JWT
     const token = jwt.sign(
-      { id: newUser.id, email: newUser.email },
+      { id: newUser.id, email: newUser.email, company_id: newUser.company_id },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -67,7 +67,7 @@ const loginUser = async (req, res) => {
 
     // Create and return JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, company_id: user.company_id },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
