@@ -3,7 +3,7 @@ const pool = require("../config/db");
 // Function to get all financial transactions
 const getAllFinancialTransactions = async () => {
   try {
-    const result = await pool.query("SELECT * FROM FinancialTransactions");
+    const result = await pool.query("SELECT * FROM financialtransactions");
     return result.rows;
   } catch (error) {
     throw new Error(
@@ -16,7 +16,7 @@ const getAllFinancialTransactions = async () => {
 const getFinancialTransactionById = async (id) => {
   try {
     const result = await pool.query(
-      "SELECT * FROM FinancialTransactions WHERE id = $1",
+      "SELECT * FROM financialtransactions WHERE id = $1",
       [id]
     );
     return result.rows[0];
@@ -31,7 +31,7 @@ const createFinancialTransaction = async (transactionData) => {
     const { propertyId, type, amount, description, transactionDate } =
       transactionData;
     const result = await pool.query(
-      "INSERT INTO FinancialTransactions (property_id, type, amount, description, transaction_date) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      "INSERT INTO financialtransactions (property_id, type, amount, description, transaction_date) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [propertyId, type, amount, description, transactionDate]
     );
     return result.rows[0];
@@ -46,7 +46,7 @@ const updateFinancialTransaction = async (id, transactionData) => {
     const { propertyId, type, amount, description, transactionDate } =
       transactionData;
     const result = await pool.query(
-      "UPDATE FinancialTransactions SET property_id = $1, type = $2, amount = $3, description = $4, transaction_date = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING *",
+      "UPDATE financialtransactions SET property_id = $1, type = $2, amount = $3, description = $4, transaction_date = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING *",
       [propertyId, type, amount, description, transactionDate, id]
     );
     return result.rows[0];
@@ -58,7 +58,7 @@ const updateFinancialTransaction = async (id, transactionData) => {
 // Function to delete a financial transaction
 const deleteFinancialTransaction = async (id) => {
   try {
-    await pool.query("DELETE FROM FinancialTransactions WHERE id = $1", [id]);
+    await pool.query("DELETE FROM financialtransactions WHERE id = $1", [id]);
     return { message: "Financial transaction deleted successfully" };
   } catch (error) {
     throw new Error("Error deleting financial transaction: " + error.message);

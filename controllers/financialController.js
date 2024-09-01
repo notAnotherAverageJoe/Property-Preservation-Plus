@@ -1,4 +1,5 @@
 const financialModel = require("../models/financialModel");
+const pool = require("../config/db");
 
 // Controller to get all financial transactions
 const getAllFinancialTransactions = async (req, res) => {
@@ -15,9 +16,13 @@ const getAllFinancialTransactions = async (req, res) => {
 
 // Controller to get a financial transaction by ID
 const getFinancialTransactionById = async (req, res) => {
-  const id = parseInt(req.params.id);
+  const transactionId = parseInt(req.params.id);
+
   try {
-    const transaction = await financialModel.getFinancialTransactionById(id);
+    const transaction = await financialModel.getFinancialTransactionById(
+      transactionId
+    );
+
     if (transaction) {
       res.json(transaction);
     } else {
@@ -25,7 +30,7 @@ const getFinancialTransactionById = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error retrieving financial transaction",
+      message: "Error fetching financial transaction",
       error: error.message,
     });
   }

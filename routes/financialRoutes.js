@@ -33,24 +33,32 @@ router.delete(
   "/financial-transactions/:id",
   financialController.deleteFinancialTransaction
 );
-router.get("/properties/:id", authenticate, async (req, res) => {
-  const propertyId = parseInt(req.params.id);
-  try {
-    const result = await pool.query("SELECT * FROM Properties WHERE id = $1", [
-      propertyId,
-    ]);
-    if (result.rows.length > 0) {
-      res.json(result.rows[0]);
-    } else {
-      res.status(404).json({ message: "Property not found" });
+router.get(
+  "/properties/:propertyId/financial-transactions",
+  async (req, res) => {
+    const propertyId = parseInt(req.params.propertyId);
+    try {
+      const result = await pool.query(
+        "SELECT * FROM FinancialTransactions WHERE property_id = $1",
+        [propertyId]
+      );
+      if (result.rows.length > 0) {
+        res.json(result.rows);
+      } else {
+        res
+          .status(404)
+          .json({
+            message: "No financial transactions found for this property",
+          });
+      }
+    } catch (error) {
+      console.error("Error fetching financial transactions:", error);
+      res.status(500).json({
+        message: "Error fetching financial transactions",
+        error: error.message,
+      });
     }
-  } catch (error) {
-    console.error("Error fetching property details:", error); // Log the error
-    res.status(500).json({
-      message: "Error fetching property details",
-      error: error.message,
-    });
   }
-});
+);
 
 module.exports = router;

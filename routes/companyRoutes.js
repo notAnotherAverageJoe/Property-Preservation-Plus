@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const companyController = require("../controllers/companyController");
-const db = require("../config/db"); // Import your database connection
+const db = require("../config/db");
 const authenticate = require("../middleware/authenticate"); // Middleware to handle authentication
 
 // Route to create a new company
