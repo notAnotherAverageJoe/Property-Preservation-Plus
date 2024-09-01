@@ -41,7 +41,9 @@ function PropertiesList() {
         <ul>
           {properties.map((property) => (
             <li key={property.id}>
-              {property.name} - {property.address}
+              <Link to={`/property/${property.id}`}>
+                {property.name} - {property.address}
+              </Link>
             </li>
           ))}
         </ul>

@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard";
 import CreateCompany from "./components/CreateCompany";
 import PropertiesList from "./components/PropertiesList";
 import CreateProperty from "./components/CreateProperty";
+import PropertyDetail from "./components/PropertyDetail"; // Import PropertyDetail
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
 import "./components/Navbar.css";
@@ -16,6 +17,7 @@ const ProtectedDashboard = withAuth(Dashboard);
 const ProtectedCreateCompany = withAuth(CreateCompany);
 const ProtectedPropertiesList = withAuth(PropertiesList);
 const ProtectedCreateProperty = withAuth(CreateProperty);
+const ProtectedPropertyDetail = withAuth(PropertyDetail);
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
             path="/create-property"
             element={<ProtectedCreateProperty />}
           />
+          <Route path="/property/:id" element={<ProtectedPropertyDetail />} />{" "}
         </Routes>
       </Router>
     </AuthProvider>

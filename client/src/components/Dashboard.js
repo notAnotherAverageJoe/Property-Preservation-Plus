@@ -41,6 +41,7 @@ function Dashboard() {
       <Link to="/create-company">Create a New Company</Link>
       <Link to="/create-property">Create a New Property</Link>
       <Link to="/properties">All Properties</Link>
+      <Link to="/properties">All Properties</Link>
 
       {/* Render company data if it exists */}
       {company ? (

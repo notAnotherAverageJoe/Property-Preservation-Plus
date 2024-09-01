@@ -6,12 +6,10 @@ const getAllFinancialTransactions = async (req, res) => {
     const transactions = await financialModel.getAllFinancialTransactions();
     res.json(transactions);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error retrieving financial transactions",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error retrieving financial transactions",
+      error: error.message,
+    });
   }
 };
 
@@ -26,12 +24,10 @@ const getFinancialTransactionById = async (req, res) => {
       res.status(404).json({ message: "Financial transaction not found" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error retrieving financial transaction",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error retrieving financial transaction",
+      error: error.message,
+    });
   }
 };
 
@@ -43,12 +39,10 @@ const createFinancialTransaction = async (req, res) => {
     );
     res.status(201).json(transaction);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error creating financial transaction",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error creating financial transaction",
+      error: error.message,
+    });
   }
 };
 
@@ -66,12 +60,10 @@ const updateFinancialTransaction = async (req, res) => {
       res.status(404).json({ message: "Financial transaction not found" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error updating financial transaction",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error updating financial transaction",
+      error: error.message,
+    });
   }
 };
 
@@ -82,12 +74,10 @@ const deleteFinancialTransaction = async (req, res) => {
     await financialModel.deleteFinancialTransaction(id);
     res.json({ message: "Financial transaction deleted successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error deleting financial transaction",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error deleting financial transaction",
+      error: error.message,
+    });
   }
 };
 
