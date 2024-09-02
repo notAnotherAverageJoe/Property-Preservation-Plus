@@ -14,6 +14,7 @@ function AddTransactionForm() {
   });
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingTransactionId, setEditingTransactionId] = useState(null);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -26,7 +27,6 @@ function AddTransactionForm() {
             },
           }
         );
-        console.log("Fetched transactions:", response.data);
         setTransactions(response.data);
       } catch (error) {
         console.error(
@@ -49,41 +49,88 @@ function AddTransactionForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Submitting transaction:", transaction);
-
     try {
-      const response = await axios.post(
-        `http://localhost:3000/api/properties/${id}/financial-transactions`,
-        transaction,
+      if (editingTransactionId) {
+        // Update existing transaction
+        const response = await axios.put(
+          `http://localhost:3000/api/properties/${id}/financial-transactions/${editingTransactionId}`,
+          transaction,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setTransactions((prev) =>
+          prev.map((trans) =>
+            trans.id === editingTransactionId ? response.data : trans
+          )
+        );
+        setEditingTransactionId(null);
+      } else {
+        // Add new transaction
+        const response = await axios.post(
+          `http://localhost:3000/api/properties/${id}/financial-transactions`,
+          transaction,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setTransactions((prev) => [...prev, response.data]);
+      }
+
+      setTransaction({
+        type: "",
+        amount: "",
+        description: "",
+        transactionDate: "",
+      });
+    } catch (error) {
+      console.error(
+        "Failed to save transaction:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
+  const handleEdit = (transaction) => {
+    setTransaction({
+      type: transaction.type,
+      amount: transaction.amount,
+      description: transaction.description,
+      transactionDate: transaction.transaction_date.split("T")[0], // Format date for input field
+    });
+    setEditingTransactionId(transaction.id);
+  };
+
+  const handleDelete = async (transactionId) => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/properties/${id}/financial-transactions/${transactionId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setTransactions((prev) => [...prev, response.data]);
-      console.log("Transaction added:", response.data);
+      setTransactions((prev) =>
+        prev.filter((transaction) => transaction.id !== transactionId)
+      );
     } catch (error) {
       console.error(
-        "Failed to add transaction:",
+        "Failed to delete transaction:",
         error.response ? error.response.data : error.message
       );
     }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) {
-      console.error("No date string provided.");
-      return "No Date Available";
-    }
+    if (!dateString) return "No Date Available";
 
-    console.log("Raw date string:", dateString);
     const date = new Date(dateString);
-
-    if (isNaN(date.getTime())) {
-      console.error("Invalid Date encountered:", dateString);
-      return "Invalid Date";
-    }
+    if (isNaN(date.getTime())) return "Invalid Date";
 
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
@@ -120,10 +167,11 @@ function AddTransactionForm() {
           onChange={handleChange}
           placeholder="Transaction Date"
         />
-        <button type="submit">Add Transaction</button>
+        <button type="submit">
+          {editingTransactionId ? "Update Transaction" : "Add Transaction"}
+        </button>
       </form>
 
-      {/* Render the list of transactions */}
       <h2>Transactions</h2>
       {loading ? (
         <p>Loading transactions...</p>
@@ -132,9 +180,12 @@ function AddTransactionForm() {
           {transactions.map((trans) => (
             <li key={trans.id}>
               <strong>{trans.type}</strong>: ${trans.amount} on{" "}
-              {formatDate(trans.transaction_date)} {/* Use correct field */}
+              {formatDate(trans.transaction_date)}
               <br />
               Description: {trans.description}
+              <br />
+              <button onClick={() => handleEdit(trans)}>Edit</button>
+              <button onClick={() => handleDelete(trans.id)}>Delete</button>
             </li>
           ))}
         </ul>

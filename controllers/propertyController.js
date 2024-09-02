@@ -185,3 +185,18 @@ exports.createFinancialTransaction = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+// propertyController.js
+
+// Function to delete a financial transaction
+exports.deleteTransaction = async (propertyId, transactionId) => {
+  try {
+    const result = await pool.query(
+      "DELETE FROM FinancialTransactions WHERE property_id = $1 AND id = $2 RETURNING *",
+      [propertyId, transactionId]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+    throw error;
+  }
+};

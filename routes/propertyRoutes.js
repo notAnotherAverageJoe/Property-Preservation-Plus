@@ -56,4 +56,30 @@ router.post(
   propertyController.createFinancialTransaction
 );
 
+// Route to delete a financial transaction
+router.delete(
+  "/properties/:propertyId/financial-transactions/:transactionId",
+  authenticate,
+  async (req, res) => {
+    const { propertyId, transactionId } = req.params;
+
+    try {
+      const result = await propertyController.deleteTransaction(
+        propertyId,
+        transactionId
+      );
+
+      if (result) {
+        return res
+          .status(200)
+          .json({ message: "Transaction deleted successfully" });
+      } else {
+        return res.status(404).json({ error: "Transaction not found" });
+      }
+    } catch (error) {
+      return res.status(500).json({ error: "Server error" });
+    }
+  }
+);
+
 module.exports = router;
