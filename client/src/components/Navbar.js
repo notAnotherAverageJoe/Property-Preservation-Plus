@@ -41,6 +41,9 @@ function Navbar() {
               Logout
             </Link>
           </li>
+          <li>
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
         </ul>
       </div>
     </nav>

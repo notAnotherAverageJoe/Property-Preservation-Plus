@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [company, setCompany] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Fetch the company data when the component mounts
@@ -29,6 +30,8 @@ function Dashboard() {
         setCompany(data);
       } catch (error) {
         console.error("Error fetching company data", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -38,23 +41,35 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <Link to="/create-company">Create a New Company</Link>
-      <Link to="/create-property">Create a New Property</Link>
-      <Link to="/properties">All Properties</Link>
-      <Link to="/properties">All Properties</Link>
 
-      {/* Render company data if it exists */}
-      {company ? (
-        <div>
-          <h2>Company Information</h2>
-          <p>
-            <strong>Name:</strong> {company.name}
-          </p>
-          <p>
-            <strong>Address:</strong> {company.address}
-          </p>
-        </div>
-      ) : (
+      {/* Conditionally render the "Create a New Company" button if no company exists */}
+      {!company && !loading && (
+        <Link to="/create-company">Create a New Company</Link>
+      )}
+
+      {/* Render additional links and company data if a company exists */}
+      {company && (
+        <>
+          <Link to="/create-property">Create a New Property</Link>
+          <Link to="/properties">All Properties</Link>
+
+          <div>
+            <h2>Company Information</h2>
+            <p>
+              <strong>Name:</strong> {company.name}
+            </p>
+            <p>
+              <strong>Address:</strong> {company.address}
+            </p>
+          </div>
+        </>
+      )}
+
+      {/* Show a loading message while fetching data */}
+      {loading && <p>Loading...</p>}
+
+      {/* Show a message if no company exists after loading is complete */}
+      {!company && !loading && (
         <p>No company information available. Please create a company.</p>
       )}
     </div>
