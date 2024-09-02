@@ -81,5 +81,11 @@ router.delete(
     }
   }
 );
+// Route to update a financial transaction
+router.put(
+  "/properties/:propertyId/financial-transactions/:transactionId",
+  authenticate,
+  propertyController.updateFinancialTransaction
+);
 
 module.exports = router;

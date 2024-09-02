@@ -185,7 +185,6 @@ exports.createFinancialTransaction = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-// propertyController.js
 
 // Function to delete a financial transaction
 exports.deleteTransaction = async (propertyId, transactionId) => {
@@ -198,5 +197,26 @@ exports.deleteTransaction = async (propertyId, transactionId) => {
   } catch (error) {
     console.error("Error deleting transaction:", error);
     throw error;
+  }
+};
+
+exports.updateFinancialTransaction = async (req, res) => {
+  const { propertyId, transactionId } = req.params;
+  const { type, amount, description, transactionDate } = req.body;
+
+  try {
+    const result = await pool.query(
+      "UPDATE FinancialTransactions SET type = $1, amount = $2, description = $3, transaction_date = $4 WHERE id = $5 AND property_id = $6 RETURNING *",
+      [type, amount, description, transactionDate, transactionId, propertyId]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).json(result.rows[0]);
+    } else {
+      res.status(404).json({ message: "Transaction not found" });
+    }
+  } catch (error) {
+    console.error("Error updating transaction:", error);
+    res.status(500).json({ error: "Failed to update transaction" });
   }
 };
