@@ -41,8 +41,19 @@ router.get("/properties/:id", authenticate, async (req, res) => {
   }
 });
 
+// Route to get all financial transactions for a property
+// Route to get all financial transactions for a property
 router.get(
-  "/api/properties/:id/financial-transactions",
+  "/properties/:id/financial-transactions",
+  authenticate,
   propertyController.getFinancialTransactions
 );
+
+// Route to create a new financial transaction for a property
+router.post(
+  "/properties/:id/financial-transactions",
+  authenticate,
+  propertyController.createFinancialTransaction
+);
+
 module.exports = router;

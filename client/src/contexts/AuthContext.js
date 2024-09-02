@@ -1,17 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // Use named import
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null); // Add state for the token
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
       try {
-        const decodedToken = jwtDecode(token);
+        const decodedToken = jwtDecode(storedToken); // Use jwtDecode function
         if (decodedToken.exp * 1000 > Date.now()) {
           setIsAuthenticated(true);
           setUser({
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
             email: decodedToken.email,
             company_id: decodedToken.company_id,
           });
+          setToken(storedToken); // Store the token
         } else {
           localStorage.removeItem("token");
         }
@@ -28,25 +30,29 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (token) => {
-    localStorage.setItem("token", token);
-    const decodedToken = jwtDecode(token);
+  const login = (newToken) => {
+    localStorage.setItem("token", newToken);
+    const decodedToken = jwtDecode(newToken); // Use jwtDecode function
     setIsAuthenticated(true);
     setUser({
       id: decodedToken.id,
       email: decodedToken.email,
       company_id: decodedToken.company_id,
     });
+    setToken(newToken); // Set token on login
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
     setUser(null);
+    setToken(null); // Clear token on logout
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, token, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

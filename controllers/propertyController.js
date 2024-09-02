@@ -1,5 +1,6 @@
 const db = require("../config/db");
 const { body, validationResult } = require("express-validator");
+const pool = require("../config/db"); // Adjust path as necessary
 
 // Helper function to get user's company ID
 const getCompanyIdForUser = async (userId) => {
@@ -161,5 +162,26 @@ exports.getFinancialTransactions = async (req, res) => {
       message: "Error fetching financial transactions",
       error: error.message,
     });
+  }
+};
+
+// Function to create a new financial transaction
+exports.createFinancialTransaction = async (req, res) => {
+  try {
+    const propertyId = req.params.id;
+    const { type, amount, description, transactionDate } = req.body;
+
+    const newTransaction = await pool.query(
+      `INSERT INTO financialtransactions 
+       (property_id, type, amount, description, transaction_date)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [propertyId, type, amount, description, transactionDate]
+    );
+
+    res.status(201).json(newTransaction.rows[0]);
+  } catch (error) {
+    console.error("Error creating financial transaction:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

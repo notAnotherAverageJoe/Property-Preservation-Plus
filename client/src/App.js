@@ -7,7 +7,7 @@ import Dashboard from "./components/Dashboard";
 import CreateCompany from "./components/CreateCompany";
 import PropertiesList from "./components/PropertiesList";
 import CreateProperty from "./components/CreateProperty";
-import PropertyDetail from "./components/PropertyDetail"; // Import PropertyDetail
+import PropertyDetail from "./components/PropertyDetail";
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
 import "./components/Navbar.css";
@@ -35,7 +35,7 @@ function App() {
             path="/create-property"
             element={<ProtectedCreateProperty />}
           />
-          <Route path="/property/:id" element={<ProtectedPropertyDetail />} />{" "}
+          <Route path="/property/:id" element={<ProtectedPropertyDetail />} />
         </Routes>
       </Router>
     </AuthProvider>
