@@ -10,6 +10,7 @@ import CreateProperty from "./components/CreateProperty";
 import PropertyDetail from "./components/PropertyDetail";
 import UnitsManager from "./components/UnitsManager";
 import AddTransactionForm from "./components/AddTransactionForm";
+import MaintenanceRequests from "./components/MaintenanceRequests"; // Import your MaintenanceRequests component
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
 import "./components/Navbar.css";
@@ -22,6 +23,7 @@ const ProtectedCreateProperty = withAuth(CreateProperty);
 const ProtectedPropertyDetail = withAuth(PropertyDetail);
 const ProtectedUnitsManager = withAuth(UnitsManager);
 const ProtectedAddTransactionForm = withAuth(AddTransactionForm);
+const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
 
 function App() {
   return (
@@ -48,6 +50,12 @@ function App() {
               element={<ProtectedAddTransactionForm />}
             />
           </Route>
+
+          {/* New route for handling maintenance requests */}
+          <Route
+            path="/properties/:propertyId/units/:unitId/requests"
+            element={<ProtectedMaintenanceRequests />}
+          />
         </Routes>
       </Router>
     </AuthProvider>

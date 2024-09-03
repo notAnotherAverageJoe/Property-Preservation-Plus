@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, useParams, Link } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import UnitsManager from "./UnitsManager";
 import AddTransactionForm from "./AddTransactionForm";
 import "./PropertyDetail.css"; // Import the CSS file
@@ -26,7 +26,7 @@ function PropertyDetail() {
         </div>
       </div>
 
-      {/* This will render nested routes */}
+      {/* This will render nested routes like MaintenanceRequests */}
       <Outlet />
     </div>
   );

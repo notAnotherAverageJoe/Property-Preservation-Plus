@@ -1,7 +1,7 @@
-// UnitsManager.js
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext"; // Import your AuthContext
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const UnitsManager = ({ propertyId }) => {
   const { token } = useAuth();
@@ -118,7 +118,9 @@ const UnitsManager = ({ propertyId }) => {
       <ul>
         {units.map((unit) => (
           <li key={unit.id}>
-            {unit.unit_number} ({unit.type}) - ${unit.rent_amount}{" "}
+            <Link to={`/properties/${propertyId}/units/${unit.id}/requests`}>
+              {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
+            </Link>{" "}
             <button onClick={() => handleEdit(unit)}>Edit</button>{" "}
             <button onClick={() => handleDelete(unit.id)}>Delete</button>
           </li>
