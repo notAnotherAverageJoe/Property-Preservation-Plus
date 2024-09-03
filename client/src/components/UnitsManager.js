@@ -17,7 +17,9 @@ const UnitsManager = ({ propertyId }) => {
 
   const fetchUnits = useCallback(async () => {
     try {
-      const response = await axios.get(`/properties/${propertyId}/units`);
+      const response = await axios.get(
+        `http://localhost:3000/api/properties/${propertyId}/units`
+      );
       setUnits(response.data);
     } catch (error) {
       console.error("Error fetching units:", error);
@@ -40,10 +42,16 @@ const UnitsManager = ({ propertyId }) => {
     try {
       if (selectedUnit) {
         // Update unit
-        await axios.put(`/units/${selectedUnit.id}`, formData);
+        await axios.put(
+          `http://localhost:3000/api/units/${selectedUnit.id}`,
+          formData
+        );
       } else {
         // Create unit
-        await axios.post(`/units`, { ...formData, property_id: propertyId });
+        await axios.post(`http://localhost:3000/api/units`, {
+          ...formData,
+          property_id: propertyId,
+        });
       }
       fetchUnits();
       setFormData({ unit_number: "", type: "", rent_amount: "" });
@@ -64,7 +72,7 @@ const UnitsManager = ({ propertyId }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/units/${id}`);
+      await axios.delete(`http://localhost:3000/api/units/${id}`);
       fetchUnits();
     } catch (error) {
       console.error("Error deleting unit:", error);

@@ -19,8 +19,7 @@ const ProtectedCreateCompany = withAuth(CreateCompany);
 const ProtectedPropertiesList = withAuth(PropertiesList);
 const ProtectedCreateProperty = withAuth(CreateProperty);
 const ProtectedPropertyDetail = withAuth(PropertyDetail);
-const ProtectedUnitsManager = withAuth(UnitsManager); // Protect UnitsManager route if needed
-
+const ProtectedUnitsManager = withAuth(UnitsManager);
 function App() {
   return (
     <AuthProvider>

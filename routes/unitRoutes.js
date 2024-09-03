@@ -9,6 +9,11 @@ router.get(
   authenticate,
   unitController.getUnitsByProperty
 );
+router.post(
+  "/properties/:propertyId/units",
+  authenticate,
+  unitController.createUnit
+);
 
 // Route to create a new unit
 router.post("/units", authenticate, unitController.createUnit);
