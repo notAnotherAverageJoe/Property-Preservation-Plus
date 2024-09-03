@@ -1,39 +1,33 @@
-import React, { useState } from "react";
-import AddTransactionForm from "./AddTransactionForm";
+import React from "react";
+import { Outlet, useParams, Link } from "react-router-dom";
 import UnitsManager from "./UnitsManager";
-import { useParams } from "react-router-dom";
+import AddTransactionForm from "./AddTransactionForm";
+import "./PropertyDetail.css"; // Import the CSS file
 
 function PropertyDetail() {
   const { id: propertyId } = useParams();
-  const [transactions, setTransactions] = useState([]);
-
-  // Function to handle adding a new transaction to the state
-  const handleTransactionAdded = (newTransaction) => {
-    setTransactions([...transactions, newTransaction]);
-  };
 
   return (
     <div>
-      {/* Section for managing units */}
-      <h2>Units Management</h2>
-      <UnitsManager propertyId={propertyId} />
+      <h1>Property Detail</h1>
 
-      {/* Section for financial transactions */}
-      <h3>Financial Transactions</h3>
-      {transactions.map((transaction) => (
-        <div key={transaction.id}>
-          <p>
-            {transaction.type}: ${transaction.amount}
-          </p>
-          <p>{transaction.description}</p>
-          <p>{transaction.transaction_date}</p>
+      {/* Flex container for side-by-side layout */}
+      <div className="property-detail-container">
+        {/* Units Manager */}
+        <div className="property-detail-section">
+          <h2>Units Management</h2>
+          <UnitsManager propertyId={propertyId} />
         </div>
-      ))}
 
-      <AddTransactionForm
-        propertyId={propertyId}
-        onTransactionAdded={handleTransactionAdded}
-      />
+        {/* Transactions Form */}
+        <div className="property-detail-section">
+          <h3>Financial Transactions</h3>
+          <AddTransactionForm propertyId={propertyId} />
+        </div>
+      </div>
+
+      {/* This will render nested routes */}
+      <Outlet />
     </div>
   );
 }

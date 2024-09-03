@@ -1,3 +1,4 @@
+// UnitsManager.js
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext"; // Import your AuthContext
@@ -17,6 +18,10 @@ const UnitsManager = ({ propertyId }) => {
 
   const fetchUnits = useCallback(async () => {
     try {
+      if (!propertyId) {
+        console.error("No propertyId provided");
+        return;
+      }
       const response = await axios.get(
         `http://localhost:3000/api/properties/${propertyId}/units`
       );

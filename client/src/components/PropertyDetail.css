@@ -1,0 +1,9 @@
+.property-detail-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .property-detail-section {
+    flex: 1;
+  }
+  

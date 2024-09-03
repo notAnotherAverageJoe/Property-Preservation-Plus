@@ -8,7 +8,8 @@ import CreateCompany from "./components/CreateCompany";
 import PropertiesList from "./components/PropertiesList";
 import CreateProperty from "./components/CreateProperty";
 import PropertyDetail from "./components/PropertyDetail";
-import UnitsManager from "./components/UnitsManager"; // Import UnitsManager
+import UnitsManager from "./components/UnitsManager";
+import AddTransactionForm from "./components/AddTransactionForm";
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
 import "./components/Navbar.css";
@@ -20,6 +21,8 @@ const ProtectedPropertiesList = withAuth(PropertiesList);
 const ProtectedCreateProperty = withAuth(CreateProperty);
 const ProtectedPropertyDetail = withAuth(PropertyDetail);
 const ProtectedUnitsManager = withAuth(UnitsManager);
+const ProtectedAddTransactionForm = withAuth(AddTransactionForm);
+
 function App() {
   return (
     <AuthProvider>
@@ -36,11 +39,15 @@ function App() {
             path="/create-property"
             element={<ProtectedCreateProperty />}
           />
-          <Route path="/property/:id" element={<ProtectedPropertyDetail />} />
-          <Route
-            path="/properties/:propertyId/units"
-            element={<ProtectedUnitsManager />}
-          />
+
+          {/* Property detail route with nested routes */}
+          <Route path="/property/:id" element={<ProtectedPropertyDetail />}>
+            <Route path="units" element={<ProtectedUnitsManager />} />
+            <Route
+              path="transactions"
+              element={<ProtectedAddTransactionForm />}
+            />
+          </Route>
         </Routes>
       </Router>
     </AuthProvider>
