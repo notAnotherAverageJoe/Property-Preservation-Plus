@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import AddTransactionForm from "./AddTransactionForm";
+import UnitsManager from "./UnitsManager";
+import { useParams } from "react-router-dom";
 
-function PropertyDetail({ propertyId }) {
+function PropertyDetail() {
+  const { id: propertyId } = useParams();
   const [transactions, setTransactions] = useState([]);
 
   // Function to handle adding a new transaction to the state
@@ -11,7 +14,11 @@ function PropertyDetail({ propertyId }) {
 
   return (
     <div>
-      {/* Other components and details */}
+      {/* Section for managing units */}
+      <h2>Units Management</h2>
+      <UnitsManager propertyId={propertyId} />
+
+      {/* Section for financial transactions */}
       <h3>Financial Transactions</h3>
       {transactions.map((transaction) => (
         <div key={transaction.id}>

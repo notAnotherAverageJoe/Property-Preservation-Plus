@@ -1,80 +1,81 @@
-const unitModel = require("../models/unitModel");
+const pool = require("../config/db");
+const db = require("../config/db");
 
-// Controller to get all units
-const getAllUnits = async (req, res) => {
+// Create a new unit
+exports.createUnit = async (req, res) => {
+  const { property_id, unit_number, type, rent_amount } = req.body;
+
   try {
-    const units = await unitModel.getAllUnits();
-    res.json(units);
+    const result = await pool.query(
+      "INSERT INTO Units (property_id, unit_number, type, rent_amount) VALUES ($1, $2, $3, $4) RETURNING *",
+      [property_id, unit_number, type, rent_amount]
+    );
+
+    res.status(201).json(result.rows[0]);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving units", error: error.message });
+    console.error("Error creating unit:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
-// Controller to get a unit by ID
-const getUnitById = async (req, res) => {
-  const id = parseInt(req.params.id);
+// Update a unit
+exports.updateUnit = async (req, res) => {
+  const { id } = req.params;
+  const { unit_number, type, rent_amount } = req.body;
+
   try {
-    const unit = await unitModel.getUnitById(id);
-    if (unit) {
-      res.json(unit);
-    } else {
-      res.status(404).json({ message: "Unit not found" });
+    const result = await pool.query(
+      "UPDATE Units SET unit_number = $1, type = $2, rent_amount = $3, updated_at = CURRENT_TIMESTAMP WHERE id = $4 RETURNING *",
+      [unit_number, type, rent_amount, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Unit not found" });
     }
+
+    res.json(result.rows[0]);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving unit", error: error.message });
+    console.error("Error updating unit:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
-// Controller to create a new unit
-const createUnit = async (req, res) => {
-  try {
-    const unit = await unitModel.createUnit(req.body);
-    res.status(201).json(unit);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating unit", error: error.message });
-  }
-};
+// Delete a unit
+exports.deleteUnit = async (req, res) => {
+  const { id } = req.params;
 
-// Controller to update a unit
-const updateUnit = async (req, res) => {
-  const id = parseInt(req.params.id);
   try {
-    const unit = await unitModel.updateUnit(id, req.body);
-    if (unit) {
-      res.json(unit);
-    } else {
-      res.status(404).json({ message: "Unit not found" });
+    const result = await pool.query(
+      "DELETE FROM Units WHERE id = $1 RETURNING *",
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Unit not found" });
     }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating unit", error: error.message });
-  }
-};
 
-// Controller to delete a unit
-const deleteUnit = async (req, res) => {
-  const id = parseInt(req.params.id);
-  try {
-    await unitModel.deleteUnit(id);
     res.json({ message: "Unit deleted successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting unit", error: error.message });
+    console.error("Error deleting unit:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
-module.exports = {
-  getAllUnits,
-  getUnitById,
-  createUnit,
-  updateUnit,
-  deleteUnit,
+// unitController.js
+exports.getUnitsByProperty = async (req, res) => {
+  const propertyId = parseInt(req.params.propertyId, 10); // Ensure propertyId is an integer
+
+  if (isNaN(propertyId)) {
+    return res.status(400).json({ error: "Invalid property ID" });
+  }
+
+  try {
+    const units = await db.query("SELECT * FROM units WHERE property_id = $1", [
+      propertyId,
+    ]);
+    res.json(units.rows);
+  } catch (error) {
+    console.error("Error fetching units:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };

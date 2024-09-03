@@ -8,6 +8,7 @@ import CreateCompany from "./components/CreateCompany";
 import PropertiesList from "./components/PropertiesList";
 import CreateProperty from "./components/CreateProperty";
 import PropertyDetail from "./components/PropertyDetail";
+import UnitsManager from "./components/UnitsManager"; // Import UnitsManager
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
 import "./components/Navbar.css";
@@ -18,6 +19,7 @@ const ProtectedCreateCompany = withAuth(CreateCompany);
 const ProtectedPropertiesList = withAuth(PropertiesList);
 const ProtectedCreateProperty = withAuth(CreateProperty);
 const ProtectedPropertyDetail = withAuth(PropertyDetail);
+const ProtectedUnitsManager = withAuth(UnitsManager); // Protect UnitsManager route if needed
 
 function App() {
   return (
@@ -36,6 +38,10 @@ function App() {
             element={<ProtectedCreateProperty />}
           />
           <Route path="/property/:id" element={<ProtectedPropertyDetail />} />
+          <Route
+            path="/properties/:propertyId/units"
+            element={<ProtectedUnitsManager />}
+          />
         </Routes>
       </Router>
     </AuthProvider>
