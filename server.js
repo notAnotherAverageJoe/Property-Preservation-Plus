@@ -48,6 +48,7 @@ app.use("/api", userRoleRoutes);
 // Auth routes
 app.use("/api/auth", authRoutes);
 app.use("/api/units", maintenanceRoutes);
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

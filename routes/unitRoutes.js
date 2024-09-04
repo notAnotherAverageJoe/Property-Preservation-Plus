@@ -23,5 +23,15 @@ router.put("/units/:id", authenticate, unitController.updateUnit);
 
 // Route to delete a unit
 router.delete("/units/:id", authenticate, unitController.deleteUnit);
+// routes/units.js
+router.get("/api/units", async (req, res) => {
+  try {
+    const units = await pool.query("SELECT * FROM Units");
+    res.json(units.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

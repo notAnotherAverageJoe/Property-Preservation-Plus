@@ -10,12 +10,14 @@ import CreateProperty from "./components/CreateProperty";
 import PropertyDetail from "./components/PropertyDetail";
 import UnitsManager from "./components/UnitsManager";
 import AddTransactionForm from "./components/AddTransactionForm";
-import MaintenanceRequests from "./components/MaintenanceRequests"; // Import your MaintenanceRequests component
+import MaintenanceRequests from "./components/MaintenanceRequests";
+import LeasesManager from "./components/LeasesManager";
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
 import "./components/Navbar.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import TenantsManager from "./components/TenantsManager";
+import CreateLease from "./components/CreateLease";
 
 const ProtectedDashboard = withAuth(Dashboard);
 const ProtectedCreateCompany = withAuth(CreateCompany);
@@ -26,6 +28,7 @@ const ProtectedUnitsManager = withAuth(UnitsManager);
 const ProtectedAddTransactionForm = withAuth(AddTransactionForm);
 const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
 const ProtectedTenantsManager = withAuth(TenantsManager);
+const ProtectedLeasesManager = withAuth(LeasesManager); // Protect LeasesManager
 
 function App() {
   return (
@@ -44,7 +47,6 @@ function App() {
             path="/create-property"
             element={<ProtectedCreateProperty />}
           />
-
           {/* Property detail route with nested routes */}
           <Route path="/property/:id" element={<ProtectedPropertyDetail />}>
             <Route path="units" element={<ProtectedUnitsManager />} />
@@ -53,12 +55,14 @@ function App() {
               element={<ProtectedAddTransactionForm />}
             />
           </Route>
-
           {/* New route for handling maintenance requests */}
           <Route
             path="/properties/:propertyId/units/:unitId/requests"
             element={<ProtectedMaintenanceRequests />}
           />
+          {/* New route for leases manager */}
+          <Route path="/leases" element={<ProtectedLeasesManager />} />{" "}
+          <Route path="/create-lease" element={<CreateLease />} />{" "}
         </Routes>
       </Router>
     </AuthProvider>

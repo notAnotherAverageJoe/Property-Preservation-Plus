@@ -52,8 +52,10 @@ function Dashboard() {
         <>
           <Link to="/create-property">Create a New Property</Link>
           <Link to="/properties">All Properties</Link>
-          <Link to="/tenants">Tentants</Link>
-
+          <Link to="/tenants">Tenants</Link>
+          <Link to="/leases">Manage Leases</Link>{" "}
+          <Link to="/create-lease">Create LEASE</Link>
+          {/* New link for leases manager */}
           <div>
             <h2>Company Information</h2>
             <p>
