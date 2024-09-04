@@ -1,80 +1,79 @@
-const tenantModel = require("../models/tenantModel");
+// controllers/tenantController.js
+const pool = require("../config/db");
 
-// Controller to get all tenants
-const getAllTenants = async (req, res) => {
+// Get all tenants
+exports.getAllTenants = async (req, res) => {
   try {
-    const tenants = await tenantModel.getAllTenants();
-    res.json(tenants);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving tenants", error: error.message });
+    const result = await pool.query("SELECT * FROM Tenants");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
 };
 
-// Controller to get a tenant by ID
-const getTenantById = async (req, res) => {
-  const id = parseInt(req.params.id);
+// Get a tenant by ID
+exports.getTenantById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const tenant = await tenantModel.getTenantById(id);
-    if (tenant) {
-      res.json(tenant);
-    } else {
-      res.status(404).json({ message: "Tenant not found" });
+    const result = await pool.query("SELECT * FROM Tenants WHERE id = $1", [
+      id,
+    ]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ msg: "Tenant not found" });
     }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving tenant", error: error.message });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
 };
 
-// Controller to create a new tenant
-const createTenant = async (req, res) => {
+// Create a new tenant
+exports.createTenant = async (req, res) => {
+  const { first_name, last_name, email, phone } = req.body;
   try {
-    const tenant = await tenantModel.createTenant(req.body);
-    res.status(201).json(tenant);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating tenant", error: error.message });
+    const result = await pool.query(
+      "INSERT INTO Tenants (first_name, last_name, email, phone) VALUES ($1, $2, $3, $4) RETURNING *",
+      [first_name, last_name, email, phone]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
 };
 
-// Controller to update a tenant
-const updateTenant = async (req, res) => {
-  const id = parseInt(req.params.id);
+// Update a tenant
+exports.updateTenant = async (req, res) => {
+  const { id } = req.params;
+  const { first_name, last_name, email, phone } = req.body;
   try {
-    const tenant = await tenantModel.updateTenant(id, req.body);
-    if (tenant) {
-      res.json(tenant);
-    } else {
-      res.status(404).json({ message: "Tenant not found" });
+    const result = await pool.query(
+      "UPDATE Tenants SET first_name = $1, last_name = $2, email = $3, phone = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5 RETURNING *",
+      [first_name, last_name, email, phone, id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ msg: "Tenant not found" });
     }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating tenant", error: error.message });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
 };
 
-// Controller to delete a tenant
-const deleteTenant = async (req, res) => {
-  const id = parseInt(req.params.id);
+// Delete a tenant
+exports.deleteTenant = async (req, res) => {
+  const { id } = req.params;
   try {
-    await tenantModel.deleteTenant(id);
-    res.json({ message: "Tenant deleted successfully" });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting tenant", error: error.message });
+    const result = await pool.query("DELETE FROM Tenants WHERE id = $1", [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ msg: "Tenant not found" });
+    }
+    res.json({ msg: "Tenant deleted" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
-};
-
-module.exports = {
-  getAllTenants,
-  getTenantById,
-  createTenant,
-  updateTenant,
-  deleteTenant,
 };
