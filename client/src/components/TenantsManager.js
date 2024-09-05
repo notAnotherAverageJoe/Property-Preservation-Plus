@@ -3,26 +3,43 @@ import axios from "axios";
 
 const TenantsManager = () => {
   const [tenants, setTenants] = useState([]);
+  const [properties, setProperties] = useState([]);
   const [formData, setFormData] = useState({
     id: null,
     first_name: "",
     last_name: "",
     email: "",
     phone: "",
+    property_id: "", // Initialize as empty string
   });
   const [editing, setEditing] = useState(false);
 
-  // Fetch tenants from the server
   useEffect(() => {
     fetchTenants();
+    fetchProperties();
   }, []);
 
   const fetchTenants = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/tenants");
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:3000/api/tenants", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setTenants(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Failed to fetch tenants:", err);
+    }
+  };
+
+  const fetchProperties = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:3000/api/properties", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProperties(res.data);
+    } catch (err) {
+      console.error("Failed to fetch properties:", err);
     }
   };
 
@@ -32,33 +49,36 @@ const TenantsManager = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editing) {
-      // Update tenant
-      try {
+    console.log("Form Data:", formData);
+    const { id, first_name, last_name, email, phone, property_id } = formData;
+    try {
+      const token = localStorage.getItem("token");
+      if (editing) {
         await axios.put(
-          `http://localhost:3000/api/tenants/${formData.id}`,
-          formData
+          `http://localhost:3000/api/tenants/${id}`,
+          { first_name, last_name, email, phone, property_id },
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         setEditing(false);
-      } catch (err) {
-        console.error(err);
+      } else {
+        await axios.post(
+          "http://localhost:3000/api/tenants",
+          { first_name, last_name, email, phone, property_id },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
       }
-    } else {
-      // Create tenant
-      try {
-        await axios.post("http://localhost:3000/api/tenants", formData);
-      } catch (err) {
-        console.error(err);
-      }
+      setFormData({
+        id: null,
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone: "",
+        property_id: "", // Reset to empty string
+      });
+      fetchTenants();
+    } catch (err) {
+      console.error("Failed to submit tenant:", err);
     }
-    setFormData({
-      id: null,
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone: "",
-    });
-    fetchTenants();
   };
 
   const handleEdit = (tenant) => {
@@ -68,10 +88,13 @@ const TenantsManager = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/tenants/${id}`);
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:3000/api/tenants/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       fetchTenants();
     } catch (err) {
-      console.error(err);
+      console.error("Failed to delete tenant:", err);
     }
   };
 
@@ -110,6 +133,20 @@ const TenantsManager = () => {
           value={formData.phone}
           onChange={handleInputChange}
         />
+
+        <select
+          name="property_id"
+          value={formData.property_id || ""}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="">Select Property</option>
+          {properties.map((property) => (
+            <option key={property.id} value={property.id}>
+              {property.name}
+            </option>
+          ))}
+        </select>
         <button type="submit">
           {editing ? "Update Tenant" : "Add Tenant"}
         </button>
