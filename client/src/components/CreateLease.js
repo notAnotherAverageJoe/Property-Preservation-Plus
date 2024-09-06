@@ -9,6 +9,7 @@ const CreateLease = () => {
     start_date: "",
     end_date: "",
     rent_amount: "",
+    company_id: "", // Add this field
   });
 
   const handleInputChange = (e) => {
@@ -18,31 +19,40 @@ const CreateLease = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if all fields are filled
     if (
       !leaseData.unit_id ||
       !leaseData.tenant_id ||
       !leaseData.start_date ||
       !leaseData.end_date ||
-      !leaseData.rent_amount
+      !leaseData.rent_amount ||
+      !leaseData.company_id
     ) {
       alert("All fields are required.");
       return;
     }
 
-    if (leaseData.start_date > leaseData.end_date) {
-      alert("End date must be after the start date.");
-      return;
-    }
+    // Format the data for submission
+    const formattedLeaseData = {
+      ...leaseData,
+      unit_id: Number(leaseData.unit_id),
+      tenant_id: Number(leaseData.tenant_id),
+      rent_amount: parseFloat(leaseData.rent_amount), // Ensures rent_amount is treated as a float
+      company_id: Number(leaseData.company_id),
+    };
 
     try {
-      await axios.post("http://localhost:3000/api/api/leases", leaseData);
+      await axios.post("http://localhost:3000/api/leases", formattedLeaseData);
       alert("Lease created successfully");
+
+      // Reset form fields after successful submission
       setLeaseData({
         unit_id: "",
         tenant_id: "",
         start_date: "",
         end_date: "",
         rent_amount: "",
+        company_id: "",
       });
     } catch (err) {
       console.error(err);
@@ -90,6 +100,15 @@ const CreateLease = () => {
           value={leaseData.rent_amount}
           onChange={handleInputChange}
           placeholder="Rent Amount"
+          required
+        />
+        {/* Add Company ID input */}
+        <input
+          type="text"
+          name="company_id"
+          value={leaseData.company_id}
+          onChange={handleInputChange}
+          placeholder="Company ID"
           required
         />
         <button type="submit">Create Lease</button>
