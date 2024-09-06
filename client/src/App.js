@@ -18,6 +18,7 @@ import "./components/Navbar.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import TenantsManager from "./components/TenantsManager";
 import CreateLease from "./components/CreateLease";
+import EditProperty from "./components/pages/EditProperty";
 
 const ProtectedDashboard = withAuth(Dashboard);
 const ProtectedCreateCompany = withAuth(CreateCompany);
@@ -29,6 +30,7 @@ const ProtectedAddTransactionForm = withAuth(AddTransactionForm);
 const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
 const ProtectedTenantsManager = withAuth(TenantsManager);
 const ProtectedLeasesManager = withAuth(LeasesManager);
+const ProtectedEditProperty = withAuth(EditProperty);
 
 function App() {
   return (
@@ -43,6 +45,10 @@ function App() {
           <Route path="/dashboard" element={<ProtectedDashboard />} />
           <Route path="/properties" element={<ProtectedPropertiesList />} />
           <Route path="/tenants" element={<ProtectedTenantsManager />} />
+          <Route
+            path="/edit-property/:id"
+            element={<ProtectedEditProperty />}
+          />
           <Route
             path="/create-property"
             element={<ProtectedCreateProperty />}
