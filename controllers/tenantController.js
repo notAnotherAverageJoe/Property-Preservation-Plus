@@ -78,3 +78,25 @@ exports.deleteTenant = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+// Get tenants based on companyId and optional propertyId
+exports.getTenants = async (req, res) => {
+  const { companyId } = req.params;
+  const { property_id } = req.query;
+
+  let query = "SELECT * FROM Tenants WHERE company_id = $1";
+  const queryParams = [companyId];
+
+  if (property_id) {
+    query += " AND property_id = $2";
+    queryParams.push(property_id);
+  }
+
+  try {
+    const result = await pool.query(query, queryParams);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching tenants:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

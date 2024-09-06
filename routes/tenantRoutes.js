@@ -1,12 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const tenantController = require("../controllers/tenantController");
-
+const db = require("../config/db");
+const Tenant = require("../models/tenantModel");
 // Route to get all tenants
 router.get("/tenants", tenantController.getAllTenants);
-
-// Route to get a tenant by ID
-router.get("/tenants/:id", tenantController.getTenantById);
 
 // Route to create a new tenant
 router.post("/tenants", tenantController.createTenant);
@@ -19,14 +17,22 @@ router.delete("/tenants/:id", tenantController.deleteTenant);
 
 // routes/tenants.js
 router.get("/api/tenants", async (req, res) => {
+  const { property_id } = req.query;
   try {
-    const tenants = await pool.query("SELECT * FROM Tenants");
+    let tenants;
+    if (property_id) {
+      tenants = await db.query("SELECT * FROM tenants WHERE property_id = $1", [
+        property_id,
+      ]);
+    } else {
+      tenants = await db.query("SELECT * FROM tenants");
+    }
     res.json(tenants.rows);
   } catch (err) {
-    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
+
 router.post("/api/tenants", async (req, res) => {
   const { first_name, last_name, email, phone, property_id } = req.body;
   const { companyId } = req.user; // Assuming you attach company ID to req.user in middleware
@@ -54,5 +60,7 @@ router.post("/api/tenants", async (req, res) => {
     res.status(500).json({ error: "Failed to create tenant" });
   }
 });
+// this route is allowing all tenants to appear
+router.get("/tenants/:company_id", tenantController.getAllTenants);
 
 module.exports = router;
