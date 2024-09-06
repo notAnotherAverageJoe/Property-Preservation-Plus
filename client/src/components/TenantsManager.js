@@ -210,8 +210,10 @@ const TenantsManager = () => {
         {filteredTenants.length > 0 ? (
           filteredTenants.map((tenant) => (
             <li key={tenant.id}>
-              {tenant.first_name} {tenant.last_name} - {tenant.email} -{" "}
-              {tenant.phone}
+              {`First Name: ${tenant.first_name} `}{" "}
+              {`Last Name: ${tenant.last_name} `} -{" "}
+              {`Tenant Email: ${tenant.email} `} -{" "}
+              {`Tenant Phone: ${tenant.phone} `} - {`Tenant ID: ${tenant.id}`}
               <button onClick={() => handleEdit(tenant)}>Edit</button>
               <button onClick={() => handleDelete(tenant.id)}>Delete</button>
             </li>
