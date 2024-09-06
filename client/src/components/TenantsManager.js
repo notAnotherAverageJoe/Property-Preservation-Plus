@@ -178,13 +178,16 @@ const TenantsManager = () => {
           onChange={handleInputChange}
           required
         >
-          <option value="">Select Property</option>
+          <option value="" disabled>
+            -- Select Property --
+          </option>
           {properties.map((property) => (
             <option key={property.id} value={property.id}>
               {property.name}
             </option>
           ))}
         </select>
+
         <button type="submit">
           {editing ? "Update Tenant" : "Add Tenant"}
         </button>
@@ -192,6 +195,9 @@ const TenantsManager = () => {
 
       <h2>Filter Tenants by Property</h2>
       <select value={selectedPropertyId} onChange={handlePropertyFilterChange}>
+        <option value="" disabled>
+          -- Select Property to Filter --
+        </option>
         {properties.map((property) => (
           <option key={property.id} value={property.id}>
             {property.name}
