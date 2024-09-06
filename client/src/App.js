@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Home from "./components/Home";
-import Dashboard from "./components/Dashboard";
+import Home from "./components/pages/Home";
+import Dashboard from "./components/pages/Dashboard";
 import CreateCompany from "./components/CreateCompany";
 import PropertiesList from "./components/PropertiesList";
 import CreateProperty from "./components/CreateProperty";
@@ -28,7 +28,7 @@ const ProtectedUnitsManager = withAuth(UnitsManager);
 const ProtectedAddTransactionForm = withAuth(AddTransactionForm);
 const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
 const ProtectedTenantsManager = withAuth(TenantsManager);
-const ProtectedLeasesManager = withAuth(LeasesManager); // Protect LeasesManager
+const ProtectedLeasesManager = withAuth(LeasesManager);
 
 function App() {
   return (
@@ -55,12 +55,12 @@ function App() {
               element={<ProtectedAddTransactionForm />}
             />
           </Route>
-          {/* New route for handling maintenance requests */}
+          {/*  route for handling maintenance requests */}
           <Route
             path="/properties/:propertyId/units/:unitId/requests"
             element={<ProtectedMaintenanceRequests />}
           />
-          {/* New route for leases manager */}
+          {/*route for leases manager */}
           <Route path="/leases" element={<ProtectedLeasesManager />} />{" "}
           <Route path="/create-lease" element={<CreateLease />} />{" "}
         </Routes>
