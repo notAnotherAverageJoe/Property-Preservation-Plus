@@ -8,20 +8,26 @@ router.get("/leases", async (req, res) => {
   try {
     const { tenant_id, company_id } = req.query;
 
-    let query = "SELECT * FROM leases WHERE 1=1"; // 1=1 is a no-op, makes adding conditions easier
-    const queryParams = [];
+    if (!company_id) {
+      return res.status(400).json({ message: "Company ID is required." });
+    }
+
+    let query = "SELECT * FROM leases WHERE company_id = $1";
+    const queryParams = [company_id];
 
     if (tenant_id) {
-      query += " AND tenant_id = $1";
+      query += " AND tenant_id = $2";
       queryParams.push(tenant_id);
     }
 
-    if (company_id) {
-      query += tenant_id ? " AND company_id = $2" : " AND company_id = $1";
-      queryParams.push(company_id);
+    const { rows: leases } = await pool.query(query, queryParams);
+
+    if (leases.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No leases found for this company/tenant." });
     }
 
-    const { rows: leases } = await pool.query(query, queryParams);
     res.json(leases);
   } catch (error) {
     console.error("Error fetching leases:", error);
