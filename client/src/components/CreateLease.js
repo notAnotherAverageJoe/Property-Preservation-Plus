@@ -56,7 +56,22 @@ const CreateLease = () => {
       });
     } catch (err) {
       console.error(err);
-      alert("Failed to create lease");
+
+      // Check if the error is a foreign key constraint violation
+      if (err.response && err.response.data && err.response.data.detail) {
+        const errorMessage = err.response.data.detail;
+        if (errorMessage.includes("violates foreign key constraint")) {
+          alert(
+            "The specified Unit ID does not exist. Please check and try again."
+          );
+        } else {
+          alert(
+            "Failed to create lease. Please check your input and try again."
+          );
+        }
+      } else {
+        alert("Failed to create lease. Please try again later.");
+      }
     }
   };
 
