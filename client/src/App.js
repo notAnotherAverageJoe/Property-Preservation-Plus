@@ -20,6 +20,7 @@ import TenantsManager from "./components/TenantsManager";
 import CreateLease from "./components/CreateLease";
 import EditProperty from "./components/pages/EditProperty";
 import LeasesListByTenant from "./components/LeasesListByTenant";
+import RolesManager from "./components/RolesManager"; // Import Roles Manager
 
 const ProtectedDashboard = withAuth(Dashboard);
 const ProtectedCreateCompany = withAuth(CreateCompany);
@@ -33,6 +34,7 @@ const ProtectedTenantsManager = withAuth(TenantsManager);
 const ProtectedLeasesManager = withAuth(LeasesManager);
 const ProtectedEditProperty = withAuth(EditProperty);
 const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant);
+const ProtectedRolesManager = withAuth(RolesManager); // Protect Roles Manager
 
 function App() {
   return (
@@ -72,6 +74,8 @@ function App() {
             path="/leases-by-tenant/:tenantId"
             element={<ProtectedLeasesListByTenant />}
           />
+          <Route path="/dashboard/roles" element={<ProtectedRolesManager />} />{" "}
+          {/* Roles Manager Route */}
         </Routes>
       </Router>
     </AuthProvider>

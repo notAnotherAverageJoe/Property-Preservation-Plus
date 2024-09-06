@@ -4,7 +4,7 @@ const userController = require("../controllers/userController");
 const authenticate = require("../middleware/authenticate");
 const companyController = require("../controllers/companyController");
 // Route to get all users
-router.get("/users", authenticate, userController.getAllUsers);
+// router.get("/users", authenticate, userController.getAllUsers);
 
 // Route to get a specific user by ID
 router.get("/users/:id", authenticate, userController.getUserById);
@@ -19,11 +19,6 @@ router.put("/users/:id", authenticate, userController.updateUser);
 router.delete("/users/:id", authenticate, userController.deleteUser);
 
 // Route to update company and refresh token
-router.post(
-  "/updateCompany",
-  authenticate,
-  authenticate,
-  companyController.updateCompany
-);
+router.post("/updateCompany", authenticate, companyController.updateCompany);
 
 module.exports = router;

@@ -65,6 +65,9 @@ function Dashboard() {
           <Link to="/create-lease" className="button-link">
             Create Lease
           </Link>
+          <Link to="/dashboard/roles" className="button-link">
+            Role Management
+          </Link>
           <div>
             <h2>Company Information</h2>
             <p>
