@@ -19,6 +19,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import TenantsManager from "./components/TenantsManager";
 import CreateLease from "./components/CreateLease";
 import EditProperty from "./components/pages/EditProperty";
+import LeasesListByTenant from "./components/LeasesListByTenant";
 
 const ProtectedDashboard = withAuth(Dashboard);
 const ProtectedCreateCompany = withAuth(CreateCompany);
@@ -31,6 +32,7 @@ const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
 const ProtectedTenantsManager = withAuth(TenantsManager);
 const ProtectedLeasesManager = withAuth(LeasesManager);
 const ProtectedEditProperty = withAuth(EditProperty);
+const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant);
 
 function App() {
   return (
@@ -53,7 +55,6 @@ function App() {
             path="/create-property"
             element={<ProtectedCreateProperty />}
           />
-          {/* Property detail route with nested routes */}
           <Route path="/property/:id" element={<ProtectedPropertyDetail />}>
             <Route path="units" element={<ProtectedUnitsManager />} />
             <Route
@@ -61,14 +62,16 @@ function App() {
               element={<ProtectedAddTransactionForm />}
             />
           </Route>
-          {/*  route for handling maintenance requests */}
           <Route
             path="/properties/:propertyId/units/:unitId/requests"
             element={<ProtectedMaintenanceRequests />}
           />
-          {/*route for leases manager */}
-          <Route path="/leases" element={<ProtectedLeasesManager />} />{" "}
-          <Route path="/create-lease" element={<CreateLease />} />{" "}
+          <Route path="/leases" element={<ProtectedLeasesManager />} />
+          <Route path="/create-lease" element={<CreateLease />} />
+          <Route
+            path="/leases-by-tenant/:tenantId"
+            element={<ProtectedLeasesListByTenant />}
+          />
         </Routes>
       </Router>
     </AuthProvider>

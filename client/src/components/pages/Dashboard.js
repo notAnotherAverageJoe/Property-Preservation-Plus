@@ -59,7 +59,7 @@ function Dashboard() {
           <Link to="/tenants" className="button-link">
             Tenants
           </Link>
-          <Link to="/leases" className="button-link">
+          <Link to="/leases-by-tenant/:tenantId" className="button-link">
             Manage Leases
           </Link>
           <Link to="/create-lease" className="button-link">
