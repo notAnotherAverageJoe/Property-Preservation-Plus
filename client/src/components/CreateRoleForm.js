@@ -4,12 +4,17 @@ import { useAuth } from "../contexts/AuthContext";
 
 const CreateRoleForm = () => {
   const [roleName, setRoleName] = useState("");
+  const [accessLevel, setAccessLevel] = useState(""); // State for access level
   const [message, setMessage] = useState("");
   const [roles, setRoles] = useState([]); // State to store the roles
   const { user, token } = useAuth(); // Use user and token from Auth context
 
   const handleInputChange = (e) => {
     setRoleName(e.target.value);
+  };
+
+  const handleAccessLevelChange = (e) => {
+    setAccessLevel(e.target.value);
   };
 
   // Define fetchRoles outside of useEffect to reuse it in handleSubmit
@@ -29,8 +34,8 @@ const CreateRoleForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!roleName) {
-      setMessage("Role name cannot be empty.");
+    if (!roleName || !accessLevel) {
+      setMessage("Role name and access level cannot be empty.");
       return;
     }
 
@@ -39,8 +44,9 @@ const CreateRoleForm = () => {
         "http://localhost:3000/api/roles",
         {
           name: roleName,
-          company_id: user.company_id, // Send company_id
-          user_id: user.id, // Send user_id
+          access_level: parseInt(accessLevel), // Ensure access level is an integer
+          company_id: user.company_id,
+          user_id: user.id,
         },
         {
           headers: {
@@ -50,6 +56,7 @@ const CreateRoleForm = () => {
       );
       setMessage(response.data.message);
       setRoleName("");
+      setAccessLevel(""); // Reset access level after submission
       fetchRoles(); // Fetch roles again after a new role is created
     } catch (error) {
       setMessage("Error creating role.");
@@ -89,6 +96,22 @@ const CreateRoleForm = () => {
           onChange={handleInputChange}
           required
         />
+
+        <label htmlFor="accessLevel">Access Level (1-5):</label>
+        <select
+          id="accessLevel"
+          value={accessLevel}
+          onChange={handleAccessLevelChange}
+          required
+        >
+          <option value="">Select Access Level</option>
+          <option value="1">1 - Lowest</option>
+          <option value="2">2 - Low</option>
+          <option value="3">3 - Medium</option>
+          <option value="4">4 - High</option>
+          <option value="5">5 - Maximum</option>
+        </select>
+
         <button type="submit">Create Role</button>
       </form>
       {message && <p>{message}</p>}
@@ -98,7 +121,7 @@ const CreateRoleForm = () => {
         {roles.length > 0 ? (
           roles.map((role) => (
             <li key={role.id}>
-              {role.name} (ID: {role.id})
+              {role.name} (ID: {role.id}, Access Level: {role.access_level})
               <button onClick={() => handleDelete(role.id)}>Delete</button>{" "}
             </li>
           ))
