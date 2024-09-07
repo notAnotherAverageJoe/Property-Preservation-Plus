@@ -56,6 +56,20 @@ const CreateRoleForm = () => {
     }
   };
 
+  const handleDelete = async (roleId) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/roles/${roleId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass token in Authorization header
+        },
+      });
+      setMessage("Role deleted successfully.");
+      fetchRoles(); // Fetch roles again after deleting a role
+    } catch (error) {
+      setMessage("Error deleting role.");
+    }
+  };
+
   // Fetch the roles on component mount
   useEffect(() => {
     if (token) {
@@ -79,13 +93,14 @@ const CreateRoleForm = () => {
       </form>
       {message && <p>{message}</p>}
 
-      {/* Display fetched roles */}
       <h3>Existing Roles</h3>
       <ul>
         {roles.length > 0 ? (
           roles.map((role) => (
             <li key={role.id}>
               {role.name} (ID: {role.id})
+              <button onClick={() => handleDelete(role.id)}>Delete</button>{" "}
+              {/* Add delete button */}
             </li>
           ))
         ) : (

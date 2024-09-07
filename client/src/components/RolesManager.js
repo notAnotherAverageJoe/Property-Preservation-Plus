@@ -7,6 +7,7 @@ const RolesManager = () => {
   const { user, token, isAuthenticated, logout } = useAuth(); // Access user and token
   const [roles, setRoles] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     if (isAuthenticated && token) {
@@ -18,8 +19,10 @@ const RolesManager = () => {
             },
           });
           setRoles(response.data);
+          setLoading(false); // Data fetched successfully
         } catch (error) {
           setMessage("Error fetching roles.");
+          setLoading(false); // Stop loading if error occurs
         }
       };
 
@@ -48,20 +51,6 @@ const RolesManager = () => {
         <CreateRoleForm companyId={user.company_id} />
       ) : (
         <p>Please log in.</p>
-      )}
-      {message && <p>{message}</p>}
-      <h3>Existing Roles</h3>
-      {roles.length > 0 ? (
-        <ul>
-          {roles.map((role) => (
-            <li key={role.id}>
-              {role.name}
-              <button onClick={() => handleDelete(role.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No roles found.</p>
       )}
       <button onClick={logout}>Logout</button> {/* Logout button */}
     </div>
