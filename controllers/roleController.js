@@ -63,3 +63,17 @@ exports.deleteRole = async (req, res) => {
     res.status(500).json({ error: "Error deleting role." });
   }
 };
+
+// Fetch roles by user ID
+exports.getRolesByUserId = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you have user information from authentication middleware
+    const roles = await pool.query("SELECT * FROM roles WHERE user_id = $1", [
+      userId,
+    ]);
+    res.json(roles.rows);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
