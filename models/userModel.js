@@ -1,13 +1,23 @@
 const pool = require("../config/db");
 
 // Function to get all users
-const getAllUsers = async () => {
+
+const getAllUsers = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM Users");
-    return result.rows;
+    const result = await pool.query(
+      "SELECT id, first_name, last_name, email FROM Users"
+    );
+    res.json(result.rows);
   } catch (error) {
-    throw new Error("Error retrieving users: " + error.message);
+    console.error("Error fetching users:", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching users", error: error.message });
   }
+};
+
+module.exports = {
+  getAllUsers,
 };
 
 // Function to get user by ID
@@ -20,19 +30,22 @@ const getUserById = async (id) => {
   }
 };
 
-// Function to create a new user
+// models/userModel.js
+
 const createUser = async (userData) => {
   try {
-    const { companyId, firstName, lastName, email, passwordHash } = userData;
+    const { company_id, first_name, last_name, email, password_hash } =
+      userData;
     const result = await pool.query(
       "INSERT INTO Users (company_id, first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [companyId, firstName, lastName, email, passwordHash]
+      [company_id, first_name, last_name, email, password_hash]
     );
     return result.rows[0];
   } catch (error) {
     throw new Error("Error creating user: " + error.message);
   }
 };
+
 // Function to update a user, including company_id
 const updateUser = async (id, userData) => {
   try {
@@ -57,11 +70,24 @@ const deleteUser = async (id) => {
   }
 };
 
-// Export functions
+const getUsersByCompanyId = async (companyId) => {
+  const query = "SELECT * FROM users WHERE company_id = $1";
+  const values = [companyId];
+
+  try {
+    const result = await pool.query(query, values);
+    return result.rows;
+  } catch (error) {
+    console.error("Database query error:", error);
+    throw error; // Re-throw the error to be caught in the controller
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  getUsersByCompanyId,
 };

@@ -68,6 +68,10 @@ function Dashboard() {
           <Link to="/dashboard/roles" className="button-link">
             Role Management
           </Link>
+          <Link to="/create-user" className="button-link">
+            Create Company User
+          </Link>
+
           <div>
             <h2>Company Information</h2>
             <p>

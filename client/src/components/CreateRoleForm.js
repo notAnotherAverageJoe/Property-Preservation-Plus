@@ -100,7 +100,6 @@ const CreateRoleForm = () => {
             <li key={role.id}>
               {role.name} (ID: {role.id})
               <button onClick={() => handleDelete(role.id)}>Delete</button>{" "}
-              {/* Add delete button */}
             </li>
           ))
         ) : (
