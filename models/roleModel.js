@@ -21,16 +21,30 @@ const getRoleById = async (id) => {
 };
 
 // Function to create a new role
-const createRole = async (roleData) => {
+const createRole = async (req, res) => {
+  const { name } = req.body;
+  const user_id = req.user.id; // Extract user_id from the token
+
+  if (!name || !user_id) {
+    return res
+      .status(400)
+      .json({ message: "Role name and user_id are required." });
+  }
+
   try {
-    const { name } = roleData;
     const result = await pool.query(
-      "INSERT INTO Roles (name) VALUES ($1) RETURNING *",
-      [name]
+      "INSERT INTO Roles (name, user_id) VALUES ($1, $2) RETURNING *",
+      [name, user_id]
     );
-    return result.rows[0];
+    res.status(201).json({
+      message: `Role '${result.rows[0].name}' created successfully.`,
+      role: result.rows[0],
+    });
   } catch (error) {
-    throw new Error("Error creating role: " + error.message);
+    if (error.code === "23505") {
+      return res.status(400).json({ message: "Role already exists." });
+    }
+    res.status(500).json({ message: "Error creating role." });
   }
 };
 
