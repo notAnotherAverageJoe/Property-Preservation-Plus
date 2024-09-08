@@ -10,13 +10,8 @@ const withAuth = (Component, requiredAccessLevel) => {
       return <Navigate to="/login" />;
     }
 
-    // Check if user has the required access level
-    if (
-      user &&
-      requiredAccessLevel !== undefined &&
-      user.access_level < requiredAccessLevel
-    ) {
-      return <Navigate to="/dashboard" />;
+    if (user.access_level < requiredAccessLevel) {
+      return <Navigate to="/unauthorized" />; // Redirect to an unauthorized page
     }
 
     return <Component {...props} />;

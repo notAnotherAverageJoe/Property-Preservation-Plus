@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 function PropertiesList() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { user } = useAuth(); // Get user info from AuthContext
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -61,10 +63,16 @@ function PropertiesList() {
     }
   };
 
-  // Handle Edit Property (Redirect to an Edit form with the selected property data)
+  // Handle Edit Property
   const handleEdit = (id) => {
     navigate(`/edit-property/${id}`);
   };
+
+  // Check if user has full access
+  const hasFullAccess =
+    user.access_level === null ||
+    user.access_level === undefined ||
+    user.access_level < 1;
 
   return (
     <div>
@@ -78,18 +86,22 @@ function PropertiesList() {
               <Link to={`/property/${property.id}`}>
                 {property.name} - {property.address}
               </Link>
-              <button
-                onClick={() => handleEdit(property.id)}
-                style={{ marginLeft: "10px" }}
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDelete(property.id)}
-                style={{ marginLeft: "10px" }}
-              >
-                Delete
-              </button>
+              {(hasFullAccess || user.access_level > 1) && ( // Check for full access
+                <>
+                  <button
+                    onClick={() => handleEdit(property.id)}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(property.id)}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
             </li>
           ))}
         </ul>

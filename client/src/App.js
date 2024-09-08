@@ -22,6 +22,7 @@ import EditProperty from "./components/pages/EditProperty";
 import LeasesListByTenant from "./components/LeasesListByTenant";
 import RolesManager from "./components/RolesManager";
 import CreateUserForm from "./components/CreateUserForm"; // Import CreateUserForm
+import Unauthorized from "./components/Unauthorized";
 
 const ProtectedDashboard = withAuth(Dashboard);
 const ProtectedCreateCompany = withAuth(CreateCompany);
@@ -34,7 +35,7 @@ const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
 const ProtectedTenantsManager = withAuth(TenantsManager, 4);
 const ProtectedLeasesManager = withAuth(LeasesManager);
 const ProtectedEditProperty = withAuth(EditProperty);
-const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant);
+const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant, 5);
 const ProtectedRolesManager = withAuth(RolesManager, 2); // Example: Level 2 required for Roles Manager
 const ProtectedCreateUserForm = withAuth(CreateUserForm, 3); // Example: Level 3 required for CreateUserForm
 
@@ -78,6 +79,8 @@ function App() {
           />
           <Route path="/dashboard/roles" element={<ProtectedRolesManager />} />
           <Route path="/create-user" element={<ProtectedCreateUserForm />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />{" "}
+          {/* Unauthorized route */}
         </Routes>
       </Router>
     </AuthProvider>
