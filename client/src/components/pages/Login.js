@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isCreator, setIsCreator] = useState(false); // New state to differentiate login type
+  const [isCreator, setIsCreator] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -20,8 +20,29 @@ const Login = () => {
       const response = await axios.post(endpoint, { email, password });
 
       if (response.data.token) {
-        login(response.data.token); // Save token and update auth state
-        navigate("/dashboard"); // Redirect to dashboard
+        const { token, accessLevel } = response.data;
+        login(token); // Save token and update auth state
+
+        // Redirect based on access level
+        switch (accessLevel) {
+          case 1:
+            navigate("/dashboard/level1");
+            break;
+          case 2:
+            navigate("/dashboard/level2");
+            break;
+          case 3:
+            navigate("/dashboard/level3");
+            break;
+          case 4:
+            navigate("/dashboard/level4");
+            break;
+          case 5:
+            navigate("/dashboard/level5");
+            break;
+          default:
+            navigate("/dashboard"); // Default fallback dashboard
+        }
       }
     } catch (error) {
       console.error("Login failed", error);
@@ -31,7 +52,6 @@ const Login = () => {
   return (
     <div>
       <h2>Login</h2>
-      {/* Toggle to choose between regular and creator login */}
       <div>
         <label>
           <input
@@ -51,7 +71,6 @@ const Login = () => {
         </label>
       </div>
 
-      {/* Form for both login types */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>

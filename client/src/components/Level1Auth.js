@@ -2,10 +2,11 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const withAuth = (Component, requiredAccessLevel) => {
+const level1Auth = (Component, requiredAccessLevel) => {
   return (props) => {
-    const { isAuthenticated, user } = useAuth();
+    const { token, user, isAuthenticated } = useAuth();
 
+    // Check if user is authenticated
     if (!isAuthenticated) {
       return <Navigate to="/login" />;
     }
@@ -14,13 +15,13 @@ const withAuth = (Component, requiredAccessLevel) => {
     if (
       user &&
       requiredAccessLevel !== undefined &&
-      user.access_level < requiredAccessLevel
+      user.accessLevel < requiredAccessLevel
     ) {
-      return <Navigate to="/dashboard" />;
+      return <Navigate to="/dashboard/level1" />;
     }
 
     return <Component {...props} />;
   };
 };
 
-export default withAuth;
+export default level1Auth;

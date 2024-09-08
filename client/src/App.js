@@ -31,12 +31,12 @@ const ProtectedPropertyDetail = withAuth(PropertyDetail);
 const ProtectedUnitsManager = withAuth(UnitsManager);
 const ProtectedAddTransactionForm = withAuth(AddTransactionForm);
 const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
-const ProtectedTenantsManager = withAuth(TenantsManager);
+const ProtectedTenantsManager = withAuth(TenantsManager, 4);
 const ProtectedLeasesManager = withAuth(LeasesManager);
 const ProtectedEditProperty = withAuth(EditProperty);
 const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant);
-const ProtectedRolesManager = withAuth(RolesManager); // Protect Roles Manager
-const ProtectedCreateUserForm = withAuth(CreateUserForm); // Protect CreateUserForm
+const ProtectedRolesManager = withAuth(RolesManager, 2); // Example: Level 2 required for Roles Manager
+const ProtectedCreateUserForm = withAuth(CreateUserForm, 3); // Example: Level 3 required for CreateUserForm
 
 function App() {
   return (
@@ -77,11 +77,7 @@ function App() {
             element={<ProtectedLeasesListByTenant />}
           />
           <Route path="/dashboard/roles" element={<ProtectedRolesManager />} />
-          <Route
-            path="/create-user"
-            element={<ProtectedCreateUserForm />}
-          />{" "}
-          {/* Add this route */}
+          <Route path="/create-user" element={<ProtectedCreateUserForm />} />
         </Routes>
       </Router>
     </AuthProvider>

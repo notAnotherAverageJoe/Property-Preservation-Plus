@@ -14,9 +14,12 @@ const roleRoutes = require("./routes/roleRoutes");
 const userRoleRoutes = require("./routes/userRoleRoutes");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const accessLevel = require("./middleware/accessLevel");
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// app.use(accessLevel);
 
 app.use(
   cors({

@@ -6,21 +6,22 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null); // Add state for the token
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       try {
-        const decodedToken = jwtDecode(storedToken); // Use jwtDecode function
+        const decodedToken = jwtDecode(storedToken);
         if (decodedToken.exp * 1000 > Date.now()) {
           setIsAuthenticated(true);
           setUser({
             id: decodedToken.id,
             email: decodedToken.email,
             company_id: decodedToken.company_id,
+            access_level: decodedToken.access_level, // Include access_level
           });
-          setToken(storedToken); // Store the token
+          setToken(storedToken);
         } else {
           localStorage.removeItem("token");
         }
@@ -32,21 +33,22 @@ export const AuthProvider = ({ children }) => {
 
   const login = (newToken) => {
     localStorage.setItem("token", newToken);
-    const decodedToken = jwtDecode(newToken); // Use jwtDecode function
+    const decodedToken = jwtDecode(newToken);
     setIsAuthenticated(true);
     setUser({
       id: decodedToken.id,
       email: decodedToken.email,
       company_id: decodedToken.company_id,
+      access_level: decodedToken.access_level, // Include access_level
     });
-    setToken(newToken); // Set token on login
+    setToken(newToken);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
     setUser(null);
-    setToken(null); // Clear token on logout
+    setToken(null);
   };
 
   return (
