@@ -69,6 +69,10 @@ function PropertiesList() {
     navigate(`/edit-property/${id}`);
   };
 
+  // Access control checks
+  const canEditOrDelete =
+    user.access_level >= 3 || hasFullAccess(user.access_level);
+
   return (
     <div>
       <h1>Properties List</h1>
@@ -81,7 +85,7 @@ function PropertiesList() {
               <Link to={`/property/${property.id}`}>
                 {property.name} - {property.address}
               </Link>
-              {hasFullAccess(user.access_level) || user.access_level > 1 ? ( // Use the utility function
+              {canEditOrDelete ? ( // Use the access control check
                 <>
                   <button
                     onClick={() => handleEdit(property.id)}
