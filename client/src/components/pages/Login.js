@@ -1,26 +1,23 @@
-// Login.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Use navigate to redirect
-  const { login } = useAuth(); // Access the login function from context
+  const [isCreator, setIsCreator] = useState(false); // New state to differentiate login type
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
+      const endpoint = isCreator
+        ? "http://localhost:3000/api/auth/creator-login"
+        : "http://localhost:3000/api/auth/login";
+
+      const response = await axios.post(endpoint, { email, password });
 
       if (response.data.token) {
         login(response.data.token); // Save token and update auth state
@@ -34,6 +31,27 @@ const Login = () => {
   return (
     <div>
       <h2>Login</h2>
+      {/* Toggle to choose between regular and creator login */}
+      <div>
+        <label>
+          <input
+            type="radio"
+            checked={!isCreator}
+            onChange={() => setIsCreator(false)}
+          />
+          Regular User
+        </label>
+        <label>
+          <input
+            type="radio"
+            checked={isCreator}
+            onChange={() => setIsCreator(true)}
+          />
+          Creator
+        </label>
+      </div>
+
+      {/* Form for both login types */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>

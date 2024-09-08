@@ -13,6 +13,7 @@ const financialRoutes = require("./routes/financialRoutes");
 const roleRoutes = require("./routes/roleRoutes");
 const userRoleRoutes = require("./routes/userRoleRoutes");
 const authRoutes = require("./routes/authRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -47,10 +48,14 @@ app.use("/api", roleRoutes);
 app.use("/api", userRoleRoutes);
 // Auth routes
 app.use("/api/auth", authRoutes);
+
 app.use("/api/units", maintenanceRoutes);
+
 app.use("api/tenants", tenantRoutes);
 
-// Start the server
+app.use("/api/admin", adminRoutes);
+
+// Starts the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
