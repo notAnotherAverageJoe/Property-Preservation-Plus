@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, useParams } from "react-router-dom";
 import UnitsManager from "./UnitsManager";
 import AddTransactionForm from "./AddTransactionForm";
-import "./PropertyDetail.css"; // Import the CSS file
+import "./PropertyDetail.css";
 
 function PropertyDetail() {
   const { id: propertyId } = useParams();

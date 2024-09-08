@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext"; // Import your AuthContext
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { useAuth } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
+import { hasFullAccess } from "../utils/accessUtils"; // Import the utility function
 
 const UnitsManager = ({ propertyId }) => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [units, setUnits] = useState([]);
   const [formData, setFormData] = useState({
     unit_number: "",
@@ -29,7 +30,7 @@ const UnitsManager = ({ propertyId }) => {
     } catch (error) {
       console.error("Error fetching units:", error);
     }
-  }, [propertyId, token]); // Add token to dependencies
+  }, [propertyId, token]);
 
   useEffect(() => {
     fetchUnits();
@@ -84,45 +85,59 @@ const UnitsManager = ({ propertyId }) => {
     }
   };
 
+  // Access control checks
+  const canView =
+    user.access_level === null ||
+    user.access_level === undefined ||
+    user.access_level < 1;
+  const canEditOrDelete =
+    user.access_level >= 3 || hasFullAccess(user.access_level);
+
   return (
     <div>
       <h2>Manage Units for Property {propertyId}</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="unit_number"
-          placeholder="Unit Number"
-          value={formData.unit_number}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="type"
-          placeholder="Type (e.g., 1B1B)"
-          value={formData.type}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="rent_amount"
-          placeholder="Rent Amount"
-          value={formData.rent_amount}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">
-          {selectedUnit ? "Update Unit" : "Create Unit"}
-        </button>
-      </form>
+      {canEditOrDelete && ( // Conditionally render form for users with edit or delete access
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="unit_number"
+            placeholder="Unit Number"
+            value={formData.unit_number}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="type"
+            placeholder="Type (e.g., 1B1B)"
+            value={formData.type}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="rent_amount"
+            placeholder="Rent Amount"
+            value={formData.rent_amount}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">
+            {selectedUnit ? "Update Unit" : "Create Unit"}
+          </button>
+        </form>
+      )}
       <ul>
         {units.map((unit) => (
           <li key={unit.id}>
             <Link to={`/properties/${propertyId}/units/${unit.id}/requests`}>
               {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
             </Link>{" "}
-            <button onClick={() => handleEdit(unit)}>Edit</button>{" "}
-            <button onClick={() => handleDelete(unit.id)}>Delete</button>
+            {canEditOrDelete && ( // Conditionally render Edit and Delete buttons
+              <>
+                <button onClick={() => handleEdit(unit)}>Edit</button>{" "}
+                <button onClick={() => handleDelete(unit.id)}>Delete</button>
+              </>
+            )}
           </li>
         ))}
       </ul>

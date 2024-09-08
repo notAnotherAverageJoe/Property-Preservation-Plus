@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { hasFullAccess } from "../utils/accessUtils"; // Import the utility function
 
 function PropertiesList() {
   const [properties, setProperties] = useState([]);
@@ -68,14 +69,6 @@ function PropertiesList() {
     navigate(`/edit-property/${id}`);
   };
 
-  // Check if user has full access
-  // The main creator is the only user with no user Role
-  // Each other User is always assigned one. So it checks for the empty DB slot.
-  const hasFullAccess =
-    user.access_level === null ||
-    user.access_level === undefined ||
-    user.access_level < 1;
-
   return (
     <div>
       <h1>Properties List</h1>
@@ -88,7 +81,7 @@ function PropertiesList() {
               <Link to={`/property/${property.id}`}>
                 {property.name} - {property.address}
               </Link>
-              {(hasFullAccess || user.access_level > 1) && ( // Check for full access
+              {hasFullAccess(user.access_level) || user.access_level > 1 ? ( // Use the utility function
                 <>
                   <button
                     onClick={() => handleEdit(property.id)}
@@ -103,7 +96,7 @@ function PropertiesList() {
                     Delete
                   </button>
                 </>
-              )}
+              ) : null}
             </li>
           ))}
         </ul>
