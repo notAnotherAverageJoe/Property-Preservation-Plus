@@ -69,6 +69,8 @@ function PropertiesList() {
   };
 
   // Check if user has full access
+  // The main creator is the only user with no user Role
+  // Each other User is always assigned one. So it checks for the empty DB slot.
   const hasFullAccess =
     user.access_level === null ||
     user.access_level === undefined ||
