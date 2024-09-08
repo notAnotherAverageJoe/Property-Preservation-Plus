@@ -8,7 +8,7 @@ const registerUser = async (req, res) => {
 
   try {
     // Validate input
-    if (!email || !password || !company_id) {
+    if (!email || !password) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
@@ -28,7 +28,7 @@ const registerUser = async (req, res) => {
     // Create new user
     const { rows: newUsers } = await pool.query(
       "INSERT INTO Users (first_name, last_name, email, password_hash, company_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [first_name, last_name, email, hashedPassword, company_id]
+      [first_name, last_name, email, hashedPassword, company_id || null] // Handle missing company_id
     );
 
     const newUser = newUsers[0];
