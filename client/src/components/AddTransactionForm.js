@@ -18,12 +18,9 @@ function AddTransactionForm() {
   const [editingTransactionId, setEditingTransactionId] = useState(null);
 
   // Determine access permissions based on user access level
-  const canView =
-    user.access_level === null ||
-    user.access_level === undefined ||
-    user.access_level < 1;
+  const canView = user.access_level !== null && user.access_level >= 3;
   const canEditOrDelete =
-    user.access_level >= 3 || hasFullAccess(user.access_level);
+    user.access_level >= 4 || hasFullAccess(user.access_level);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -47,8 +44,10 @@ function AddTransactionForm() {
       }
     };
 
-    fetchTransactions();
-  }, [id, token]);
+    if (canView) {
+      fetchTransactions();
+    }
+  }, [id, token, canView]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -147,47 +146,45 @@ function AddTransactionForm() {
 
   return (
     <div>
-      {canView && (
+      {canView ? (
         <>
-          <form onSubmit={handleSubmit}>
-            {canEditOrDelete && (
-              <>
-                <input
-                  type="text"
-                  name="type"
-                  value={transaction.type}
-                  onChange={handleChange}
-                  placeholder="Type"
-                />
-                <input
-                  type="number"
-                  name="amount"
-                  value={transaction.amount}
-                  onChange={handleChange}
-                  placeholder="Amount"
-                />
-                <input
-                  type="text"
-                  name="description"
-                  value={transaction.description}
-                  onChange={handleChange}
-                  placeholder="Description"
-                />
-                <input
-                  type="date"
-                  name="transactionDate"
-                  value={transaction.transactionDate}
-                  onChange={handleChange}
-                  placeholder="Transaction Date"
-                />
-                <button type="submit">
-                  {editingTransactionId
-                    ? "Update Transaction"
-                    : "Add Transaction"}
-                </button>
-              </>
-            )}
-          </form>
+          {canEditOrDelete && (
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="type"
+                value={transaction.type}
+                onChange={handleChange}
+                placeholder="Type"
+              />
+              <input
+                type="number"
+                name="amount"
+                value={transaction.amount}
+                onChange={handleChange}
+                placeholder="Amount"
+              />
+              <input
+                type="text"
+                name="description"
+                value={transaction.description}
+                onChange={handleChange}
+                placeholder="Description"
+              />
+              <input
+                type="date"
+                name="transactionDate"
+                value={transaction.transactionDate}
+                onChange={handleChange}
+                placeholder="Transaction Date"
+              />
+              <button type="submit">
+                {editingTransactionId
+                  ? "Update Transaction"
+                  : "Add Transaction"}
+              </button>
+            </form>
+          )}
 
           <h2>Transactions</h2>
           {loading ? (
@@ -216,8 +213,9 @@ function AddTransactionForm() {
             <p>No transactions found.</p>
           )}
         </>
+      ) : (
+        <p>You do not have permission to view this page.</p>
       )}
-      {!canView && <p>You do not have permission to view this page.</p>}
     </div>
   );
 }

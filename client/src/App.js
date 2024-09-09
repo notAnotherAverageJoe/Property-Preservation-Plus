@@ -11,7 +11,7 @@ import PropertyDetail from "./components/PropertyDetail";
 import UnitsManager from "./components/UnitsManager";
 import AddTransactionForm from "./components/AddTransactionForm";
 import MaintenanceRequests from "./components/MaintenanceRequests";
-import LeasesManager from "./components/LeasesManager";
+import LeasesManager from "./components/leaseComponents/LeasesManager";
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
 import "./components/Navbar.css";
@@ -19,9 +19,9 @@ import { AuthProvider } from "./contexts/AuthContext";
 import TenantsManager from "./components/TenantsManager";
 import CreateLease from "./components/CreateLease";
 import EditProperty from "./components/pages/EditProperty";
-import LeasesListByTenant from "./components/LeasesListByTenant";
+import LeasesListByTenant from "./components/leaseComponents/LeasesListByTenant";
 import RolesManager from "./components/RolesManager";
-import CreateUserForm from "./components/CreateUserForm"; // Import CreateUserForm
+import CreateUserForm from "./components/CreateUserForm";
 import Unauthorized from "./components/Unauthorized";
 
 const ProtectedDashboard = withAuth(Dashboard, 1);
