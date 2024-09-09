@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { hasFullAccess } from "../utils/accessUtils"; // Import your access utility function
+import { useAuth } from "../../contexts/AuthContext";
+import { hasFullAccess } from "../../utils/accessUtils"; // Import your access utility function
 
 function AddTransactionForm() {
   const { token, user } = useAuth();

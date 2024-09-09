@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
-import CreateRoleForm from "./CreateRoleForm";
+import CreateRoleForm from "./creationComponents/CreateRoleForm";
 
 const RolesManager = () => {
   const { user, token, isAuthenticated } = useAuth();

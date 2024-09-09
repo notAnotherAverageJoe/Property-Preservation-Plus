@@ -72,3 +72,11 @@ ProtectedCreateUserForm:
 Security Level: 4
 Authentication + Authorization + Data Validation + Rate Limiting: Creating users requires high security.
 Enhancements: Secure transmission, robust error handling, and audit logs.
+
+
+
+Level 1. 
+- Dashboard Access
+- Property Detail - View only.
+- maintenance requests - View, Create, Update, Delete
+- Tenants - Create
