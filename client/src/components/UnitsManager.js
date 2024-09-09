@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { hasFullAccess } from "../utils/accessUtils"; // Import the utility function
 
 const UnitsManager = ({ propertyId }) => {
-  const { token, user } = useAuth();
+  const { token, user } = useAuth(); // Get user info and token from AuthContext
   const [units, setUnits] = useState([]);
   const [formData, setFormData] = useState({
     unit_number: "",
@@ -86,17 +86,15 @@ const UnitsManager = ({ propertyId }) => {
   };
 
   // Access control checks
-  const canView =
-    user.access_level === null ||
-    user.access_level === undefined ||
-    user.access_level < 1;
-  const canEditOrDelete =
-    user.access_level >= 3 || hasFullAccess(user.access_level);
+  const canView = user.access_level >= 1; // Allow viewing for access level 1 or higher
+  const canCreate = user.access_level >= 2; // Allow creating units for access level 2 or higher
+  const canEdit = user.access_level >= 3; // Allow editing for access level 3 or higher
+  const canDelete = user.access_level >= 4 || hasFullAccess(user.access_level); // Allow deleting only for access level 4 or full access
 
   return (
     <div>
       <h2>Manage Units for Property {propertyId}</h2>
-      {canEditOrDelete && ( // Conditionally render form for users with edit or delete access
+      {canCreate && ( // Conditionally render form for users with create access (level 2 or higher)
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -126,21 +124,25 @@ const UnitsManager = ({ propertyId }) => {
           </button>
         </form>
       )}
-      <ul>
-        {units.map((unit) => (
-          <li key={unit.id}>
-            <Link to={`/properties/${propertyId}/units/${unit.id}/requests`}>
-              {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
-            </Link>{" "}
-            {canEditOrDelete && ( // Conditionally render Edit and Delete buttons
-              <>
-                <button onClick={() => handleEdit(unit)}>Edit</button>{" "}
+      {canView ? ( // Only render units list for users who have at least view access
+        <ul>
+          {units.map((unit) => (
+            <li key={unit.id}>
+              <Link to={`/properties/${propertyId}/units/${unit.id}/requests`}>
+                {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
+              </Link>{" "}
+              {canEdit && ( // Conditionally render Edit button for users with edit access
+                <button onClick={() => handleEdit(unit)}>Edit</button>
+              )}
+              {canDelete && ( // Conditionally render Delete button for users with delete access (level 4 or full access)
                 <button onClick={() => handleDelete(unit.id)}>Delete</button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>You do not have permission to view units for this property.</p>
+      )}
     </div>
   );
 };

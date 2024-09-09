@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function CreateProperty() {
   const [propertyName, setPropertyName] = useState("");
   const [address, setAddress] = useState("");
   const [companyId, setCompanyId] = useState(""); // Add state for companyId
   const navigate = useNavigate();
+  const { user } = useAuth(); // Get user info from AuthContext
 
   useEffect(() => {
     const storedCompanyId = localStorage.getItem("companyId");
@@ -15,6 +17,14 @@ function CreateProperty() {
       console.error("Company ID not found in localStorage");
     }
   }, []);
+
+  // Access control: Check if user has at least access level 2
+  useEffect(() => {
+    if (user.access_level < 2) {
+      console.error("Insufficient access level to create properties");
+      navigate("/dashboard"); // Redirect to dashboard or any other page
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,6 +65,7 @@ function CreateProperty() {
 
   return (
     <div>
+      <h1>Create New Property</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

@@ -1,82 +1,43 @@
-Level 1. Lowest access level, capable of viewing pages such as properties and seeing the units.
-    capable of creating and completing maintenance requests.
-
-    Applying Security Measures to Your Components
-ProtectedDashboard:
-
-Security Level: 1
-Basic Authentication Required: Ensure the user is logged in.
-Enhancements: Could include authorization checks based on user roles.
-ProtectedCreateCompany:
-
-Security Level: 2
-Authentication + Authorization: Ensure that only users with appropriate roles can create a company.
-Enhancements: Validate input data, and consider rate limiting to prevent abuse.
-ProtectedPropertiesList:
-
-Security Level: 2
-Authentication + Authorization: Users should be authenticated and authorized to view the properties list.
-Enhancements: Ensure data is securely transmitted and protected from unauthorized access.
-ProtectedCreateProperty:
-
-Security Level: 3
-Authentication + Authorization + Data Validation: Only authorized users can create properties, and input data must be validated.
-Enhancements: Implement rate limiting and secure transmission.
-ProtectedPropertyDetail:
-
-Security Level: 3
-Authentication + Authorization: Ensure users have access to view property details.
-Enhancements: Protect sensitive data and ensure secure data transmission.
-ProtectedUnitsManager:
-
-Security Level: 4
-Authentication + Authorization + Data Validation + Rate Limiting: Higher access level required, with proper validation and rate limiting.
-Enhancements: Consider session management and audit logs.
-ProtectedAddTransactionForm:
-
-Security Level: 4
-Authentication + Authorization + Data Validation + Rate Limiting: Ensure proper handling of financial or sensitive data.
-Enhancements: Secure transmission and robust error handling.
-ProtectedMaintenanceRequests:
-
-Security Level: 3
-Authentication + Authorization: Users need appropriate permissions to manage maintenance requests.
-Enhancements: Ensure data validation and secure handling of sensitive information.
-ProtectedTenantsManager:
-
-Security Level: 4
-Authentication + Authorization + Data Validation + Rate Limiting: Higher access control with proper input validation.
-Enhancements: Secure session management and detailed logging.
-ProtectedLeasesManager:
-
-Security Level: 3
-Authentication + Authorization: Users should have appropriate roles to manage leases.
-Enhancements: Validate input data and ensure secure data handling.
-ProtectedEditProperty:
-
-Security Level: 4
-Authentication + Authorization + Data Validation + Rate Limiting: Editing properties requires high security.
-Enhancements: Secure transmission, error handling, and audit logs.
-ProtectedLeasesListByTenant:
-
-Security Level: 3
-Authentication + Authorization: Ensure only authorized users can view lease details.
-Enhancements: Validate data and ensure secure transmission.
-ProtectedRolesManager:
-
-Security Level: 5
-Highest Security: Manage user roles and permissions; requires strict access control.
-Enhancements: Implement all security measures, including session management, audit logs, and error handling.
-ProtectedCreateUserForm:
-
-Security Level: 4
-Authentication + Authorization + Data Validation + Rate Limiting: Creating users requires high security.
-Enhancements: Secure transmission, robust error handling, and audit logs.
-
 
 
 Level 1. 
-- Dashboard Access
+- Dashboard Access.
 - Property Detail - View only.
 - maintenance requests - View, Create, Update, Delete
-- Tenants - Create
+- Tenants - Create.
+(Good for maintenance requests)
+
+Level 2.
+- Dashboard Access.
+- Property Detail - View only.
+- maintenance requests - View, Create, Update, Delete.
+- Tenants - Create.
+- Create properties.
+- Create Units on those properties.
+
+Level 3.
+- Dashboard Access.
+- Property Detail - View only.
+- maintenance requests - View, Create, Update, Delete.
+- Tenants - Create.
+- Create properties.
+- Create Units and Update Units.
+- Financial Transaction - View only.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Access level 3 can manage (edit/delete) only their own properties.
+Access level 4+ can manage all properties.

@@ -69,9 +69,15 @@ function PropertiesList() {
     navigate(`/edit-property/${id}`);
   };
 
-  // Access control checks
-  const canEditOrDelete =
-    user.access_level >= 3 || hasFullAccess(user.access_level);
+  // Access control logic
+  const canCreate = user.access_level >= 2; // Access level 2+ can create properties
+  const canEditOrDelete = (property) => {
+    return (
+      user.access_level >= 4 || // Full access for level 4+
+      (user.access_level === 3 && property.created_by === user.id) || // Level 3 can edit/delete their own properties
+      hasFullAccess(user.access_level) // Check if user has full access
+    );
+  };
 
   return (
     <div>
@@ -85,7 +91,7 @@ function PropertiesList() {
               <Link to={`/property/${property.id}`}>
                 {property.name} - {property.address}
               </Link>
-              {canEditOrDelete ? ( // Use the access control check
+              {canEditOrDelete(property) && ( // Check permissions for edit/delete
                 <>
                   <button
                     onClick={() => handleEdit(property.id)}
@@ -100,13 +106,22 @@ function PropertiesList() {
                     Delete
                   </button>
                 </>
-              ) : null}
+              )}
             </li>
           ))}
         </ul>
       ) : (
         <p>No properties found.</p>
       )}
+
+      {canCreate && ( // Only show the "Add Property" button if user can create properties
+        <div style={{ marginTop: "20px" }}>
+          <button onClick={() => navigate("/create-property")}>
+            Add New Property
+          </button>
+        </div>
+      )}
+
       <div style={{ marginTop: "20px" }}>
         <Link to="/dashboard">Back to Dashboard</Link>
       </div>

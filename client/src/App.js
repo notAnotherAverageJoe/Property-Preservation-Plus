@@ -27,7 +27,7 @@ import Unauthorized from "./components/Unauthorized";
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
 const ProtectedPropertiesList = withAuth(PropertiesList);
-const ProtectedCreateProperty = withAuth(CreateProperty, 3);
+const ProtectedCreateProperty = withAuth(CreateProperty);
 const ProtectedPropertyDetail = withAuth(PropertyDetail, 1);
 const ProtectedUnitsManager = withAuth(UnitsManager);
 const ProtectedAddTransactionForm = withAuth(AddTransactionForm, 4);
