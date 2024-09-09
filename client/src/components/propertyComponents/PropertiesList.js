@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { hasFullAccess } from "../utils/accessUtils"; // Import the utility function
+import { useAuth } from "../../contexts/AuthContext";
+import { hasFullAccess } from "../../utils/accessUtils"; // Import the utility function
 
 function PropertiesList() {
   const [properties, setProperties] = useState([]);
