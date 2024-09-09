@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { hasFullAccess } from "../utils/accessUtils"; // Import your access utility function
 
 function AddTransactionForm() {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const { id } = useParams();
   const [transaction, setTransaction] = useState({
     type: "",
@@ -15,6 +16,14 @@ function AddTransactionForm() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingTransactionId, setEditingTransactionId] = useState(null);
+
+  // Determine access permissions based on user access level
+  const canView =
+    user.access_level === null ||
+    user.access_level === undefined ||
+    user.access_level < 1;
+  const canEditOrDelete =
+    user.access_level >= 3 || hasFullAccess(user.access_level);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -138,60 +147,77 @@ function AddTransactionForm() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="type"
-          value={transaction.type}
-          onChange={handleChange}
-          placeholder="Type"
-        />
-        <input
-          type="number"
-          name="amount"
-          value={transaction.amount}
-          onChange={handleChange}
-          placeholder="Amount"
-        />
-        <input
-          type="text"
-          name="description"
-          value={transaction.description}
-          onChange={handleChange}
-          placeholder="Description"
-        />
-        <input
-          type="date"
-          name="transactionDate"
-          value={transaction.transactionDate}
-          onChange={handleChange}
-          placeholder="Transaction Date"
-        />
-        <button type="submit">
-          {editingTransactionId ? "Update Transaction" : "Add Transaction"}
-        </button>
-      </form>
+      {canView && (
+        <>
+          <form onSubmit={handleSubmit}>
+            {canEditOrDelete && (
+              <>
+                <input
+                  type="text"
+                  name="type"
+                  value={transaction.type}
+                  onChange={handleChange}
+                  placeholder="Type"
+                />
+                <input
+                  type="number"
+                  name="amount"
+                  value={transaction.amount}
+                  onChange={handleChange}
+                  placeholder="Amount"
+                />
+                <input
+                  type="text"
+                  name="description"
+                  value={transaction.description}
+                  onChange={handleChange}
+                  placeholder="Description"
+                />
+                <input
+                  type="date"
+                  name="transactionDate"
+                  value={transaction.transactionDate}
+                  onChange={handleChange}
+                  placeholder="Transaction Date"
+                />
+                <button type="submit">
+                  {editingTransactionId
+                    ? "Update Transaction"
+                    : "Add Transaction"}
+                </button>
+              </>
+            )}
+          </form>
 
-      <h2>Transactions</h2>
-      {loading ? (
-        <p>Loading transactions...</p>
-      ) : transactions.length > 0 ? (
-        <ul>
-          {transactions.map((trans) => (
-            <li key={trans.id}>
-              <strong>{trans.type}</strong>: ${trans.amount} on{" "}
-              {formatDate(trans.transaction_date)}
-              <br />
-              Description: {trans.description}
-              <br />
-              <button onClick={() => handleEdit(trans)}>Edit</button>
-              <button onClick={() => handleDelete(trans.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No transactions found.</p>
+          <h2>Transactions</h2>
+          {loading ? (
+            <p>Loading transactions...</p>
+          ) : transactions.length > 0 ? (
+            <ul>
+              {transactions.map((trans) => (
+                <li key={trans.id}>
+                  <strong>{trans.type}</strong>: ${trans.amount} on{" "}
+                  {formatDate(trans.transaction_date)}
+                  <br />
+                  Description: {trans.description}
+                  <br />
+                  {canEditOrDelete && (
+                    <>
+                      <button onClick={() => handleEdit(trans)}>Edit</button>
+                      <button onClick={() => handleDelete(trans.id)}>
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No transactions found.</p>
+          )}
+        </>
       )}
+      {!canView && <p>You do not have permission to view this page.</p>}
     </div>
   );
 }

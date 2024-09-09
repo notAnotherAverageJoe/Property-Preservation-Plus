@@ -24,20 +24,20 @@ import RolesManager from "./components/RolesManager";
 import CreateUserForm from "./components/CreateUserForm"; // Import CreateUserForm
 import Unauthorized from "./components/Unauthorized";
 
-const ProtectedDashboard = withAuth(Dashboard);
+const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
 const ProtectedPropertiesList = withAuth(PropertiesList);
-const ProtectedCreateProperty = withAuth(CreateProperty);
-const ProtectedPropertyDetail = withAuth(PropertyDetail);
+const ProtectedCreateProperty = withAuth(CreateProperty, 3);
+const ProtectedPropertyDetail = withAuth(PropertyDetail, 1);
 const ProtectedUnitsManager = withAuth(UnitsManager);
-const ProtectedAddTransactionForm = withAuth(AddTransactionForm);
-const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
+const ProtectedAddTransactionForm = withAuth(AddTransactionForm, 4);
+const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests, 1);
 const ProtectedTenantsManager = withAuth(TenantsManager, 4);
-const ProtectedLeasesManager = withAuth(LeasesManager);
-const ProtectedEditProperty = withAuth(EditProperty);
+const ProtectedLeasesManager = withAuth(LeasesManager, 4);
+const ProtectedEditProperty = withAuth(EditProperty, 5);
 const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant, 5);
-const ProtectedRolesManager = withAuth(RolesManager, 2); // Example: Level 2 required for Roles Manager
-const ProtectedCreateUserForm = withAuth(CreateUserForm, 3); // Example: Level 3 required for CreateUserForm
+const ProtectedRolesManager = withAuth(RolesManager, null);
+const ProtectedCreateUserForm = withAuth(CreateUserForm, null);
 
 function App() {
   return (
