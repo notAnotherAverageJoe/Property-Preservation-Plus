@@ -61,6 +61,21 @@ const deleteMaintenanceRequest = async (id) => {
   }
 };
 
+// Function to get all maintenance requests for a specific unit
+const getRequestsByUnitId = async (unitId) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM MaintenanceRequests WHERE unit_id = $1",
+      [unitId]
+    );
+    return result.rows;
+  } catch (error) {
+    throw new Error(
+      "Error retrieving maintenance requests by unit: " + error.message
+    );
+  }
+};
+
 // Export functions
 module.exports = {
   getAllMaintenanceRequests,
@@ -68,4 +83,5 @@ module.exports = {
   createMaintenanceRequest,
   updateMaintenanceRequest,
   deleteMaintenanceRequest,
+  getRequestsByUnitId,
 };

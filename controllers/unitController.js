@@ -1,5 +1,4 @@
 const pool = require("../config/db");
-const db = require("../config/db");
 
 // Create a new unit
 exports.createUnit = async (req, res) => {
@@ -10,7 +9,6 @@ exports.createUnit = async (req, res) => {
       "INSERT INTO Units (property_id, unit_number, type, rent_amount) VALUES ($1, $2, $3, $4) RETURNING *",
       [property_id, unit_number, type, rent_amount]
     );
-
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error("Error creating unit:", error);
@@ -61,7 +59,7 @@ exports.deleteUnit = async (req, res) => {
   }
 };
 
-// unitController.js
+// Fetch units by property ID
 exports.getUnitsByProperty = async (req, res) => {
   const propertyId = parseInt(req.params.propertyId, 10); // Ensure propertyId is an integer
 
@@ -70,10 +68,18 @@ exports.getUnitsByProperty = async (req, res) => {
   }
 
   try {
-    const units = await db.query("SELECT * FROM units WHERE property_id = $1", [
-      propertyId,
-    ]);
-    res.json(units.rows);
+    const result = await pool.query(
+      "SELECT * FROM Units WHERE property_id = $1",
+      [propertyId]
+    );
+
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No units found for this property" });
+    }
+
+    res.json(result.rows);
   } catch (error) {
     console.error("Error fetching units:", error);
     res.status(500).json({ error: "Internal Server Error" });

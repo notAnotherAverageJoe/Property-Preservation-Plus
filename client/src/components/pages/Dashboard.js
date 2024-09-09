@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Weather from "../../components/Weather"; // Import Weather component
 import "../pagesCSS/Dashboard.css";
 
 function Dashboard() {
@@ -89,6 +90,9 @@ function Dashboard() {
       {!company && !loading && (
         <p>No company information available. Please create a company.</p>
       )}
+
+      {/* Weather Component */}
+      <Weather />
     </div>
   );
 }

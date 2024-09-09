@@ -78,9 +78,30 @@ const deleteMaintenanceRequest = async (req, res) => {
     });
   }
 };
+// Controller to get maintenance requests for a specific unit
+const getRequestsByUnitId = async (req, res) => {
+  const unitId = parseInt(req.params.unitId);
+  try {
+    const requests = await maintenanceModel.getRequestsByUnitId(unitId);
+    if (requests.length > 0) {
+      res.json(requests);
+    } else {
+      res
+        .status(404)
+        .json({ message: "No maintenance requests found for this unit" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving maintenance requests by unit",
+      error: error.message,
+    });
+  }
+};
 
+// Export functions including the new one
 module.exports = {
   getAllMaintenanceRequests,
+  getRequestsByUnitId,
   getMaintenanceRequestById,
   createMaintenanceRequest,
   updateMaintenanceRequest,
