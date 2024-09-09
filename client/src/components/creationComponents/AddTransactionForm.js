@@ -17,10 +17,14 @@ function AddTransactionForm() {
   const [loading, setLoading] = useState(true);
   const [editingTransactionId, setEditingTransactionId] = useState(null);
 
-  // Determine access permissions based on user access level
-  const canView = user.access_level !== null && user.access_level >= 3;
-  const canEditOrDelete =
-    user.access_level >= 4 || hasFullAccess(user.access_level);
+  // Determine access permissions
+  const isCreator = user.is_owner !== false; // Check if user is not an owner
+  const accessLevel = user.access_level || 0; // Default to 0 if access_level is undefined
+
+  const canView = isCreator || accessLevel >= 1; // Allow viewing for access level 1 or higher
+  const canCreate = canView || accessLevel >= 2; // Allow creating transactions for access level 2 or higher
+  const canEdit = accessLevel >= 3; // Allow editing for access level 3 or higher
+  const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel); // Allow deleting only for access level 4 or full access
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -148,7 +152,7 @@ function AddTransactionForm() {
     <div>
       {canView ? (
         <>
-          {canEditOrDelete && (
+          {canCreate && (
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -198,12 +202,16 @@ function AddTransactionForm() {
                   <br />
                   Description: {trans.description}
                   <br />
-                  {canEditOrDelete && (
+                  {(canEdit || canDelete) && (
                     <>
-                      <button onClick={() => handleEdit(trans)}>Edit</button>
-                      <button onClick={() => handleDelete(trans.id)}>
-                        Delete
-                      </button>
+                      {canEdit && (
+                        <button onClick={() => handleEdit(trans)}>Edit</button>
+                      )}
+                      {canDelete && (
+                        <button onClick={() => handleDelete(trans.id)}>
+                          Delete
+                        </button>
+                      )}
                     </>
                   )}
                 </li>

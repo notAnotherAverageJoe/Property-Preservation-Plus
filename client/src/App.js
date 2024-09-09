@@ -26,18 +26,18 @@ import Unauthorized from "./components/Unauthorized";
 
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
-const ProtectedPropertiesList = withAuth(PropertiesList);
-const ProtectedCreateProperty = withAuth(CreateProperty);
-const ProtectedPropertyDetail = withAuth(PropertyDetail, 1);
-const ProtectedUnitsManager = withAuth(UnitsManager);
+const ProtectedPropertiesList = withAuth(PropertiesList, 2);
+const ProtectedCreateProperty = withAuth(CreateProperty, 3);
+const ProtectedPropertyDetail = withAuth(PropertyDetail, 3);
+const ProtectedUnitsManager = withAuth(UnitsManager, 3);
 const ProtectedAddTransactionForm = withAuth(AddTransactionForm, 4);
-const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests, 1);
+const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
 const ProtectedTenantsManager = withAuth(TenantsManager, 4);
-const ProtectedLeasesManager = withAuth(LeasesManager, 4);
-const ProtectedEditProperty = withAuth(EditProperty, 5);
-const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant, 5);
-const ProtectedRolesManager = withAuth(RolesManager, null);
-const ProtectedCreateUserForm = withAuth(CreateUserForm, null);
+const ProtectedLeasesManager = withAuth(LeasesManager, 2);
+const ProtectedEditProperty = withAuth(EditProperty, 4);
+const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant, 4);
+const ProtectedRolesManager = withAuth(RolesManager, 8);
+const ProtectedCreateUserForm = withAuth(CreateUserForm, 8);
 
 function App() {
   return (
