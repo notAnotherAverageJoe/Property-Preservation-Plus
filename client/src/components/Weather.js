@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../components/Weather.css";
 import MaintenanceScheduler from "./MaintenanceScheduler";
+import EnergyManagement from "./EnergyManagement";
 
 function Weather() {
   const [city, setCity] = useState("");
@@ -14,15 +15,35 @@ function Weather() {
     return () => clearInterval(timer); // Clean up the interval on component unmount
   }, []);
 
-  const handleWeatherFetch = async (e) => {
-    e.preventDefault();
+  const fetchWeatherData = async (city, state, retries = 3) => {
     try {
       const response = await axios.get(
         `http://localhost:3000/api/weather?city=${city}&state=${state}`
       );
-      setWeather(response.data);
+      return response.data;
     } catch (error) {
-      console.error("Error fetching weather data", error);
+      if (retries > 0) {
+        console.warn(`Retrying... Attempts left: ${retries}`);
+        await new Promise((res) => setTimeout(res, 1000)); // Wait before retrying
+        return fetchWeatherData(city, state, retries - 1);
+      } else {
+        throw error;
+      }
+    }
+  };
+
+  const handleWeatherFetch = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await fetchWeatherData(city, state);
+      setWeather(data);
+    } catch (error) {
+      console.error("Error fetching weather data:", error.message);
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error
+      );
+      // Provide user feedback if needed
     }
   };
 
@@ -85,7 +106,14 @@ function Weather() {
           </div>
 
           {/* MaintenanceScheduler Component */}
-          <MaintenanceScheduler weatherData={weather} />
+          <div className="maintenance-scheduler">
+            <MaintenanceScheduler weatherData={weather} />
+          </div>
+
+          {/* EnergyManagement Component */}
+          <div className="energy-management">
+            <EnergyManagement weatherData={weather} />
+          </div>
         </>
       )}
     </div>
