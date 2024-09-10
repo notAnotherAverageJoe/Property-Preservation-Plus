@@ -23,6 +23,7 @@ import LeasesListByTenant from "./components/leaseComponents/LeasesListByTenant"
 import RolesManager from "./components/RolesManager";
 import CreateUserForm from "./components/creationComponents/CreateUserForm";
 import Unauthorized from "./components/Unauthorized";
+import BudgetForecast from "./components/BudgetForecast";
 
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
@@ -38,6 +39,7 @@ const ProtectedEditProperty = withAuth(EditProperty, 4);
 const ProtectedLeasesListByTenant = withAuth(LeasesListByTenant, 4);
 const ProtectedRolesManager = withAuth(RolesManager, 8);
 const ProtectedCreateUserForm = withAuth(CreateUserForm, 8);
+const ProtectedBudgetForecast = withAuth(BudgetForecast);
 
 function App() {
   return (
@@ -49,6 +51,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/create-company" element={<ProtectedCreateCompany />} />
+          <Route
+            path="/budget-forecast"
+            element={<ProtectedBudgetForecast />}
+          />
           <Route path="/dashboard" element={<ProtectedDashboard />} />
           <Route path="/properties" element={<ProtectedPropertiesList />} />
           <Route path="/tenants" element={<ProtectedTenantsManager />} />
