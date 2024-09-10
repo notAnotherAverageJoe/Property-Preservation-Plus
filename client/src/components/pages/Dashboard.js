@@ -51,9 +51,9 @@ function Dashboard() {
 
       {company && (
         <>
-          <Link to="/create-property" className="button-link">
+          {/* <Link to="/create-property" className="button-link">
             Create a New Property
-          </Link>
+          </Link> */}
           <Link to="/properties" className="button-link">
             All Properties
           </Link>
