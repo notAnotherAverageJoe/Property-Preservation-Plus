@@ -1,94 +1,111 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
-const LeasesListByTenant = () => {
-  const [tenantId, setTenantId] = useState("");
-  const [companyId, setCompanyId] = useState("");
+const LeasesListByCompany = () => {
   const [leases, setLeases] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [decodedToken, setDecodedToken] = useState(null); // State for decoded token
 
-  const handleTenantInputChange = (e) => setTenantId(e.target.value);
-  const handleCompanyInputChange = (e) => setCompanyId(e.target.value);
-
-  const formatDate = (isoDate) => {
-    const date = new Date(isoDate);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  const toISODate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toISOString();
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-
-    if (!tenantId || !companyId) {
-      alert("Please enter both tenant ID and company ID.");
-      return;
-    }
-
+  // Define fetchLeases function outside of useEffect
+  const fetchLeases = async (companyId) => {
     setLoading(true);
     setSubmitted(true);
 
     try {
-      const url = `http://localhost:3000/api/leases?tenant_id=${tenantId}&company_id=${companyId}`;
-      const response = await axios.get(url);
+      const url = `http://localhost:3000/api/leases?company_id=${companyId}`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setLeases(response.data);
     } catch (error) {
-      setError("Error fetching leases");
+      setError(
+        "Error fetching leases: " +
+          (error.response?.data?.message || error.message)
+      );
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    const fetchCompanyIdFromToken = () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("No token found. Please log in.");
+        return;
+      }
+
+      try {
+        const tokenData = jwtDecode(token);
+        setDecodedToken(tokenData); // Set decoded token to state
+        const companyId = tokenData.company_id; // Extract company_id from the token
+
+        if (companyId) {
+          fetchLeases(companyId); // Call fetchLeases with companyId
+        } else {
+          setError("Company ID not found in token.");
+        }
+      } catch (e) {
+        setError("Failed to decode token.");
+      }
+    };
+
+    fetchCompanyIdFromToken(); // Trigger fetching on component mount
+  }, []); // Empty dependency array means this effect runs once on mount
+
   const handleUpdateLease = async (leaseId, updatedLease) => {
+    if (!decodedToken) {
+      setError("No token decoded. Unable to update lease.");
+      return;
+    }
+
     try {
       const updatedLeaseWithISO = {
         ...updatedLease,
         start_date: toISODate(updatedLease.start_date),
         end_date: toISODate(updatedLease.end_date),
       };
-      await axios.put(
+      console.log("Payload to update lease:", updatedLeaseWithISO); // Log payload for debugging
+      const response = await axios.put(
         `http://localhost:3000/api/leases/${leaseId}`,
-        updatedLeaseWithISO
+        updatedLeaseWithISO,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add Authorization header
+          },
+        }
       );
+      console.log("Update response:", response); // Log response for debugging
       alert("Lease updated successfully");
-      fetchLeases(); // Use a separate function to fetch leases
+      fetchLeases(decodedToken.company_id); // Refetch leases after update
     } catch (error) {
-      setError("Error updating lease");
-    }
-  };
-
-  const fetchLeases = async () => {
-    if (!tenantId || !companyId) return;
-
-    setLoading(true);
-    setSubmitted(true);
-
-    try {
-      const url = `http://localhost:3000/api/leases?tenant_id=${tenantId}&company_id=${companyId}`;
-      const response = await axios.get(url);
-      setLeases(response.data);
-    } catch (error) {
-      setError("Error fetching leases");
-    } finally {
-      setLoading(false);
+      console.error("Error updating lease:", error); // Log error for debugging
+      setError(
+        "Error updating lease: " +
+          (error.response?.data?.message || error.message)
+      );
     }
   };
 
   const handleDeleteLease = async (leaseId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/leases/${leaseId}`);
+      await axios.delete(`http://localhost:3000/api/leases/${leaseId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       alert("Lease deleted successfully");
       setLeases(leases.filter((lease) => lease.id !== leaseId));
     } catch (error) {
-      setError("Error deleting lease");
+      setError(
+        "Error deleting lease: " +
+          (error.response?.data?.message || error.message)
+      );
     }
   };
 
@@ -102,31 +119,16 @@ const LeasesListByTenant = () => {
     setLeases(updatedLeases);
   };
 
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+  };
+
+  const toISODate = (dateString) => new Date(dateString).toISOString();
+
   return (
     <div>
-      <h1>Leases by Tenant</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="tenantId">Tenant ID:</label>
-        <input
-          type="text"
-          id="tenantId"
-          value={tenantId}
-          onChange={handleTenantInputChange}
-          required
-        />
-
-        <label htmlFor="companyId">Company ID:</label>
-        <input
-          type="text"
-          id="companyId"
-          value={companyId}
-          onChange={handleCompanyInputChange}
-          required
-        />
-
-        <button type="submit">Fetch Leases</button>
-      </form>
-
+      <h1>Leases by Company</h1>
       {submitted && (
         <>
           {loading && <p>Loading...</p>}
@@ -200,7 +202,7 @@ const LeasesListByTenant = () => {
               ))}
             </ul>
           ) : (
-            !loading && <p>No leases found for this tenant and company.</p>
+            !loading && <p>No leases found for this company.</p>
           )}
         </>
       )}
@@ -208,4 +210,4 @@ const LeasesListByTenant = () => {
   );
 };
 
-export default LeasesListByTenant;
+export default LeasesListByCompany;

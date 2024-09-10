@@ -88,5 +88,44 @@ router.put("/leases/:id", leaseController.updateLease);
 
 // Delete a lease by ID
 router.delete("/leases/:id", leaseController.deleteLease);
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env; // Make sure to set this in your environment
+
+const verifyTokenAndCompanyId = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1]; // Extract token from header
+
+  if (!token) return res.status(401).send("Access denied.");
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const tokenCompanyId = decoded.company_id;
+    const requestCompanyId = parseInt(req.query.company_id); // Or where the company_id comes from in your request
+
+    if (tokenCompanyId !== requestCompanyId) {
+      return res.status(403).send("Forbidden: Company ID mismatch.");
+    }
+
+    // Token is valid and company IDs match
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).send("Invalid or expired token.");
+  }
+};
+
+// Example route using the middleware
+router.get("/api/leases", verifyTokenAndCompanyId, async (req, res) => {
+  // Fetch leases based on tenant_id and company_id
+  const { tenant_id, company_id } = req.query;
+
+  try {
+    // Your logic to fetch leases based on tenant_id and company_id
+    // Make sure to check the company_id from the token here as well
+    const leases = await getLeases(tenant_id, company_id);
+    res.json(leases);
+  } catch (error) {
+    res.status(500).send("Error fetching leases.");
+  }
+});
 
 module.exports = router;

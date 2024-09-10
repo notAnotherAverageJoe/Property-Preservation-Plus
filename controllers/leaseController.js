@@ -45,54 +45,50 @@ const createLease = async (req, res) => {
 // Controller to update a lease
 
 const updateLease = async (req, res) => {
+  const { id } = req.params;
+  const { unit_id, tenant_id, start_date, end_date, rent_amount, status } =
+    req.body;
+
+  // Validation
+  if (
+    !unit_id ||
+    !tenant_id ||
+    !start_date ||
+    !end_date ||
+    !rent_amount ||
+    !status
+  ) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  const query = `
+    UPDATE leases
+    SET unit_id = $1,
+        tenant_id = $2,
+        start_date = $3,
+        end_date = $4,
+        rent_amount = $5,
+        status = $6,
+        updated_at = NOW()
+    WHERE id = $7
+    RETURNING *;
+  `;
+  const values = [
+    unit_id,
+    tenant_id,
+    start_date,
+    end_date,
+    rent_amount,
+    status,
+    id,
+  ];
+
   try {
-    const leaseId = req.params.id;
-    const {
-      unit_id,
-      tenant_id,
-      start_date,
-      end_date,
-      rent_amount,
-      company_id,
-    } = req.body;
-
-    // Validation: Make sure all required fields are provided
-    if (
-      !unit_id ||
-      !tenant_id ||
-      !start_date ||
-      !end_date ||
-      !rent_amount ||
-      !company_id
-    ) {
-      return res.status(400).json({ message: "All fields are required." });
-    }
-
-    // Update the lease record in the database
-    const query = `
-      UPDATE leases 
-      SET unit_id = $1, tenant_id = $2, start_date = $3, end_date = $4, rent_amount = $5, company_id = $6
-      WHERE id = $7 RETURNING *
-    `;
-    const values = [
-      unit_id,
-      tenant_id,
-      start_date,
-      end_date,
-      rent_amount,
-      company_id,
-      leaseId,
-    ];
-
     const result = await pool.query(query, values);
-
-    // Check if the lease was updated
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Lease not found." });
     }
-
-    // Return the updated lease
-    res.status(200).json(result.rows[0]);
+    res.json(result.rows[0]);
   } catch (error) {
     console.error("Error updating lease:", error);
     res.status(500).json({ message: "Error updating lease" });
