@@ -2,7 +2,6 @@ import React from "react";
 
 function MaintenanceScheduler({ weatherData }) {
   function getWeatherCondition(weatherData) {
-    // Ensure weatherData and weather array exist
     if (weatherData && weatherData.weather && weatherData.weather.length > 0) {
       // Return the main weather condition
       return weatherData.weather[0].main;
@@ -11,7 +10,6 @@ function MaintenanceScheduler({ weatherData }) {
   }
 
   function getWeatherResponse(weatherCondition) {
-    // Determine if today is good for outdoor work
     const goodConditions = ["Clear", "Clouds"]; // Adjust these conditions as needed
 
     if (weatherCondition) {

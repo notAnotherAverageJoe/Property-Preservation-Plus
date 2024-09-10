@@ -26,6 +26,19 @@ function Weather() {
     }
   };
 
+  function getWeatherEmoji(weatherCondition) {
+    const weatherEmoji = {
+      Rain: "🌧️",
+      Storm: "⛈️",
+      Snow: "❄️",
+      Drizzle: "🌦️",
+      Clouds: "☁️",
+      Clear: "☀️",
+    };
+
+    return weatherEmoji[weatherCondition] || "🌫️"; // Default emoji if condition is not matched
+  }
+
   return (
     <div className="weather-dashboard">
       <h2>Weather Dashboard</h2>
@@ -63,7 +76,8 @@ function Weather() {
               <strong>Temperature:</strong> {weather.main.temp}°F
             </p>
             <p>
-              <strong>Weather:</strong> {weather.weather[0].description}
+              <strong>Weather:</strong> {weather.weather[0].description}{" "}
+              {getWeatherEmoji(weather.weather[0].main)}
             </p>
             <p>
               <strong>Humidity:</strong> {weather.main.humidity}%
