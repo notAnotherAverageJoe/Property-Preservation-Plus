@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../components/Weather.css";
+import MaintenanceScheduler from "./MaintenanceScheduler";
 
 function Weather() {
   const [city, setCity] = useState("");
-  const [state, setState] = useState(""); // Add state input
+  const [state, setState] = useState("");
   const [weather, setWeather] = useState(null);
   const [time, setTime] = useState(new Date());
 
@@ -55,18 +56,23 @@ function Weather() {
 
       {/* Weather Info */}
       {weather && (
-        <div className="weather-info">
-          <h3>Weather in {weather.name}</h3>
-          <p>
-            <strong>Temperature:</strong> {weather.main.temp}°F
-          </p>
-          <p>
-            <strong>Weather:</strong> {weather.weather[0].description}
-          </p>
-          <p>
-            <strong>Humidity:</strong> {weather.main.humidity}%
-          </p>
-        </div>
+        <>
+          <div className="weather-info">
+            <h3>Weather in {weather.name}</h3>
+            <p>
+              <strong>Temperature:</strong> {weather.main.temp}°F
+            </p>
+            <p>
+              <strong>Weather:</strong> {weather.weather[0].description}
+            </p>
+            <p>
+              <strong>Humidity:</strong> {weather.main.humidity}%
+            </p>
+          </div>
+
+          {/* MaintenanceScheduler Component */}
+          <MaintenanceScheduler weatherData={weather} />
+        </>
       )}
     </div>
   );
