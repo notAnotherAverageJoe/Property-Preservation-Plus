@@ -2,10 +2,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import { hasFullAccess } from "../utils/accessUtils"; // Import the utility function
+import { hasFullAccess } from "../utils/accessUtils";
+import SearchBar from "./SearchBar"; // Import SearchBar component
 
 const UnitsManager = ({ propertyId }) => {
-  const { token, user } = useAuth(); // Get user info and token from AuthContext
+  const { token, user } = useAuth();
   const [units, setUnits] = useState([]);
   const [formData, setFormData] = useState({
     unit_number: "",
@@ -13,8 +14,10 @@ const UnitsManager = ({ propertyId }) => {
     rent_amount: "",
   });
   const [selectedUnit, setSelectedUnit] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Search term state
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
+  const unitsPerPage = 5; // Define how many units per page
 
-  // Set axios default headers for authentication
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   const fetchUnits = useCallback(async () => {
@@ -47,13 +50,11 @@ const UnitsManager = ({ propertyId }) => {
     e.preventDefault();
     try {
       if (selectedUnit) {
-        // Update unit
         await axios.put(
           `http://localhost:3000/api/units/${selectedUnit.id}`,
           formData
         );
       } else {
-        // Create unit
         await axios.post(`http://localhost:3000/api/units`, {
           ...formData,
           property_id: propertyId,
@@ -86,18 +87,40 @@ const UnitsManager = ({ propertyId }) => {
   };
 
   // Access control checks
-  const isCreator = user.is_owner !== false; // Check if user is not an owner
-  const accessLevel = user.access_level || 0; // Default to 0 if access_level is undefined
+  const isCreator = user.is_owner !== false;
+  const accessLevel = user.access_level || 0;
 
-  const canView = isCreator || accessLevel >= 1; // Allow viewing for access level 1 or higher
-  const canCreate = canView || accessLevel >= 2; // Allow creating units for access level 2 or higher
-  const canEdit = accessLevel >= 3; // Allow editing for access level 3 or higher
-  const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel); // Allow deleting only for access level 4 or full access
+  const canView = isCreator || accessLevel >= 1;
+  const canCreate = canView || accessLevel >= 2;
+  const canEdit = accessLevel >= 3;
+  const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel);
+
+  // Filter units by search term (both unit_number and type)
+  const filteredUnits = units.filter(
+    (unit) =>
+      unit.unit_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      unit.type.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Pagination logic
+  const indexOfLastUnit = currentPage * unitsPerPage;
+  const indexOfFirstUnit = indexOfLastUnit - unitsPerPage;
+  const currentUnits = filteredUnits.slice(indexOfFirstUnit, indexOfLastUnit);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
       <h2>Manage Units for Property {propertyId}</h2>
-      {canCreate && ( // Conditionally render form for users with create access (level 2 or higher)
+
+      {/* Search Bar */}
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        placeholderText="Search units (1A1, 6B3, etc..."
+      />
+
+      {canCreate && (
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -127,22 +150,50 @@ const UnitsManager = ({ propertyId }) => {
           </button>
         </form>
       )}
-      {canView ? ( // Only render units list for users who have at least view access
-        <ul>
-          {units.map((unit) => (
-            <li key={unit.id}>
-              <Link to={`/properties/${propertyId}/units/${unit.id}/requests`}>
-                {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
-              </Link>{" "}
-              {canEdit && ( // Conditionally render Edit button for users with edit access
-                <button onClick={() => handleEdit(unit)}>Edit</button>
-              )}
-              {canDelete && ( // Conditionally render Delete button for users with delete access (level 4 or full access)
-                <button onClick={() => handleDelete(unit.id)}>Delete</button>
-              )}
-            </li>
-          ))}
-        </ul>
+
+      {canView ? (
+        <>
+          <ul>
+            {currentUnits.map((unit) => (
+              <li key={unit.id}>
+                <Link
+                  to={`/properties/${propertyId}/units/${unit.id}/requests`}
+                >
+                  {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
+                </Link>
+                {canEdit && (
+                  <button onClick={() => handleEdit(unit)}>Edit</button>
+                )}
+                {canDelete && (
+                  <button onClick={() => handleDelete(unit.id)}>Delete</button>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          {/* Pagination */}
+          <nav>
+            <ul className="pagination">
+              {Array.from({
+                length: Math.ceil(filteredUnits.length / unitsPerPage),
+              }).map((_, index) => (
+                <li
+                  key={index}
+                  className={`page-item ${
+                    currentPage === index + 1 ? "active" : ""
+                  }`}
+                >
+                  <button
+                    onClick={() => paginate(index + 1)}
+                    className="page-link"
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </>
       ) : (
         <p>You do not have permission to view units for this property.</p>
       )}

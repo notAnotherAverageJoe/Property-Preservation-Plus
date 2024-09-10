@@ -24,6 +24,7 @@ import RolesManager from "./components/RolesManager";
 import CreateUserForm from "./components/creationComponents/CreateUserForm";
 import Unauthorized from "./components/Unauthorized";
 import BudgetForecast from "./components/BudgetForecast";
+import "./components/Pagination.css";
 
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);

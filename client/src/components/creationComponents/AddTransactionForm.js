@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { hasFullAccess } from "../../utils/accessUtils"; // Import your access utility function
+import { hasFullAccess } from "../../utils/accessUtils";
+import SearchBar from "../SearchBar"; // Import the SearchBar component
 
 function AddTransactionForm() {
   const { token, user } = useAuth();
@@ -16,15 +17,18 @@ function AddTransactionForm() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingTransactionId, setEditingTransactionId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [currentPage, setCurrentPage] = useState(1);
+  const transactionsPerPage = 5;
 
   // Determine access permissions
-  const isCreator = user.is_owner !== false; // Check if user is not an owner
-  const accessLevel = user.access_level || 0; // Default to 0 if access_level is undefined
+  const isCreator = user.is_owner !== false;
+  const accessLevel = user.access_level || 0;
 
-  const canView = isCreator || accessLevel >= 1; // Allow viewing for access level 1 or higher
-  const canCreate = canView || accessLevel >= 2; // Allow creating transactions for access level 2 or higher
-  const canEdit = accessLevel >= 3; // Allow editing for access level 3 or higher
-  const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel); // Allow deleting only for access level 4 or full access
+  const canView = isCreator || accessLevel >= 1;
+  const canCreate = canView || accessLevel >= 2;
+  const canEdit = accessLevel >= 3;
+  const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -63,7 +67,6 @@ function AddTransactionForm() {
 
     try {
       if (editingTransactionId) {
-        // Update existing transaction
         const response = await axios.put(
           `http://localhost:3000/api/properties/${id}/financial-transactions/${editingTransactionId}`,
           transaction,
@@ -80,7 +83,6 @@ function AddTransactionForm() {
         );
         setEditingTransactionId(null);
       } else {
-        // Add new transaction
         const response = await axios.post(
           `http://localhost:3000/api/properties/${id}/financial-transactions`,
           transaction,
@@ -112,7 +114,7 @@ function AddTransactionForm() {
       type: transaction.type,
       amount: transaction.amount,
       description: transaction.description,
-      transactionDate: transaction.transaction_date.split("T")[0], // Format date for input field
+      transactionDate: transaction.transaction_date.split("T")[0],
     });
     setEditingTransactionId(transaction.id);
   };
@@ -147,6 +149,25 @@ function AddTransactionForm() {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
+
+  // Filter transactions based on the search term
+  const filteredTransactions = transactions.filter(
+    (trans) =>
+      trans.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      trans.amount.toString().includes(searchTerm) ||
+      trans.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      formatDate(trans.transaction_date).includes(searchTerm)
+  );
+
+  // Pagination logic
+  const indexOfLastTransaction = currentPage * transactionsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const currentTransactions = filteredTransactions.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -190,12 +211,19 @@ function AddTransactionForm() {
             </form>
           )}
 
+          {/* Search Bar */}
+          <SearchBar
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            placeholderText="Search transactions..."
+          />
+
           <h2>Transactions</h2>
           {loading ? (
             <p>Loading transactions...</p>
-          ) : transactions.length > 0 ? (
+          ) : currentTransactions.length > 0 ? (
             <ul>
-              {transactions.map((trans) => (
+              {currentTransactions.map((trans) => (
                 <li key={trans.id}>
                   <strong>{trans.type}</strong>: ${trans.amount} on{" "}
                   {formatDate(trans.transaction_date)}
@@ -220,6 +248,31 @@ function AddTransactionForm() {
           ) : (
             <p>No transactions found.</p>
           )}
+
+          {/* Pagination Controls */}
+          <nav>
+            <ul className="pagination">
+              {Array.from({
+                length: Math.ceil(
+                  filteredTransactions.length / transactionsPerPage
+                ),
+              }).map((_, index) => (
+                <li
+                  key={index}
+                  className={`page-item ${
+                    currentPage === index + 1 ? "active" : ""
+                  }`}
+                >
+                  <button
+                    onClick={() => paginate(index + 1)}
+                    className="page-link"
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </>
       ) : (
         <p>You do not have permission to view this page.</p>
