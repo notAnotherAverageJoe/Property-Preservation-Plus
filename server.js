@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+require("dotenv").config();
 const port = process.env.PORT || 3000;
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
@@ -15,7 +16,7 @@ const userRoleRoutes = require("./routes/userRoleRoutes");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const accessLevel = require("./middleware/accessLevel");
-
+const axios = require("axios");
 // Middleware to parse JSON
 app.use(express.json());
 
@@ -57,6 +58,40 @@ app.use("/api/units", maintenanceRoutes);
 app.use("api/tenants", tenantRoutes);
 
 app.use("/api/admin", adminRoutes);
+
+// Function to convert Celsius to Fahrenheit
+const celsiusToFahrenheit = (celsius) => (celsius * 9) / 5 + 32;
+
+// Weather route
+
+app.get("/api/weather", async (req, res) => {
+  const city = req.query.city;
+  const apiKey = process.env.API_KEY; // Ensure this is correctly loaded
+
+  if (!city) {
+    return res.status(400).json({ error: "City parameter is required" });
+  }
+
+  try {
+    const weatherResponse = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+        city
+      )}&appid=${apiKey}&units=metric`
+    );
+
+    // Convert the temperature from Celsius to Fahrenheit
+    const weatherData = weatherResponse.data;
+    weatherData.main.temp = celsiusToFahrenheit(weatherData.main.temp);
+
+    res.json(weatherData);
+  } catch (error) {
+    console.error(
+      "Error fetching weather data:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Error fetching weather data" });
+  }
+});
 
 // Starts the server
 app.listen(port, () => {

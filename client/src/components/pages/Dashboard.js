@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Weather from "../../components/Weather"; // Import Weather component
+import Weather from "../../components/Weather";
 import "../pagesCSS/Dashboard.css";
 
 function Dashboard() {
