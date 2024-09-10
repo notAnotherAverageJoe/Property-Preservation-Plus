@@ -59,29 +59,33 @@ app.use("api/tenants", tenantRoutes);
 
 app.use("/api/admin", adminRoutes);
 
-// Function to convert Celsius to Fahrenheit
+// Weather route
+
+const API_KEY = process.env.API_KEY; // Ensure your API key is stored securely
+
+// Helper function to convert Celsius to Fahrenheit
 const celsiusToFahrenheit = (celsius) => (celsius * 9) / 5 + 32;
 
 // Weather route
-
 app.get("/api/weather", async (req, res) => {
-  const city = req.query.city;
-  const apiKey = process.env.API_KEY; // Ensure this is correctly loaded
+  const { city, state } = req.query; // Get city and state from query parameters
+  const apiKey = API_KEY;
 
   if (!city) {
     return res.status(400).json({ error: "City parameter is required" });
   }
 
   try {
+    const location = state ? `${city},${state}` : city; // Use state if provided
     const weatherResponse = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
-        city
-      )}&appid=${apiKey}&units=metric`
+        location
+      )}&appid=${apiKey}&units=imperial` // Request data in Fahrenheit
     );
 
-    // Convert the temperature from Celsius to Fahrenheit
     const weatherData = weatherResponse.data;
-    weatherData.main.temp = celsiusToFahrenheit(weatherData.main.temp);
+
+    // Optionally, you can verify if the temperature is correct here
 
     res.json(weatherData);
   } catch (error) {

@@ -4,6 +4,7 @@ import "../components/Weather.css";
 
 function Weather() {
   const [city, setCity] = useState("");
+  const [state, setState] = useState(""); // Add state input
   const [weather, setWeather] = useState(null);
   const [time, setTime] = useState(new Date());
 
@@ -16,7 +17,7 @@ function Weather() {
     e.preventDefault();
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/weather?city=${city}`
+        `http://localhost:3000/api/weather?city=${city}&state=${state}`
       );
       setWeather(response.data);
     } catch (error) {
@@ -35,12 +36,19 @@ function Weather() {
 
       {/* Weather Form */}
       <form onSubmit={handleWeatherFetch}>
-        <label htmlFor="city">Enter City Name:</label>
+        <label htmlFor="city">Enter City Name: </label>
         <input
           type="text"
           id="city"
           value={city}
           onChange={(e) => setCity(e.target.value)}
+        />
+        <label htmlFor="state">State/Region: </label>
+        <input
+          type="text"
+          id="state"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
         />
         <button type="submit">Get Weather</button>
       </form>
@@ -50,7 +58,7 @@ function Weather() {
         <div className="weather-info">
           <h3>Weather in {weather.name}</h3>
           <p>
-            <strong>Temperature:</strong> {weather.main.temp.toFixed(1)}°C
+            <strong>Temperature:</strong> {weather.main.temp}°F
           </p>
           <p>
             <strong>Weather:</strong> {weather.weather[0].description}
