@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -9,6 +9,16 @@ const Login = () => {
   const [isCreator, setIsCreator] = useState(false); // State to differentiate login type
   const navigate = useNavigate(); // Use navigate to redirect
   const { login } = useAuth(); // Access the login function from context
+  const location = useLocation(); // Hook to get location object
+  const message = location.state?.message; // Get the message from location state
+
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => {
+        navigate("/login"); // Redirect after showing the message
+      }, 20000); // Message display duration
+    }
+  }, [message, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,13 +39,15 @@ const Login = () => {
         "Login failed:",
         error.response ? error.response.data : error.message
       );
-      // Optionally handle the error by showing a message to the user
     }
   };
 
   return (
     <div>
       <h2>Login</h2>
+      {/* Display message if available */}
+      {message && <p className="alert alert-info">{message}</p>}
+
       {/* Toggle to choose between regular and creator login */}
       <div>
         <label>

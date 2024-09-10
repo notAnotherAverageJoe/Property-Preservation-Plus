@@ -31,3 +31,16 @@ button {
 button:hover {
   background-color: #75b043;
 }
+
+
+.alert {
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+.alert-info {
+  background-color: #d9edf7;
+  color: #31708f;
+  border: 1px solid #bce8f1;
+}

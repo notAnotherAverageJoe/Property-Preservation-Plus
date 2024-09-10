@@ -34,7 +34,18 @@ function CreateCompany() {
         localStorage.getItem("companyId")
       );
 
-      navigate("/dashboard");
+      // Clear user session
+      localStorage.removeItem("token"); // Assuming you store token in localStorage
+      localStorage.removeItem("userId"); // Remove other relevant items
+      localStorage.removeItem("companyId");
+
+      // Redirect to login page with a prompt message
+      navigate("/login", {
+        state: {
+          message:
+            "Your company has been created. As the Creator you will always log in through the Creator portal\nAll users must be assigned roles and then will be able to access the Users Portal!",
+        },
+      });
     } catch (error) {
       console.error("Failed to create company", error);
     }
