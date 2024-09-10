@@ -16,7 +16,7 @@ const Login = () => {
     if (message) {
       setTimeout(() => {
         navigate("/login"); // Redirect after showing the message
-      }, 20000); // Message display duration
+      }, 40000); // Message display duration
     }
   }, [message, navigate]);
 

@@ -33,14 +33,17 @@ button:hover {
 }
 
 
+/* Add to your CSS file */
 .alert {
   padding: 15px;
   margin: 20px 0;
   border-radius: 4px;
-}
-
-.alert-info {
+  border: 1px solid #bce8f1;
   background-color: #d9edf7;
   color: #31708f;
-  border: 1px solid #bce8f1;
+}
+
+.alert-info p {
+  margin: 0; /* Remove default margins for p elements */
+  line-height: 1.5; /* Improve readability with line height */
 }
