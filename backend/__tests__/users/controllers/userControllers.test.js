@@ -26,6 +26,16 @@ beforeAll(async () => {
   console.log("Server initialization complete.");
 });
 
+// Start a transaction before each test
+beforeEach(async () => {
+  await pool.query("BEGIN");
+});
+
+// Rollback the transaction after each test to keep the database clean
+afterEach(async () => {
+  await pool.query("ROLLBACK");
+});
+
 describe("User Controller", () => {
   it("should create a new user", async () => {
     // Ensure the request payload matches what your endpoint expects

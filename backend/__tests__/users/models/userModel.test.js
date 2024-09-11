@@ -1,5 +1,3 @@
-// npm test backend/__tests__
-
 const pool = require("../../../../config/db"); // Update path as necessary
 const {
   getAllUsers,
@@ -9,6 +7,7 @@ const {
   deleteUser,
   getUsersByCompanyId,
 } = require("../../../../models/userModel"); // Update path as necessary
+
 const createUniqueSampleUser = () => ({
   company_id: 1,
   first_name: "John",
@@ -21,19 +20,23 @@ let client;
 
 beforeAll(async () => {
   client = await pool.connect();
+  console.log("Database client connected.");
 });
 
 beforeEach(async () => {
   await client.query("BEGIN"); // Start a transaction
+  console.log("Transaction started.");
 });
 
 afterEach(async () => {
   await client.query("ROLLBACK"); // Rollback the transaction
+  console.log("Transaction rolled back.");
 });
 
 afterAll(async () => {
   client.release();
   await pool.end();
+  console.log("Database client released and pool ended.");
 });
 
 describe("User Model Tests", () => {
