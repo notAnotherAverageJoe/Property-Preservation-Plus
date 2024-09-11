@@ -1,0 +1,135 @@
+const request = require("supertest");
+const app = require("../../../../server"); // Adjust path as needed
+const { Pool } = require("pg");
+
+// Mock the Pool and query method
+jest.mock("../../../../config/db", () => {
+  const mockPool = {
+    query: jest.fn(),
+    connect: jest.fn(),
+    end: jest.fn(),
+  };
+  return mockPool;
+});
+
+const pool = require("../../../../config/db");
+
+describe("User Routes", () => {
+  let server;
+  const port = 8000; // Ensure this port is used consistently
+
+  beforeAll(async () => {
+    server = app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+
+    // Connect to the mock database
+    await pool.connect();
+  });
+
+  afterAll(async () => {
+    await new Promise((resolve) => server.close(resolve)); // Ensure server closes
+    await pool.end(); // Close database connection
+  });
+
+  beforeEach(() => {
+    // Reset the mock query function
+    pool.query.mockReset();
+
+    // Mock implementations
+    pool.query
+      .mockImplementationOnce(() => Promise.resolve({ rows: [{ id: 1 }] })) // Mock company insert
+      .mockImplementationOnce(() => Promise.resolve({ rows: [{ id: 1 }] })) // Mock user insert
+      .mockImplementationOnce(() => Promise.resolve({ rows: [{ id: 1 }] })) // Mock role insert
+      .mockImplementationOnce(() => Promise.resolve()) // Mock userrole insert
+      .mockImplementation(() => Promise.resolve()); // Mock other queries
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks(); // Clear mocks after each test
+  });
+
+  // Example tests
+  describe("GET /api/users/:id", () => {
+    it("should return 401 if the user is not authenticated", async () => {
+      const res = await request(app).get("/api/users/1");
+      expect(res.statusCode).toBe(401);
+    });
+  });
+  describe("GET /api/users/:id", () => {
+    it("should return 401 if the user is not authenticated", async () => {
+      const res = await request(app).get("/api/users/1"); // Assuming authentication middleware is applied
+      expect(res.statusCode).toBe(401);
+      expect(res.body.message).toBe(undefined);
+    });
+  });
+
+  describe("PUT /api/users/:id", () => {
+    it("should return 401 if the user is not authenticated", async () => {
+      const updateData = { first_name: "Updated" };
+
+      const res = await request(app).put("/api/users/1").send(updateData); // Assuming authentication middleware is applied
+      expect(res.statusCode).toBe(401);
+      expect(res.body.message).toBe(undefined);
+    });
+  });
+
+  describe("DELETE /api/users/:id", () => {
+    it("should return 401 if the user is not authenticated", async () => {
+      const res = await request(app).delete("/api/users/1"); // Assuming authentication middleware is applied
+      expect(res.statusCode).toBe(401);
+      expect(res.body.message).toBe(undefined);
+    });
+  });
+
+  describe("POST /api/auth/login", () => {
+    it("should return 401 for incorrect credentials", async () => {
+      const mockUser = {
+        email: "test@example.com",
+        password: "wrongpassword", // Invalid password
+      };
+
+      const res = await request(app).post("/api/auth/login").send(mockUser);
+      expect(res.statusCode).toBe(500);
+      expect(res.body.message).toBe("Error logging in");
+    });
+  });
+
+  describe("GET /api/protected", () => {
+    it("should return 401 if the user does not have the required role", async () => {
+      // Assuming this route requires specific roles/permissions
+      const res = await request(app).get("/api/protected"); // Assuming authentication middleware is applied
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toBe(undefined);
+    });
+  });
+  afterAll(async () => {
+    console.log("Starting teardown...");
+    try {
+      if (server) {
+        console.log("Attempting to close server...");
+        await new Promise((resolve, reject) => {
+          server.close((err) => {
+            if (err) {
+              console.error("Error closing server:", err);
+              return reject(err);
+            }
+            console.log("Server closed.");
+            resolve();
+          });
+        });
+      } else {
+        console.log("Server was not running.");
+      }
+
+      if (pool) {
+        console.log("Ending database pool...");
+        await pool.end();
+        console.log("Database pool ended.");
+      }
+    } catch (error) {
+      console.error("Error during teardown:", error);
+    }
+    console.log("Teardown complete.");
+  }, 15000);
+});

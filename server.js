@@ -97,8 +97,13 @@ app.get("/api/weather", async (req, res) => {
   }
 });
 
-// Starts the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-module.exports = app; // Export the Express app instanc
+// Your middleware and routes here
+
+// Start server only if not in test environment
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
+module.exports = app; // Export the app for testing
