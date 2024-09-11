@@ -5,9 +5,7 @@ const Main = () => {
   return (
     <div>
       <h1>Welcome to Our Application</h1>
-      <p>
-        This is the main page. You can navigate to different sections from here.
-      </p>
+      <p>This is the main page. WIP</p>
     </div>
   );
 };

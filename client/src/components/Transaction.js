@@ -8,7 +8,6 @@ function Transaction({ transaction }) {
       <p>Amount: ${transaction.amount}</p>
       <p>Date: {new Date(transaction.date).toLocaleDateString()}</p>
       <p>Description: {transaction.description}</p>
-      {/* Add more transaction details as needed */}
     </div>
   );
 }

@@ -16,10 +16,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAllUsers,
-};
-
 // Function to get user by ID
 const getUserById = async (id) => {
   try {
