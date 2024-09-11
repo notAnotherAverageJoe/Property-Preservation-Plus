@@ -23,8 +23,12 @@ CREATE TABLE Users (
 
 CREATE TABLE Roles (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE
+    name VARCHAR(255) NOT NULL,
+    company_id INT,
+    user_id INT,
+    access_level INT
 );
+
 
 CREATE TABLE UserRoles (
     user_id INT REFERENCES Users(id),
@@ -50,7 +54,6 @@ CREATE TABLE Units (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE TABLE Tenants (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -58,7 +61,8 @@ CREATE TABLE Tenants (
     email VARCHAR(255) UNIQUE NOT NULL,
     phone VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    property_id INT
 );
 
 CREATE TABLE Leases (
@@ -70,7 +74,8 @@ CREATE TABLE Leases (
     rent_amount DECIMAL(10, 2) NOT NULL,
     status VARCHAR(50) DEFAULT 'Active',  -- e.g., 'Active', 'Terminated'
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    company_id INT  
 );
 
 CREATE TABLE MaintenanceRequests (
