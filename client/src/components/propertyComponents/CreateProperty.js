@@ -1,61 +1,52 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function CreateProperty() {
   const [propertyName, setPropertyName] = useState("");
-  const [address, setAddress] = useState("");
-  const [companyId, setCompanyId] = useState(""); // Add state for companyId
+  const [propertyAddress, setPropertyAddress] = useState("");
   const navigate = useNavigate();
-  const { user } = useAuth(); // Get user info from AuthContext
 
-  useEffect(() => {
-    const storedCompanyId = localStorage.getItem("companyId");
-    if (storedCompanyId) {
-      setCompanyId(storedCompanyId);
-    } else {
-      console.error("Company ID not found in localStorage");
-    }
-  }, []);
+  // Retrieve token from localStorage
+  const token = localStorage.getItem("token");
+  let companyId = null;
 
-  // Access control: Check if user has at least access level 2
-  useEffect(() => {
-    if (user.access_level < 2) {
-      console.error("Insufficient access level to create properties");
-      navigate("/dashboard"); // Redirect to dashboard or any other page
+  if (token) {
+    try {
+      // Decode the token to get the company_id
+      const decodedToken = jwtDecode(token);
+      companyId = decodedToken.company_id;
+    } catch (error) {
+      console.error("Error decoding token", error);
     }
-  }, [user, navigate]);
+  }
+
+  if (!companyId) {
+    console.error("Company ID not found in token");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem("token");
-
-    if (!companyId) {
-      console.error("No company ID found");
-      return;
-    }
+    const property = {
+      name: propertyName,
+      address: propertyAddress,
+      company_id: companyId, // Include company_id
+    };
 
     try {
       const response = await fetch("http://localhost:3000/api/properties", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: propertyName,
-          address,
-          company_id: companyId, // Use the retrieved companyId
-        }),
+        body: JSON.stringify(property),
       });
 
       if (!response.ok) {
         throw new Error("Failed to create property");
       }
-
-      const data = await response.json();
-      console.log("Property created:", data);
 
       navigate("/properties");
     } catch (error) {
@@ -65,27 +56,28 @@ function CreateProperty() {
 
   return (
     <div>
-      <h1>Create New Property</h1>
+      <h1>Create Property</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={propertyName}
-          onChange={(e) => setPropertyName(e.target.value)}
-          placeholder="Property Name"
-          required
-        />
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          placeholder="Address"
-          required
-        />
+        <div>
+          <label>Property Name</label>
+          <input
+            type="text"
+            value={propertyName}
+            onChange={(e) => setPropertyName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Property Address</label>
+          <input
+            type="text"
+            value={propertyAddress}
+            onChange={(e) => setPropertyAddress(e.target.value)}
+            required
+          />
+        </div>
         <button type="submit">Create Property</button>
       </form>
-      <div style={{ marginTop: "20px" }}>
-        <Link to="/dashboard">Back to Dashboard</Link>
-      </div>
     </div>
   );
 }

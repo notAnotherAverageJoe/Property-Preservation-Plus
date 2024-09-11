@@ -2,21 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
+import "./Login.css"; // Link to the CSS file
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isCreator, setIsCreator] = useState(false); // State to differentiate login type
-  const navigate = useNavigate(); // Use navigate to redirect
-  const { login } = useAuth(); // Access the login function from context
-  const location = useLocation(); // Hook to get location object
-  const message = location.state?.message; // Get the message from location state
+  const [isCreator, setIsCreator] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const location = useLocation();
+  const message = location.state?.message;
 
   useEffect(() => {
     if (message) {
       setTimeout(() => {
-        navigate("/login"); // Redirect after showing the message
-      }, 40000); // Message display duration
+        navigate("/login");
+      }, 40000);
     }
   }, [message, navigate]);
 
@@ -31,8 +32,8 @@ const Login = () => {
       const response = await axios.post(endpoint, { email, password });
 
       if (response.data.token) {
-        login(response.data.token); // Save token and update auth state
-        navigate("/dashboard"); // Redirect to a protected route
+        login(response.data.token);
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error(
@@ -43,53 +44,52 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      {/* Display message if available */}
-      {message && <p className="alert alert-info">{message}</p>}
+    <div className="login-container">
+      <div className="login-form">
+        <h2>Login</h2>
+        {message && <p className="alert alert-info">{message}</p>}
 
-      {/* Toggle to choose between regular and creator login */}
-      <div>
-        <label>
-          <input
-            type="radio"
-            checked={!isCreator}
-            onChange={() => setIsCreator(false)}
-          />
-          Regular User
-        </label>
-        <label>
-          <input
-            type="radio"
-            checked={isCreator}
-            onChange={() => setIsCreator(true)}
-          />
-          Creator
-        </label>
+        <div className="login-type">
+          <label>
+            <input
+              type="radio"
+              checked={!isCreator}
+              onChange={() => setIsCreator(false)}
+            />
+            Regular User
+          </label>
+          <label>
+            <input
+              type="radio"
+              checked={isCreator}
+              onChange={() => setIsCreator(true)}
+            />
+            Creator
+          </label>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Login</button>
+        </form>
       </div>
-
-      {/* Form for both login types */}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
     </div>
   );
 };
