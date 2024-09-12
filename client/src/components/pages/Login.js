@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import "../pagesCSS/Login.css";
+import GoToHome from "../helper/GoTohome";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -92,6 +93,7 @@ const Login = () => {
             />
           </div>
           <button type="submit">Login</button>
+          <GoToHome />
         </form>
       </div>
     </div>

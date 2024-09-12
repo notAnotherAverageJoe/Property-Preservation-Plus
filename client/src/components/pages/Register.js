@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "..//../utils/authService";
+import GoToHome from "../helper/GoTohome";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -72,6 +73,7 @@ function Register() {
         />
       </label>
       <button type="submit">Register</button>
+      <GoToHome />
     </form>
   );
 }

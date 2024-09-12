@@ -19,7 +19,7 @@
 
 button {
   padding: 10px 15px;
-  background-color: #343a40;
+  background-color: #495057;
   color: white;
   border: none;
   border-radius: 5px;
@@ -51,7 +51,7 @@ button:hover {
 button.pill-link {
   display: inline-block;
   padding: 10px 20px; /* Adjust padding for the pill shape */
-  background-color: #343a40;
+  background-color: #495057;
   color: #fff; 
   text-align: center;
   text-decoration: none; 
@@ -93,11 +93,11 @@ hr {
 }
 
 .unit-item {
-  margin-bottom: 10px; /* Adds space between list items */
-  padding: 10px; /* Adds padding inside list items */
-  border: 1px solid #ddd; /* Adds a border around each item */
+  margin-bottom: 10px; 
+  padding: 10px; 
+  border: 1px solid #ddd; 
   border-radius: 5px; /* Rounds the corners of the border */
-  background-color: #f9f9f9; /* Sets a light background color */
+  background-color: #f9f9f9; 
 }
 
 .unit-link {
