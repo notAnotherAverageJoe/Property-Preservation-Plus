@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 
-const CreateRoleForm = () => {
+const CreateRoleForm = ({ onRoleCreated }) => {
   const [roleName, setRoleName] = useState("");
   const [accessLevel, setAccessLevel] = useState(""); // State for access level
   const [message, setMessage] = useState("");
@@ -43,7 +43,7 @@ const CreateRoleForm = () => {
     }
 
     try {
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:3000/api/roles",
         {
           name: roleName,
@@ -57,15 +57,16 @@ const CreateRoleForm = () => {
           },
         }
       );
+      setMessage(response.data.message);
       setRoleName("");
       setAccessLevel(""); // Reset access level after submission
-      setMessage("Role created successfully.");
-      fetchRoles(); // Fetch roles again after a new role is created
+      if (onRoleCreated) {
+        onRoleCreated(); // Refresh roles list
+      }
     } catch (error) {
       setMessage("Error creating role.");
     }
   };
-
   // Handle role deletion
   const handleDelete = async (roleId) => {
     try {

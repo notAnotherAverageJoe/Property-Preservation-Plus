@@ -3,7 +3,6 @@ import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import CreateRoleForm from "./creationComponents/CreateRoleForm";
 import RoleAssignment from "./creationComponents/RolesAssignment";
-
 const RolesManager = () => {
   const { user, token, isAuthenticated } = useAuth();
   const [roles, setRoles] = useState([]);
