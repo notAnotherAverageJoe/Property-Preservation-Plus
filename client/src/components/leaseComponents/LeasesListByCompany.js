@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import CreateLease from "./CreateLease";
+import SearchBar from "../SearchBar"; // Import the SearchBar component
 
 const LeasesListByCompany = () => {
   const [leases, setLeases] = useState([]);
+  const [filteredLeases, setFilteredLeases] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const [decodedToken, setDecodedToken] = useState(null); // State for decoded token
 
-  // Define fetchLeases function outside of useEffect
   const fetchLeases = async (companyId) => {
     setLoading(true);
     setSubmitted(true);
@@ -22,6 +25,7 @@ const LeasesListByCompany = () => {
         },
       });
       setLeases(response.data);
+      setFilteredLeases(response.data); // Initialize filteredLeases with all leases
     } catch (error) {
       setError(
         "Error fetching leases: " +
@@ -101,6 +105,7 @@ const LeasesListByCompany = () => {
       });
       alert("Lease deleted successfully");
       setLeases(leases.filter((lease) => lease.id !== leaseId));
+      setFilteredLeases(filteredLeases.filter((lease) => lease.id !== leaseId));
     } catch (error) {
       setError(
         "Error deleting lease: " +
@@ -117,6 +122,7 @@ const LeasesListByCompany = () => {
       return lease;
     });
     setLeases(updatedLeases);
+    setFilteredLeases(updatedLeases); // Update filteredLeases as well
   };
 
   const formatDate = (isoDate) => {
@@ -126,16 +132,30 @@ const LeasesListByCompany = () => {
 
   const toISODate = (dateString) => new Date(dateString).toISOString();
 
+  const handleSearchChange = (searchTerm) => {
+    setSearchTerm(searchTerm);
+    const filtered = leases.filter((lease) =>
+      String(lease.unit_id).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredLeases(filtered);
+  };
+
   return (
     <div>
+      <CreateLease />
       <h1>Leases by Company</h1>
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        placeholderText="Search by Unit ID"
+      />
       {submitted && (
         <>
           {loading && <p>Loading...</p>}
           {error && <p>{error}</p>}
-          {leases.length > 0 ? (
+          {filteredLeases.length > 0 ? (
             <ul>
-              {leases.map((lease) => (
+              {filteredLeases.map((lease) => (
                 <li key={lease.id}>
                   <label>
                     Unit ID:
@@ -198,6 +218,8 @@ const LeasesListByCompany = () => {
                   <button onClick={() => handleDeleteLease(lease.id)}>
                     Delete Lease
                   </button>
+                  <hr></hr>
+                  <br></br>
                 </li>
               ))}
             </ul>

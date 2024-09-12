@@ -37,7 +37,7 @@ const CreateLease = () => {
       ...leaseData,
       unit_id: Number(leaseData.unit_id),
       tenant_id: Number(leaseData.tenant_id),
-      rent_amount: parseFloat(leaseData.rent_amount), // Ensures rent_amount is treated as a float
+      rent_amount: parseFloat(leaseData.rent_amount),
       company_id: Number(leaseData.company_id),
     };
 
@@ -60,17 +60,26 @@ const CreateLease = () => {
       // Check if the error is a foreign key constraint violation
       if (err.response && err.response.data && err.response.data.detail) {
         const errorMessage = err.response.data.detail;
+        // Check for specific foreign key constraint violations
         if (errorMessage.includes("violates foreign key constraint")) {
-          alert(
-            "The specified Unit ID does not exist. Please check and try again."
-          );
+          if (errorMessage.includes("leases_tenant_id_fkey")) {
+            alert("Invalid tenant ID. Please check and try again.");
+          } else if (errorMessage.includes("leases_unit_id_fkey")) {
+            alert("Invalid unit ID. Please check and try again.");
+          } else {
+            alert(
+              "Failed to create lease. Please check your input and try again."
+            );
+          }
         } else {
           alert(
             "Failed to create lease. Please check your input and try again."
           );
         }
       } else {
-        alert("Failed to create lease. Please try again later.");
+        alert(
+          "Failed to create lease. Please check your input and try again. Valid Tenant ID and Valid Unit ID required."
+        );
       }
     }
   };
@@ -97,6 +106,7 @@ const CreateLease = () => {
         />
         <input
           type="date"
+          placeholder="Start Date."
           name="start_date"
           value={leaseData.start_date}
           onChange={handleInputChange}
@@ -104,6 +114,7 @@ const CreateLease = () => {
         />
         <input
           type="date"
+          placeholder="End Date."
           name="end_date"
           value={leaseData.end_date}
           onChange={handleInputChange}

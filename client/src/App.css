@@ -75,3 +75,13 @@ button.pill-link:active {
 button.pill-link:focus {
   outline: 2px solid #75b043; 
 }
+h1 {
+  text-align: center;
+  margin: 4px;
+}
+hr {
+  border: 0; /* Remove the default border */
+  height: 3px; /* Set the height of the hr (making it thicker) */
+  background-color: #4CAF50; /* Set the color of the hr */
+  margin: 20px 0; /* Add some margin for spacing */
+}
