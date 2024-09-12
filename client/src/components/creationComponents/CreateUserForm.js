@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const CreateUserForm = () => {
   const { token, user } = useAuth();
@@ -9,8 +10,8 @@ const CreateUserForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
   const [userRoles, setUserRoles] = useState([]); // Initialize as empty array
+  const navigate = useNavigate(); // useNavigate hook for redirection
 
   // Fetch user roles from an API
   useEffect(() => {
@@ -46,13 +47,14 @@ const CreateUserForm = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setMessage("User created successfully.");
+      alert("User created successfully.");
+      navigate("/dashboard/roles"); // Redirect to Role Management page
     } catch (error) {
       console.error(
         "Error details:",
         error.response ? error.response.data : error.message
       );
-      setMessage("Error creating user.");
+      alert("Error creating user.");
     }
   };
 
@@ -107,7 +109,6 @@ const CreateUserForm = () => {
 
         <button type="submit">Create User</button>
       </form>
-      {message && <p>{message}</p>}
     </div>
   );
 };
