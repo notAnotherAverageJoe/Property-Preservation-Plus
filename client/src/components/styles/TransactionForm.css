@@ -32,7 +32,7 @@ form {
   button[type="submit"] {
     padding: 12px;
     font-size: 1em;
-    background-color: #343a40; /* Professional blue color */
+    background-color: #343a40; 
     color: #fff;
     border: none;
     border-radius: 5px;

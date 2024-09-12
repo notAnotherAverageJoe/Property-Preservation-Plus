@@ -1,80 +1,84 @@
 /* Basic Reset */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Body Styling */
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-  }
-  
-  /* Navbar Container */
-  nav {
-    background-color: #75b043;
-    color: #ffffff;
-  }
-  
-  /* Navbar Inner Container */
-  .nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* Navbar Brand */
-  .nav-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  
-  /* Navbar Links */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Navbar Container */
+nav {
+  background-color: #75b043;
+  color: #ffffff;
+  position: fixed; /* Fix the nav to the viewport */
+  top: 0; /* Position at the top of the page */
+  width: 100%; /* Full width */
+  z-index: 1000; /* Ensure it stays on top of other content */
+}
+
+/* Navbar Inner Container */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Navbar Brand */
+.nav-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Navbar Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li {
+  margin: 0 0.5rem;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.nav-links a:hover {
+  background-color: #495057;
+  border-radius: 4px;
+}
+
+/* Toggle Button */
+.toggle-button {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.toggle-button div {
+  background-color: #ffffff;
+  height: 3px;
+  width: 25px;
+  margin: 3px 0;
+  transition: 0.3s;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
   .nav-links {
-    list-style: none;
-    display: flex;
-  }
-  
-  .nav-links li {
-    margin: 0 0.5rem;
-  }
-  
-  .nav-links a {
-    color: #ffffff;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
-    transition: background-color 0.3s;
-  }
-  
-  .nav-links a:hover {
-    background-color: #495057;
-    border-radius: 4px;
-  }
-  
-  /* Toggle Button */
-  .toggle-button {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    padding: 0.5rem;
-  }
-  
-  .toggle-button div {
-    background-color: #ffffff;
-    height: 3px;
-    width: 25px;
-    margin: 3px 0;
-    transition: 0.3s;
-  }
-  
-  /* Responsive Styling */
-  @media (max-width: 768px) {
-    .nav-links {
       display: none;
       flex-direction: column;
       width: 100%;
@@ -83,14 +87,18 @@
       top: 60px;
       left: 0;
       padding: 1rem;
-    }
-  
-    .nav-links.active {
-      display: flex;
-    }
-  
-    .toggle-button {
-      display: flex;
-    }
   }
-  
+
+  .nav-links.active {
+      display: flex;
+  }
+
+  .toggle-button {
+      display: flex;
+  }
+}
+
+/* Add a margin to the body to avoid content being hidden under the navbar */
+body {
+  padding-top: 60px; /* Height of the navbar */
+}

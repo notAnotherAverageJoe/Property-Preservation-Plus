@@ -12,10 +12,10 @@
 /* Button Container */
 .button-container {
   display: flex;
-  flex-wrap: wrap; /* Allows buttons to wrap if needed */
-  justify-content: center; /* Center buttons horizontally */
-  gap: 20px; /* Space between buttons, adjust as needed */
-  padding: 20px 0; /* Padding above and below buttons */
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 20px; 
+  padding: 20px 0; 
 }
 
 /* Button-like Links */
