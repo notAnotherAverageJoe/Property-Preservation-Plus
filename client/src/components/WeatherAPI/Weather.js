@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../components/Weather.css";
+import "./Weather.css";
 import MaintenanceScheduler from "./MaintenanceScheduler";
 import EnergyManagement from "./EnergyManagement";
 
