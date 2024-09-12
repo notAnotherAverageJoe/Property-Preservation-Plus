@@ -153,12 +153,13 @@ const UnitsManager = ({ propertyId }) => {
 
       {canView ? (
         <>
+          <h2>Units</h2>
           <ul>
             {currentUnits.map((unit) => (
-              <li key={unit.id} className="unit-item">
+              <li key={unit.id} className="transaction-item">
                 <Link
                   to={`/properties/${propertyId}/units/${unit.id}/requests`}
-                  className="unit-link"
+                  className="transaction-link"
                 >
                   {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
                 </Link>

@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { hasFullAccess } from "../../utils/accessUtils";
 import SearchBar from "../SearchBar";
 import TransactionForm from "./TransactionForm";
-import Pagination from "../Pagination";
+import Pagination from "../helper/Pagination";
 import TransactionList from "./TransactionList";
 import "../styles/Pagination.css";
 

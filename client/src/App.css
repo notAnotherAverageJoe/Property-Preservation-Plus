@@ -102,7 +102,7 @@ hr {
 
 .unit-link {
   text-decoration: none; /* Removes underline from links */
-  color: #007bff; /* Sets the color of the link */
+  color: #343a40; /* Sets the color of the link */
 }
 
 .unit-link:hover {
