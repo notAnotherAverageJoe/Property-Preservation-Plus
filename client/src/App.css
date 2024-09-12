@@ -33,7 +33,6 @@ button:hover {
 }
 
 
-/* Add to your CSS file */
 .alert {
   padding: 15px;
   margin: 20px 0;
@@ -44,6 +43,35 @@ button:hover {
 }
 
 .alert-info p {
-  margin: 0; /* Remove default margins for p elements */
-  line-height: 1.5; /* Improve readability with line height */
+  margin: 0;
+  line-height: 1.5; 
+}
+
+button.pill-link {
+  display: inline-block;
+  padding: 10px 20px; /* Adjust padding for the pill shape */
+  background-color: #343a40;
+  color: #fff; 
+  text-align: center;
+  text-decoration: none; 
+  border-radius: 50px; /* Makes the shape a pill */
+  font-size: 1em; /* Adjust text size */
+  font-weight: 500; 
+  transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+
+button.pill-link:hover {
+  background-color: #75b043;
+  transform: translateY(-2px); 
+}
+
+button.pill-link:active {
+  background-color: #75b043;
+  transform: translateY(0); 
+}
+
+
+button.pill-link:focus {
+  outline: 2px solid #75b043; 
 }

@@ -40,7 +40,7 @@ function Dashboard() {
   }, [navigate]);
 
   return (
-    <div>
+    <div className="dashboard-container">
       <h1>Dashboard</h1>
 
       {!company && !loading && (
@@ -51,9 +51,6 @@ function Dashboard() {
 
       {company && (
         <>
-          {/* <Link to="/create-property" className="button-link">
-            Create a New Property
-          </Link> */}
           <Link to="/properties" className="button-link">
             All Properties
           </Link>
@@ -83,6 +80,9 @@ function Dashboard() {
             </p>
             <p>
               <strong>Address:</strong> {company.address}
+            </p>
+            <p>
+              <strong>Company ID:</strong> {company.id}
             </p>
           </div>
         </>

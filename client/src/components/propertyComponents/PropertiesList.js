@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 // Import the utility function if needed
-// import { hasFullAccess } from "../../utils/accessUtils";
 
 function PropertiesList() {
   const [properties, setProperties] = useState([]);
@@ -116,12 +115,14 @@ function PropertiesList() {
               {canEditOrDelete(property) && ( // Check permissions for edit/delete
                 <>
                   <button
+                    className="pill-link"
                     onClick={() => handleEdit(property.id)}
                     style={{ marginLeft: "10px" }}
                   >
                     Edit
                   </button>
                   <button
+                    className="pill-link"
                     onClick={() => handleDelete(property.id)}
                     style={{ marginLeft: "10px" }}
                   >

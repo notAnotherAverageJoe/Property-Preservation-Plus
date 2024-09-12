@@ -62,7 +62,7 @@ function Weather() {
 
   return (
     <div className="weather-dashboard">
-      <h2>Weather Dashboard</h2>
+      <h2>Maintenance Guide</h2>
 
       {/* Clock */}
       <div className="clock">
