@@ -2,13 +2,13 @@
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Adds space between each form element */
-    max-width: 400px; /* Limits form width */
-    margin: 0 auto; /* Centers the form on the page */
+    gap: 15px; 
+    max-width: 400px; 
+    margin: 0 auto; 
     padding: 20px;
     background-color: #f9f9f9; /* Light background */
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   }
   
   /* Input fields */
@@ -18,8 +18,8 @@ form {
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: border-color 0.3s ease;
-    width: 100%; /* Ensure inputs take full width */
-    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    width: 100%; 
+    box-sizing: border-box; 
   }
   
   /* Focus state for inputs */
@@ -41,11 +41,11 @@ form {
   }
   
   button[type="submit"]:hover {
-    background-color: #75b043; /* Darker blue on hover */
+    background-color: #75b043; 
   }
   
   button[type="submit"]:active {
-    background-color: #75b043; /* Even darker blue on click */
+    background-color: #75b043; 
   }
   
   /* Make the form responsive */

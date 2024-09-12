@@ -25,6 +25,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 4px
 
 }
 
@@ -81,7 +82,7 @@ h1 {
 }
 hr {
   border: 0; /* Remove the default border */
-  height: 3px; /* Set the height of the hr (making it thicker) */
+  height: 4px; /* Set the height of the hr (making it thicker) */
   background-color: #4CAF50; /* Set the color of the hr */
   margin: 20px 0; /* Add some margin for spacing */
 }
