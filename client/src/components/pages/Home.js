@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const Main = () => {
   return (
     <div>
+      <h1>Welcome to the main page!</h1>
       <h2>
         <Link to="/login">Login</Link>
       </h2>
