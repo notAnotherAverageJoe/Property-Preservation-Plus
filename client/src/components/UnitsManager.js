@@ -92,8 +92,8 @@ const UnitsManager = ({ propertyId }) => {
 
   const canView = isCreator || accessLevel >= 1;
   const canCreate = canView || accessLevel >= 2;
-  const canEdit = accessLevel >= 3;
-  const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel);
+  const canEdit = accessLevel >= 3 || isCreator;
+  const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel) || isCreator;
 
   // Filter units by search term (both unit_number and type)
   const filteredUnits = units.filter(
@@ -155,9 +155,10 @@ const UnitsManager = ({ propertyId }) => {
         <>
           <ul>
             {currentUnits.map((unit) => (
-              <li key={unit.id}>
+              <li key={unit.id} className="unit-item">
                 <Link
                   to={`/properties/${propertyId}/units/${unit.id}/requests`}
+                  className="unit-link"
                 >
                   {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
                 </Link>

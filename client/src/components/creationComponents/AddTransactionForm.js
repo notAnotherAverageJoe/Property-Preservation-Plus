@@ -31,7 +31,7 @@ function AddTransactionForm() {
 
   const canView = isCreator || accessLevel >= 1;
   const canCreate = canView || accessLevel >= 2;
-  const canEdit = accessLevel >= 3;
+  const canEdit = accessLevel >= 3 || isCreator;
   const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel);
 
   useEffect(() => {

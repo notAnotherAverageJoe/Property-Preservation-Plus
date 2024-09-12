@@ -86,3 +86,52 @@ hr {
   background-color: #4CAF50; /* Set the color of the hr */
   margin: 20px 0; /* Add some margin for spacing */
 }
+/* app.css */
+.unit-list {
+  list-style-type: none; /* Removes default bullet points */
+  padding: 0; /* Removes default padding */
+}
+
+.unit-item {
+  margin-bottom: 10px; /* Adds space between list items */
+  padding: 10px; /* Adds padding inside list items */
+  border: 1px solid #ddd; /* Adds a border around each item */
+  border-radius: 5px; /* Rounds the corners of the border */
+  background-color: #f9f9f9; /* Sets a light background color */
+}
+
+.unit-link {
+  text-decoration: none; /* Removes underline from links */
+  color: #007bff; /* Sets the color of the link */
+}
+
+.unit-link:hover {
+  text-decoration: underline; /* Adds underline on hover */
+}
+
+.edit-button,
+.delete-button {
+  margin-left: 10px; /* Adds space between the buttons */
+  padding: 5px 10px; 
+  border: none; 
+  border-radius: 3px; 
+  cursor: pointer; 
+}
+
+.edit-button {
+  background-color: #28a745; /* Green background for edit button */
+  color: white; 
+}
+
+.edit-button:hover {
+  background-color: #218838; 
+}
+
+.delete-button {
+  background-color: #dc3545; /* Red background for delete button */
+  color: white; 
+}
+
+.delete-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
