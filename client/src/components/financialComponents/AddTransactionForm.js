@@ -4,9 +4,9 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { hasFullAccess } from "../../utils/accessUtils";
 import SearchBar from "../SearchBar";
-import TransactionForm from "../TransactionForm";
-import Pagination from "../../components/Pagination";
-import TransactionList from "../TransactionList";
+import TransactionForm from "./TransactionForm";
+import Pagination from "../Pagination";
+import TransactionList from "./TransactionList";
 import "../styles/Pagination.css";
 
 function AddTransactionForm() {
@@ -175,11 +175,10 @@ function AddTransactionForm() {
     <div>
       {canView ? (
         <>
-          {/* Move SearchBar here */}
           <SearchBar
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
-            placeholderText="Search transactions..."
+            placeholderText="Search transactions by type (Flood, Roofs, Flooring etc...)"
           />
 
           {canCreate && (

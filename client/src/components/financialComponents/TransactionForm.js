@@ -1,6 +1,6 @@
 // components/TransactionForm.js
 import React from "react";
-import "./styles/TransactionForm.css";
+import "../styles/TransactionForm.css";
 
 const TransactionForm = ({
   transaction,

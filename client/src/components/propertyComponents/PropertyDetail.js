@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, useParams } from "react-router-dom";
 import UnitsManager from "../UnitsManager";
-import AddTransactionForm from "../creationComponents/AddTransactionForm";
+import AddTransactionForm from "../financialComponents/AddTransactionForm";
 import "./PropertyDetail.css";
 
 function PropertyDetail() {
@@ -15,7 +15,7 @@ function PropertyDetail() {
       <div className="property-detail-container">
         {/* Units Manager */}
         <div className="property-detail-section">
-          <h2>Units Management</h2>
+          <h3>Units Management</h3>
           <UnitsManager propertyId={propertyId} />
         </div>
 

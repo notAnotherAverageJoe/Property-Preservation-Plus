@@ -8,8 +8,8 @@ const Main = () => {
       <div className="triangleBackground"></div>
       <h1>Welcome to </h1>
       <h1>Property Preservation Plus!</h1>
-      <h2>The Only Property Management System You'll Ever Need!</h2>
-      <h3>info to be added</h3>
+      <h2>Streamline Your Property Management </h2>
+      <h3>Effortlessly Handle Every Detail with Ease!</h3>
       <h2>
         <Link to="/login">Login</Link>
       </h2>
