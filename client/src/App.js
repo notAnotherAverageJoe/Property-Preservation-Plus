@@ -16,7 +16,7 @@ import MaintenanceRequests from "./components/MaintenanceRequests";
 import LeasesManager from "./components/leaseComponents/LeasesManager";
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
-import "./components/Navbar.css";
+import "./components/styles/Navbar.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import TenantsManager from "./components/TenantsManager";
 import CreateLease from "./components/creationComponents/CreateLease";
@@ -26,7 +26,7 @@ import RolesManager from "./components/RolesManager";
 import CreateUserForm from "./components/creationComponents/CreateUserForm";
 import Unauthorized from "./components/Unauthorized";
 import BudgetForecast from "./components/BudgetForecast";
-import "./components/Pagination.css";
+import "./components/styles/Pagination.css";
 
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);

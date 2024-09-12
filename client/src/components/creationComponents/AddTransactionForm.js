@@ -3,7 +3,11 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { hasFullAccess } from "../../utils/accessUtils";
-import SearchBar from "../SearchBar"; // Import the SearchBar component
+import SearchBar from "../SearchBar";
+import TransactionForm from "../TransactionForm";
+import Pagination from "../../components/Pagination";
+import TransactionList from "../TransactionList";
+import "../styles/Pagination.css";
 
 function AddTransactionForm() {
   const { token, user } = useAuth();
@@ -17,7 +21,7 @@ function AddTransactionForm() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingTransactionId, setEditingTransactionId] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const transactionsPerPage = 5;
 
@@ -150,7 +154,6 @@ function AddTransactionForm() {
     return date.toLocaleDateString(undefined, options);
   };
 
-  // Filter transactions based on the search term
   const filteredTransactions = transactions.filter(
     (trans) =>
       trans.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -159,7 +162,6 @@ function AddTransactionForm() {
       formatDate(trans.transaction_date).includes(searchTerm)
   );
 
-  // Pagination logic
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
   const currentTransactions = filteredTransactions.slice(
@@ -174,44 +176,14 @@ function AddTransactionForm() {
       {canView ? (
         <>
           {canCreate && (
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="type"
-                value={transaction.type}
-                onChange={handleChange}
-                placeholder="Type"
-              />
-              <input
-                type="number"
-                name="amount"
-                value={transaction.amount}
-                onChange={handleChange}
-                placeholder="Amount"
-              />
-              <input
-                type="text"
-                name="description"
-                value={transaction.description}
-                onChange={handleChange}
-                placeholder="Description"
-              />
-              <input
-                type="date"
-                name="transactionDate"
-                value={transaction.transactionDate}
-                onChange={handleChange}
-                placeholder="Transaction Date"
-              />
-              <button type="submit">
-                {editingTransactionId
-                  ? "Update Transaction"
-                  : "Add Transaction"}
-              </button>
-            </form>
+            <TransactionForm
+              transaction={transaction}
+              onChange={handleChange}
+              onSubmit={handleSubmit}
+              editingTransactionId={editingTransactionId}
+            />
           )}
 
-          {/* Search Bar */}
           <SearchBar
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -222,57 +194,24 @@ function AddTransactionForm() {
           {loading ? (
             <p>Loading transactions...</p>
           ) : currentTransactions.length > 0 ? (
-            <ul>
-              {currentTransactions.map((trans) => (
-                <li key={trans.id}>
-                  <strong>{trans.type}</strong>: ${trans.amount} on{" "}
-                  {formatDate(trans.transaction_date)}
-                  <br />
-                  Description: {trans.description}
-                  <br />
-                  {(canEdit || canDelete) && (
-                    <>
-                      {canEdit && (
-                        <button onClick={() => handleEdit(trans)}>Edit</button>
-                      )}
-                      {canDelete && (
-                        <button onClick={() => handleDelete(trans.id)}>
-                          Delete
-                        </button>
-                      )}
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <TransactionList
+              transactions={currentTransactions}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              canEdit={canEdit}
+              canDelete={canDelete}
+            />
           ) : (
             <p>No transactions found.</p>
           )}
 
-          {/* Pagination Controls */}
-          <nav>
-            <ul className="pagination">
-              {Array.from({
-                length: Math.ceil(
-                  filteredTransactions.length / transactionsPerPage
-                ),
-              }).map((_, index) => (
-                <li
-                  key={index}
-                  className={`page-item ${
-                    currentPage === index + 1 ? "active" : ""
-                  }`}
-                >
-                  <button
-                    onClick={() => paginate(index + 1)}
-                    className="page-link"
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(
+              filteredTransactions.length / transactionsPerPage
+            )}
+            onPageChange={paginate}
+          />
         </>
       ) : (
         <p>You do not have permission to view this page.</p>
