@@ -22,12 +22,12 @@
 }
 
 .pagination-container .page-link:hover {
-  background-color: #75b043;
+  background-color:#4caf50;
   color: #fff;
 }
 
 .pagination-container .page-item.active .page-link {
   background-color: #343a40;
   color: #fff;
-  border-color: #75b043;
+  border-color: #4caf50;
 }

@@ -26,7 +26,7 @@ input[type="password"], input[type="email"] {
 /* Focus state for inputs */
 input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, 
 input[type="password"]:focus, input[type="email"]:focus {
-  border-color: #75b043; 
+  border-color: #4caf50;
   outline: none;
 }
 
@@ -43,11 +43,11 @@ input[type="password"]:focus, input[type="email"]:focus {
   }
   
   button[type="submit"]:hover {
-    background-color: #75b043; 
+    background-color: #4caf50;
   }
   
   button[type="submit"]:active {
-    background-color: #75b043; 
+    background-color: #343a40;
   }
   
   /* Make the form responsive */
