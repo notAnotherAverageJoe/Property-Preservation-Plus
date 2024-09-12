@@ -53,6 +53,7 @@ const Login = () => {
           <label>
             <input
               type="radio"
+              id="regularUser"
               checked={!isCreator}
               onChange={() => setIsCreator(false)}
             />
@@ -61,6 +62,7 @@ const Login = () => {
           <label>
             <input
               type="radio"
+              id="creator"
               checked={isCreator}
               onChange={() => setIsCreator(true)}
             />
@@ -70,18 +72,20 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
           <div>
-            <label>Email:</label>
+            <label htmlFor="email">Email:</label>
             <input
               type="email"
+              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
           <div>
-            <label>Password:</label>
+            <label htmlFor="password">Password:</label>
             <input
               type="password"
+              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
