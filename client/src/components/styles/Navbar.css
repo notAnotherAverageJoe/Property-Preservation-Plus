@@ -15,11 +15,16 @@ body {
 nav {
   background-color: #75b043;
   color: #ffffff;
-  position: fixed; /* Fix the nav to the viewport */
-  top: 0; /* Position at the top of the page */
-  width: 100%; /* Full width */
-  z-index: 1000; /* Ensure it stays on top of other content */
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
+
+body {
+  padding-top: 60px; /* Ensure content is not hidden under the fixed navbar */
+}
+
 
 /* Navbar Inner Container */
 .nav-container {

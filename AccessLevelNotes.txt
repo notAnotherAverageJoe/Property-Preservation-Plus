@@ -4,7 +4,6 @@ Level 1.
 - Dashboard Access.
 - Property Detail - View only.
 - maintenance requests - View, Create, Update, Delete
-- Tenants - Create.
 (Good for maintenance requests)
 
 Level 2.

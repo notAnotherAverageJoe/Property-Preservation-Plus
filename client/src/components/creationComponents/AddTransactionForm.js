@@ -175,6 +175,13 @@ function AddTransactionForm() {
     <div>
       {canView ? (
         <>
+          {/* Move SearchBar here */}
+          <SearchBar
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            placeholderText="Search transactions..."
+          />
+
           {canCreate && (
             <TransactionForm
               transaction={transaction}
@@ -183,12 +190,6 @@ function AddTransactionForm() {
               editingTransactionId={editingTransactionId}
             />
           )}
-
-          <SearchBar
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            placeholderText="Search transactions..."
-          />
 
           <h2>Transactions</h2>
           {loading ? (

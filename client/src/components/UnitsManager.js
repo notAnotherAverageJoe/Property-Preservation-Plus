@@ -172,7 +172,7 @@ const UnitsManager = ({ propertyId }) => {
           </ul>
 
           {/* Pagination */}
-          <nav>
+          <div className="pagination-container">
             <ul className="pagination">
               {Array.from({
                 length: Math.ceil(filteredUnits.length / unitsPerPage),
@@ -192,7 +192,7 @@ const UnitsManager = ({ propertyId }) => {
                 </li>
               ))}
             </ul>
-          </nav>
+          </div>
         </>
       ) : (
         <p>You do not have permission to view units for this property.</p>

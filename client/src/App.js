@@ -30,9 +30,9 @@ import "./components/styles/Pagination.css";
 
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
-const ProtectedPropertiesList = withAuth(PropertiesList, 2);
+const ProtectedPropertiesList = withAuth(PropertiesList, 1);
 const ProtectedCreateProperty = withAuth(CreateProperty, 3);
-const ProtectedPropertyDetail = withAuth(PropertyDetail, 3);
+const ProtectedPropertyDetail = withAuth(PropertyDetail, 1);
 const ProtectedUnitsManager = withAuth(UnitsManager, 3);
 const ProtectedAddTransactionForm = withAuth(AddTransactionForm, 4);
 const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
