@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../../../server"); // Adjust path if necessary
+const app = require("../../../server");
 const userRoleModel = require("../../../models/userRoleModel");
 
 // Mock the userRoleModel
