@@ -78,7 +78,9 @@ function Weather() {
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
-        <label htmlFor="state">State/Region: </label>
+        <label htmlFor="state">
+          <br></br>State/Region:{" "}
+        </label>
         <input
           type="text"
           id="state"
