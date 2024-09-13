@@ -1,15 +1,26 @@
 const request = require("supertest");
 const app = require("../../../server");
 const pool = require("../../../config/db");
+
 jest.mock("../../../middleware/authenticate", () => (req, res, next) => next());
 
 describe("Unit Endpoints", () => {
   let unitId;
-  const propertyId = 1; // Adjust as needed for your tests
+  const propertyId = 12534545444543454332324533322577542; // Adjust as needed for your tests
+  let client;
 
-  // Clear the database before running tests
   beforeAll(async () => {
-    await pool.query("TRUNCATE TABLE Units RESTART IDENTITY CASCADE");
+    client = await pool.connect();
+    await client.query("BEGIN"); // Start a transaction
+  });
+
+  afterEach(async () => {
+    await client.query("ROLLBACK"); // Rollback the transaction
+  });
+
+  afterAll(async () => {
+    await client.query("COMMIT"); // Commit the transaction if all tests are successful
+    client.release();
   });
 
   // Test for creating a new unit
