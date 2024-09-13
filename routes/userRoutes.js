@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const authenticate = require("../middleware/authenticate");
 const companyController = require("../controllers/companyController");
 const pool = require("../config/db");
+const userModel = require("../models/userModel");
 
 // Route to get a specific user by ID
 router.get("/users/:id", authenticate, userController.getUserById);

@@ -61,7 +61,7 @@ app.use("/api/admin", adminRoutes);
 
 // Weather route
 
-const API_KEY = process.env.API_KEY; // Ensure your API key is stored securely
+const API_KEY = process.env.API_KEY;
 
 // Helper function to convert Celsius to Fahrenheit
 const celsiusToFahrenheit = (celsius) => (celsius * 9) / 5 + 32;
