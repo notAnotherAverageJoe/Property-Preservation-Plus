@@ -55,8 +55,9 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
     <div>
       <h3>Assign Role to User</h3>
       <div>
-        <label>User: </label>
+        <label htmlFor="user-select">User: </label>
         <select
+          id="user-select"
           value={selectedUserId}
           onChange={(e) => setSelectedUserId(e.target.value)}
         >
@@ -70,8 +71,9 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
       </div>
 
       <div>
-        <label>Role: </label>
+        <label htmlFor="role-select">Role: </label>
         <select
+          id="role-select"
           value={selectedRoleId}
           onChange={(e) => setSelectedRoleId(e.target.value)}
         >
