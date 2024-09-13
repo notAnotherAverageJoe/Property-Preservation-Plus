@@ -62,16 +62,21 @@ const CreateUserForm = () => {
     <div>
       <h2>Create New User</h2>
       <form onSubmit={handleSubmit}>
-        <label>Email:</label>
+        <label htmlFor="email">Email:</label>
         <input
+          id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
 
-        <label>Role:</label>
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
+        <label htmlFor="role">Role:</label>
+        <select
+          id="role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+        >
           {userRoles.length > 0 ? (
             userRoles.map((userRole, index) => (
               <option key={index} value={userRole}>
@@ -83,24 +88,27 @@ const CreateUserForm = () => {
           )}
         </select>
 
-        <label>First Name:</label>
+        <label htmlFor="firstName">First Name:</label>
         <input
+          id="firstName"
           type="text"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           required
         />
 
-        <label>Last Name:</label>
+        <label htmlFor="lastName">Last Name:</label>
         <input
+          id="lastName"
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           required
         />
 
-        <label>Password:</label>
+        <label htmlFor="password">Password:</label>
         <input
+          id="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
