@@ -19,9 +19,7 @@ describe("User Routes with Transaction Rollback", () => {
   const port = 8000; // Ensure this port is used consistently
 
   beforeAll(async () => {
-    server = app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
+    server = app.listen(port, () => {});
 
     // Connect to the mock database
     await pool.connect();
