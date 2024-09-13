@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import GoToHome from "../../components/helper/GoTohome"; // Adjust the import path accordingly
+import GoToHome from "../../components/helper/GoTohome";
 import { useNavigate } from "react-router-dom";
 
 // Mock the useNavigate hook
