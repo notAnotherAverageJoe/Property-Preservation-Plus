@@ -79,6 +79,40 @@ const getUsersByCompanyId = async (companyId) => {
   }
 };
 
+const bcrypt = require("bcrypt");
+const updatePassword = async (userId, oldPassword, newPassword) => {
+  try {
+    // Retrieve user by ID
+    const result = await pool.query(
+      "SELECT password_hash FROM Users WHERE id = $1",
+      [userId]
+    );
+    const user = result.rows[0];
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Compare old password with stored hash
+    const isMatch = await bcrypt.compare(oldPassword, user.password_hash);
+    if (!isMatch) {
+      throw new Error("Incorrect old password");
+    }
+
+    // Hash new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password in database
+    await pool.query("UPDATE Users SET password_hash = $1 WHERE id = $2", [
+      hashedNewPassword,
+      userId,
+    ]);
+
+    return { message: "Password updated successfully" };
+  } catch (error) {
+    throw new Error("Error updating password: " + error.message);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -86,4 +120,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getUsersByCompanyId,
+  updatePassword,
 };

@@ -1,19 +1,17 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-function Navbar() {
+const Navbar = () => {
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  // Check if user is logged in by looking for the token in localStorage
-  const isLoggedIn = !!localStorage.getItem("token");
-
   const handleLogout = () => {
-    // Clear authentication token from localStorage or any other storage
-    localStorage.removeItem("token");
-
-    // Redirect to login page
+    logout();
     navigate("/login");
   };
+
+  const isLoggedIn = !!user; // Check if user is authenticated
 
   return (
     <nav>
@@ -49,7 +47,10 @@ function Navbar() {
                 <Link to="/dashboard">Dashboard</Link>
               </li>
               <li>
-                <Link to="/login" onClick={handleLogout} className="nav-button">
+                <Link to={`/profile/${user.id}`}>Profile</Link>
+              </li>
+              <li>
+                <Link to="#" onClick={handleLogout} className="nav-button">
                   Logout
                 </Link>
               </li>
@@ -59,6 +60,6 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

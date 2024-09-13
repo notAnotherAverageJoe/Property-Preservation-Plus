@@ -116,21 +116,21 @@ const loginUser = async (req, res) => {
 
 // Function to update user password
 const updatePassword = async (req, res) => {
-  const userId = parseInt(req.params.id, 10); // Convert ID to integer
-  const { newPassword } = req.body;
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const userId = parseInt(req.params.id);
+  const { oldPassword, newPassword } = req.body;
 
   try {
-    const updatedUser = await userModel.updatePassword(userId, hashedPassword);
-    if (updatedUser) {
-      res.status(200).json({ message: "Password updated successfully." });
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
+    const result = await userModel.updatePassword(
+      userId,
+      oldPassword,
+      newPassword
+    );
+    res.json(result);
   } catch (error) {
+    console.error("Error updating password:", error);
     res
       .status(500)
-      .json({ message: "Error updating password.", error: error.message });
+      .json({ message: "Error updating password", error: error.message });
   }
 };
 
@@ -171,6 +171,54 @@ const getUsersByCompanyId = async (req, res) => {
   }
 };
 
+// Function to get user profile by ID
+const getUserProfile = async (req, res) => {
+  const userId = parseInt(req.params.id, 10);
+  try {
+    const userProfile = await userModel.getUserById(userId);
+    if (userProfile) {
+      res.status(200).json(userProfile);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching user profile", error: error.message });
+  }
+};
+
+// Function to update user profile
+const updateUserProfile = async (req, res) => {
+  const userId = parseInt(req.params.id, 10);
+  const userData = req.body;
+  try {
+    const updatedUser = await userModel.updateUser(userId, userData);
+    if (updatedUser) {
+      res.status(200).json(updatedUser);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating user profile", error: error.message });
+  }
+};
+
+// Function to delete user profile
+const deleteUserProfile = async (req, res) => {
+  const userId = parseInt(req.params.id, 10);
+  try {
+    await userModel.deleteUser(userId);
+    res.status(200).json({ message: "User profile deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting user profile", error: error.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -180,4 +228,7 @@ module.exports = {
   loginUser,
   updatePassword,
   getUsersByCompanyId,
+  getUserProfile,
+  updateUserProfile,
+  deleteUserProfile,
 };

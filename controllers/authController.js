@@ -7,12 +7,10 @@ const registerUser = async (req, res) => {
   const { first_name, last_name, email, password, company_id } = req.body;
 
   try {
-    // Validate input
     if (!email || !password) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Check if the user already exists
     const { rows: existingUsers } = await pool.query(
       "SELECT * FROM Users WHERE email = $1",
       [email]
@@ -21,19 +19,16 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user
     const { rows: newUsers } = await pool.query(
       "INSERT INTO Users (first_name, last_name, email, password_hash, company_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [first_name, last_name, email, hashedPassword, company_id || null] // Handle missing company_id
+      [first_name, last_name, email, hashedPassword, company_id || null]
     );
 
     const newUser = newUsers[0];
 
-    // Create and return JWT
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email, company_id: newUser.company_id },
       process.env.JWT_SECRET,
@@ -42,7 +37,7 @@ const registerUser = async (req, res) => {
 
     res.status(201).json({ token });
   } catch (error) {
-    console.error("Error registering user:", error); // Log the error for debugging
+    console.error("Error registering user:", error);
     res
       .status(500)
       .json({ message: "Error registering user", error: error.message });

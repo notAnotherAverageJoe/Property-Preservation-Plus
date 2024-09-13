@@ -32,6 +32,7 @@ import CreateUserForm from "./components/creationComponents/CreateUserForm";
 import Unauthorized from "./components/Unauthorized";
 import BudgetForecast from "./components/BudgetForecast";
 import "./components/styles/Pagination.css";
+import ProfilePage from "./components/pages/ProfilePage";
 
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
@@ -48,6 +49,7 @@ const ProtectedLeasesListByTenant = withAuth(LeasesListByCompany, 4);
 const ProtectedRolesManager = withAuth(RolesManager, 8);
 const ProtectedCreateUserForm = withAuth(CreateUserForm, 8);
 const ProtectedBudgetForecast = withAuth(BudgetForecast);
+const ProtectedProfilePage = withAuth(ProfilePage);
 
 function AppLayout() {
   const location = useLocation(); // useLocation inside the Router context
@@ -61,6 +63,7 @@ function AppLayout() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/profile/:id" element={<ProtectedProfilePage />} />{" "}
         <Route path="/create-company" element={<ProtectedCreateCompany />} />
         <Route path="/budget-forecast" element={<ProtectedBudgetForecast />} />
         <Route path="/dashboard" element={<ProtectedDashboard />} />
