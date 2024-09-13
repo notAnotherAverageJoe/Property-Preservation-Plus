@@ -41,7 +41,28 @@ router.get("/properties/:id", authenticate, async (req, res) => {
   }
 });
 
-// Route to get all financial transactions for a property
+// Route to get all units for a specific property
+router.get("/properties/:id/units", authenticate, async (req, res) => {
+  const propertyId = parseInt(req.params.id);
+  try {
+    const result = await pool.query(
+      "SELECT * FROM Units WHERE property_id = $1",
+      [propertyId]
+    );
+    if (result.rows.length > 0) {
+      res.json(result.rows);
+    } else {
+      res.status(404).json({ message: "Units not found for this property" });
+    }
+  } catch (error) {
+    console.error("Error fetching units:", error);
+    res.status(500).json({
+      message: "Error fetching units",
+      error: error.message,
+    });
+  }
+});
+
 // Route to get all financial transactions for a property
 router.get(
   "/properties/:id/financial-transactions",
@@ -81,6 +102,7 @@ router.delete(
     }
   }
 );
+
 // Route to update a financial transaction
 router.put(
   "/properties/:propertyId/financial-transactions/:transactionId",

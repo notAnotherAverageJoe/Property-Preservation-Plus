@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import UnitRentDisplay from "./UnitRentDisplay";
+import FinancialTransactionDisplay from "./FinancialTransactionDisplay";
+import "../styles/BudgetForecast.css"; // Ensure correct path to CSS
 
 function BudgetForecast() {
   const [budget, setBudget] = useState(0);
@@ -26,61 +29,57 @@ function BudgetForecast() {
   }, []);
 
   useEffect(() => {
-    if (selectedProperty) {
-      const fetchData = async () => {
-        try {
-          const unitResponse = await axios.get(
-            `http://localhost:3000/api/properties/${selectedProperty}/units`
-          );
-          const transactionResponse = await axios.get(
-            `http://localhost:3000/api/properties/${selectedProperty}/financial-transactions`
-          );
+    const fetchData = async () => {
+      if (!selectedProperty) return;
 
-          setUnits(unitResponse.data);
-          setTransactions(transactionResponse.data);
+      try {
+        const unitResponse = await axios.get(
+          `http://localhost:3000/api/properties/${selectedProperty}/units`
+        );
+        const transactionResponse = await axios.get(
+          `http://localhost:3000/api/properties/${selectedProperty}/financial-transactions`
+        );
 
-          console.log("Units:", unitResponse.data);
-          console.log("Transactions:", transactionResponse.data);
-        } catch (error) {
+        setUnits(unitResponse.data || []);
+        setTransactions(transactionResponse.data || []);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          console.error("Data not found:", error);
+          setError("No data available for the selected property.");
+          setUnits([]);
+          setTransactions([]);
+        } else {
           console.error("Error fetching data", error);
           setError("Failed to fetch data");
         }
-      };
+      }
+    };
 
-      fetchData();
-    }
+    fetchData();
   }, [selectedProperty]);
 
   const handlePropertyChange = (e) => {
     setSelectedProperty(e.target.value);
   };
 
-  // Calculate total rent
-  const totalRent = units.reduce((sum, unit) => {
-    const rent = parseFloat(unit.rent_amount); // Adjust field name if needed
-    return !isNaN(rent) ? sum + rent : sum;
-  }, 0);
-
-  // Calculate total transactions (including negatives)
-  const totalTransactions = transactions.reduce((sum, transaction) => {
-    const amount = parseFloat(transaction.amount);
-    return !isNaN(amount) ? sum + amount : sum;
-  }, 0);
-
   // Calculate forecast
-  const forecast = budget + totalRent - totalTransactions;
+  const forecast =
+    budget +
+    units.reduce((sum, unit) => {
+      const rent = parseFloat(unit.rent_amount);
+      return !isNaN(rent) ? sum + rent : sum;
+    }, 0) -
+    transactions.reduce((sum, transaction) => {
+      const amount = parseFloat(transaction.amount);
+      return !isNaN(amount) ? sum + amount : sum;
+    }, 0);
 
   return (
     <div className="budget-forecast">
       <h2>Budget Forecast</h2>
       {error && <p className="error">{error}</p>}
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          // Handle form submission if needed
-        }}
-      >
+      <form onSubmit={(e) => e.preventDefault()}>
         <label htmlFor="property">Select Property:</label>
         <select
           id="property"
@@ -102,24 +101,20 @@ function BudgetForecast() {
           value={budget}
           onChange={(e) => setBudget(parseFloat(e.target.value) || 0)}
         />
-        {/* <button type="submit">Update Forecast</button> */}
       </form>
 
       {selectedProperty && (
         <div className="forecast-info">
-          <h3>Forecast</h3>
-          <p>
-            <strong>Total Rent:</strong> ${totalRent.toFixed(2)}
-          </p>
-          <p>
-            <strong>Total Transactions:</strong> ${totalTransactions.toFixed(2)}
-          </p>
-          <p>
-            <strong>Budget:</strong> ${budget.toFixed(2)}
-          </p>
-          <p>
-            <strong>Forecast:</strong> ${forecast.toFixed(2)}
-          </p>
+          <UnitRentDisplay units={units} />
+          <FinancialTransactionDisplay transactions={transactions} />
+          <div className="summary-box">
+            <p>
+              <strong>Budget:</strong> ${budget.toFixed(2)}
+            </p>
+            <p>
+              <strong>Forecast:</strong> ${forecast.toFixed(2)}
+            </p>
+          </div>
         </div>
       )}
     </div>

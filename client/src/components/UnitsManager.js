@@ -161,7 +161,9 @@ const UnitsManager = ({ propertyId }) => {
                   to={`/properties/${propertyId}/units/${unit.id}/requests`}
                   className="transaction-link"
                 >
-                  {unit.unit_number} ({unit.type}) - ${unit.rent_amount}
+                  {/* Display unit number, type, rent amount, and unit ID */}
+                  {unit.unit_number} ({unit.type}) - ${unit.rent_amount} - Unit
+                  ID: {unit.id}
                 </Link>
                 {canEdit && (
                   <button onClick={() => handleEdit(unit)}>Edit</button>

@@ -30,7 +30,7 @@ import LeasesListByCompany from "./components/leaseComponents/LeasesListByCompan
 import RolesManager from "./components/RolesManager";
 import CreateUserForm from "./components/creationComponents/CreateUserForm";
 import Unauthorized from "./components/Unauthorized";
-import BudgetForecast from "./components/BudgetForecast";
+import BudgetForecast from "./components/Budgets/BudgetForecast";
 import "./components/styles/Pagination.css";
 import ProfilePage from "./components/pages/ProfilePage";
 
