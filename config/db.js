@@ -16,10 +16,10 @@ const pool = new Pool({
 (async () => {
   try {
     const client = await pool.connect();
-    console.log("Connected to the database successfully!");
+    // console.log("Connected to the database successfully!");
     client.release();
   } catch (err) {
-    console.error("Error connecting to the database:", err);
+    // console.error("Error connecting to the database:", err);
   }
 })();
 
