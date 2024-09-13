@@ -12,7 +12,7 @@ test("renders the component with expected text", () => {
     </MemoryRouter>
   );
 
-  const expectedText = /main/i;
+  const expectedText = /preservation/i;
   const element = screen.getByText(expectedText);
 
   expect(element).toBeInTheDocument();

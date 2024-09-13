@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import SearchBar from "../../components/SearchBar";
+import SearchBar from "../../components/helper/SearchBar";
 
 test("renders SearchBar with correct placeholder and handles input change", () => {
   const mockOnSearchChange = jest.fn();
