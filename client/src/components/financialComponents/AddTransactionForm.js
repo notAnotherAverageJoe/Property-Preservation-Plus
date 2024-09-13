@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { hasFullAccess } from "../../utils/accessUtils";
-import SearchBar from "../SearchBar";
+import SearchBar from "../helper/SearchBar";
 import TransactionForm from "./TransactionForm";
 import Pagination from "../helper/Pagination";
 import TransactionList from "./TransactionList";

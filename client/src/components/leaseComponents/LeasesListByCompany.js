@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import CreateLease from "./CreateLease";
-import SearchBar from "../SearchBar"; // Import the SearchBar component
+import SearchBar from "../helper/SearchBar";
 
 const LeasesListByCompany = () => {
   const [leases, setLeases] = useState([]);

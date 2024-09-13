@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-// Import the utility function if needed
+import SearchBar from "../helper/SearchBar"; // Import the SearchBar component
+import "../styles/PropertyList.css"; // Import the CSS file
 
 function PropertiesList() {
   const [properties, setProperties] = useState([]);
+  const [filteredProperties, setFilteredProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const { user } = useAuth(); // Get user info from AuthContext
+  const { user } = useAuth();
 
-  console.log("User from AuthContext:", user); // Debugging statement
-
-  const isCreator = user.is_owner !== false; // Determine if user is a creator
+  const isCreator = user.is_owner !== false;
   const accessLevel = user.access_level || 5;
 
-  console.log("Is Creator:", isCreator); // Debugging statement
-  console.log("Access Level:", accessLevel); // Debugging statement
-
-  // Determine if the user can view properties
   const canView = isCreator || accessLevel >= 1;
-
-  // Determine if the user can create properties
   const canCreate = accessLevel >= 2;
 
-  // Determine if the user can edit or delete a property
   const canEditOrDelete = (property) => {
     return (
-      isCreator || // Creators always have permissions
-      accessLevel >= 4 || // Level 4+ can edit/delete
-      // hasFullAccess(accessLevel) || // Check if user has full access
-      (accessLevel === 3 && property.created_by === user.id) // Level 3 can edit/delete their own properties
+      isCreator ||
+      accessLevel >= 4 ||
+      (accessLevel === 3 && property.created_by === user.id)
     );
   };
 
@@ -42,7 +35,6 @@ function PropertiesList() {
       }
 
       const token = localStorage.getItem("token");
-      console.log("Fetching properties with token:", token); // Debugging statement
 
       try {
         const response = await fetch("http://localhost:3000/api/properties", {
@@ -57,6 +49,7 @@ function PropertiesList() {
 
         const data = await response.json();
         setProperties(data);
+        setFilteredProperties(data);
       } catch (error) {
         console.error("Error fetching properties", error);
       } finally {
@@ -67,7 +60,6 @@ function PropertiesList() {
     fetchProperties();
   }, [canView]);
 
-  // Handle Delete Property
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
 
@@ -87,65 +79,81 @@ function PropertiesList() {
           throw new Error("Failed to delete property");
         }
 
-        // Update the state after deletion
         setProperties(properties.filter((property) => property.id !== id));
+        setFilteredProperties(
+          filteredProperties.filter((property) => property.id !== id)
+        );
       } catch (error) {
         console.error("Error deleting property", error);
       }
     }
   };
 
-  // Handle Edit Property
   const handleEdit = (id) => {
     navigate(`/edit-property/${id}`);
   };
 
+  const handleSearchChange = (term) => {
+    setSearchTerm(term);
+    setFilteredProperties(
+      properties.filter((property) =>
+        property.name.toLowerCase().includes(term.toLowerCase())
+      )
+    );
+  };
+
   return (
-    <div>
-      <h1>Properties List</h1>
+    <div className="container">
+      <h1 className="title">Properties List</h1>
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        placeholderText="Search by property name..."
+      />
       {loading ? (
-        <p>Loading...</p>
-      ) : properties.length > 0 ? (
-        <ul>
-          {properties.map((property) => (
-            <li key={property.id}>
-              <Link to={`/property/${property.id}`}>
+        <p className="message">Loading...</p>
+      ) : filteredProperties.length > 0 ? (
+        <ul className="propertyList">
+          {filteredProperties.map((property) => (
+            <li key={property.id} className="propertyItem">
+              <Link to={`/property/${property.id}`} className="propertyLink">
                 {property.name} - {property.address}
               </Link>
-              {canEditOrDelete(property) && ( // Check permissions for edit/delete
-                <>
+              {canEditOrDelete(property) && (
+                <div className="actionButtons">
                   <button
                     className="pill-link"
                     onClick={() => handleEdit(property.id)}
-                    style={{ marginLeft: "10px" }}
                   >
                     Edit
                   </button>
                   <button
                     className="pill-link"
                     onClick={() => handleDelete(property.id)}
-                    style={{ marginLeft: "10px" }}
                   >
                     Delete
                   </button>
-                </>
+                </div>
               )}
             </li>
           ))}
         </ul>
       ) : (
-        <p>No properties found.</p>
+        <p className="message">No properties found.</p>
       )}
 
-      {canCreate && ( // Only show the "Add Property" button if user can create properties
-        <div style={{ marginTop: "20px" }}>
-          <button onClick={() => navigate("/create-property")}>
+      {canCreate && (
+        <div className="addPropertyButton">
+          <button
+            className="pill-link"
+            onClick={() => navigate("/create-property")}
+          >
             Add New Property
           </button>
         </div>
       )}
 
-      <div style={{ marginTop: "20px" }}>
+      <div className="backLink">
         <Link to="/dashboard">Back to Dashboard</Link>
       </div>
     </div>

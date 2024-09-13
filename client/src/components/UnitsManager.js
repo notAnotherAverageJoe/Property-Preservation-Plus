@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { hasFullAccess } from "../utils/accessUtils";
-import SearchBar from "./SearchBar"; // Import SearchBar component
+import SearchBar from "./helper/SearchBar"; // Import SearchBar component
 
 const UnitsManager = ({ propertyId }) => {
   const { token, user } = useAuth();
