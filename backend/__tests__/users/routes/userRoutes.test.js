@@ -41,7 +41,6 @@ describe("User Routes with Transaction Rollback", () => {
     jest.clearAllMocks(); // Clear mocks after each test
   });
 
-  // Example tests
   describe("GET /api/users/:id", () => {
     it("should return 401 if the user is not authenticated", async () => {
       const res = await request(app).get("/api/users/1");

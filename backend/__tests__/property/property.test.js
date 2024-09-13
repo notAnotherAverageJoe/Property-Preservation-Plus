@@ -1,4 +1,3 @@
-// Mock the authentication middleware to bypass it for tests
 jest.mock("../../../middleware/authenticate", () => (req, res, next) => {
   // Simulate a successful authentication by attaching a mock user to the request
   req.user = { id: 1, company_id: 123 };
@@ -43,7 +42,7 @@ describe("Properties API", () => {
 
     expect(response.status).toBe(201);
     expect(response.body).toEqual(mockProperty);
-    expect(db.query).toHaveBeenCalledTimes(2); // Two queries: One for user, one for property
+    expect(db.query).toHaveBeenCalledTimes(2);
   });
 
   it("should return an error if property creation fails", async () => {
@@ -59,6 +58,6 @@ describe("Properties API", () => {
     expect(response.body).toEqual({
       error: "Failed to create property: Failed to create property",
     });
-    expect(db.query).toHaveBeenCalledTimes(2); // Even on error, 2 queries are expected
+    expect(db.query).toHaveBeenCalledTimes(2);
   });
 });

@@ -4,7 +4,7 @@ const userRoleModel = require("../../../models/userRoleModel");
 
 // Mock the userRoleModel
 jest.mock("../../../models/userRoleModel");
-// In your test setup file or before each test
+
 jest.mock("../../../middleware/authenticate", () => (req, res, next) => next());
 
 describe("User Role Controller Tests", () => {

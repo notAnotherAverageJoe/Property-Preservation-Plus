@@ -6,7 +6,7 @@ jest.mock("../../../middleware/authenticate", () => (req, res, next) => next());
 
 describe("Unit Endpoints", () => {
   let unitId;
-  const propertyId = 12534545444543454332324533322577542; // Adjust as needed for your tests
+  const propertyId = 12534545444543454332324533322577542;
   let client;
 
   beforeAll(async () => {

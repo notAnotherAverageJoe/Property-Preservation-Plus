@@ -62,7 +62,6 @@ describe("Auth Controller Tests", () => {
 
 describe("Login User", () => {
   beforeEach(() => {
-    // Reset mocks before each test
     pool.query.mockReset();
     bcrypt.compare.mockReset();
     jwt.sign.mockReset();

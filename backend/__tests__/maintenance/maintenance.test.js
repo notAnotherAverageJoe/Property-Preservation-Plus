@@ -47,8 +47,6 @@ describe("Maintenance Controller", () => {
       });
     });
   });
-
-  // Add additional test cases for other methods here...
 });
 
 describe("getMaintenanceRequestById", () => {

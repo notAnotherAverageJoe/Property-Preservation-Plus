@@ -1,13 +1,13 @@
 const request = require("supertest");
 const app = require("../../../server");
-// Assuming you have an express `app` in a file
+
 const pool = require("../../../config/db");
 
 const leaseModel = require("../../../models/leaseModel");
 
 jest.mock("../../../models/leaseModel");
 jest.mock("../../../config/db", () => ({
-  query: jest.fn(), // Ensure that pool.query can be mocked
+  query: jest.fn(),
 }));
 // Test getting a lease by ID
 describe("GET /api/leases/:id", () => {

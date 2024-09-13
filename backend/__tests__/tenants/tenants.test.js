@@ -34,7 +34,6 @@ describe("Tenants API", () => {
   });
 
   // Test for getting a tenant by ID
-  // Test for getting a tenant by ID
   it("should return a tenant by ID", async () => {
     const mockTenant = {
       id: 1,
