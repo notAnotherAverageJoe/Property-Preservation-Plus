@@ -19,7 +19,7 @@ const ProfilePage = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/users/${id}`,
+          `http://localhost:3000/api/api/users/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -50,7 +50,7 @@ const ProfilePage = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      await axios.put(`http://localhost:3000/api/users/${id}`, formData, {
+      await axios.put(`http://localhost:3000/api/api/users/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setEditMode(false);
@@ -63,7 +63,7 @@ const ProfilePage = () => {
   const handlePasswordUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:3000/api/users/${id}/password`,
+        `http://localhost:3000/api/api/users/${id}/password`,
         passwordData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -81,7 +81,7 @@ const ProfilePage = () => {
 
   const handleDeleteProfile = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/users/${id}`, {
+      await axios.delete(`http://localhost:3000/api/api/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/"); // Redirect after deletion
