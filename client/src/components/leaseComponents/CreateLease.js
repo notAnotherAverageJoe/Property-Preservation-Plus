@@ -1,4 +1,3 @@
-// src/components/CreateLease.js
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -9,11 +8,18 @@ const CreateLease = () => {
     start_date: "",
     end_date: "",
     rent_amount: "",
-    company_id: "", // Add this field
+    company_id: "",
   });
 
   const handleInputChange = (e) => {
-    setLeaseData({ ...leaseData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "rent_amount" && value !== "") {
+      // Ensure rent_amount is a valid number
+      const rentValue = value.replace(/[^0-9.]/g, ""); // Allow only digits and dots
+      setLeaseData({ ...leaseData, [name]: rentValue });
+    } else {
+      setLeaseData({ ...leaseData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -57,10 +63,9 @@ const CreateLease = () => {
     } catch (err) {
       console.error(err);
 
-      // Check if the error is a foreign key constraint violation
+      // Handle foreign key errors or other validation issues
       if (err.response && err.response.data && err.response.data.detail) {
         const errorMessage = err.response.data.detail;
-        // Check for specific foreign key constraint violations
         if (errorMessage.includes("violates foreign key constraint")) {
           if (errorMessage.includes("leases_tenant_id_fkey")) {
             alert("Invalid tenant ID. Please check and try again.");
@@ -106,7 +111,7 @@ const CreateLease = () => {
         />
         <input
           type="date"
-          placeholder="Start Date."
+          placeholder="Start Date"
           name="start_date"
           value={leaseData.start_date}
           onChange={handleInputChange}
@@ -114,7 +119,7 @@ const CreateLease = () => {
         />
         <input
           type="date"
-          placeholder="End Date."
+          placeholder="End Date"
           name="end_date"
           value={leaseData.end_date}
           onChange={handleInputChange}
@@ -127,8 +132,9 @@ const CreateLease = () => {
           onChange={handleInputChange}
           placeholder="Rent Amount"
           required
+          min="0" // Prevent negative values
+          step="0.01" // Allow decimal values
         />
-        {/* Add Company ID input */}
         <input
           type="text"
           name="company_id"
