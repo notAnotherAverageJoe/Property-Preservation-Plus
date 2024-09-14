@@ -67,9 +67,6 @@ function Dashboard() {
           <Link to="/create-user" className="button-link">
             Create Company User
           </Link>
-          <Link to="/budget-forecast" className="button-link">
-            Budget Forecast
-          </Link>
 
           <div>
             <h2>Company Information</h2>
