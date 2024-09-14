@@ -2,6 +2,7 @@
 --\i /path/to/your/schema.sql
 
 
+-- First, create the Companies table, as it is referenced by other tables.
 CREATE TABLE Companies (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -10,6 +11,7 @@ CREATE TABLE Companies (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Next, create the Users table, which references the Companies table.
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     company_id INT REFERENCES Companies(id),
@@ -21,6 +23,7 @@ CREATE TABLE Users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Now create the Roles table, which references Users and Companies.
 CREATE TABLE Roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -29,13 +32,14 @@ CREATE TABLE Roles (
     access_level INT
 );
 
-
+-- Then create the UserRoles table, which references Users and Roles.
 CREATE TABLE UserRoles (
-    user_id INT REFERENCES Users(id),
-    role_id INT REFERENCES Roles(id),
+    user_id INT REFERENCES Users(id) ON DELETE CASCADE,
+    role_id INT REFERENCES Roles(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, role_id)
 );
 
+-- Create the Properties table, which references Companies.
 CREATE TABLE Properties (
     id SERIAL PRIMARY KEY,
     company_id INT REFERENCES Companies(id),
@@ -45,6 +49,7 @@ CREATE TABLE Properties (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create the Units table, which references Properties.
 CREATE TABLE Units (
     id SERIAL PRIMARY KEY,
     property_id INT REFERENCES Properties(id),
@@ -54,6 +59,8 @@ CREATE TABLE Units (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Create the Tenants table (no dependencies).
 CREATE TABLE Tenants (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -65,6 +72,7 @@ CREATE TABLE Tenants (
     property_id INT
 );
 
+-- Create the Leases table, which references Units, Tenants, and Companies.
 CREATE TABLE Leases (
     id SERIAL PRIMARY KEY,
     unit_id INT REFERENCES Units(id),
@@ -75,9 +83,10 @@ CREATE TABLE Leases (
     status VARCHAR(50) DEFAULT 'Active',  -- e.g., 'Active', 'Terminated'
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    company_id INT  
+    company_id INT
 );
 
+-- Create the MaintenanceRequests table, which references Units.
 CREATE TABLE MaintenanceRequests (
     id SERIAL PRIMARY KEY,
     unit_id INT REFERENCES Units(id),
@@ -88,6 +97,7 @@ CREATE TABLE MaintenanceRequests (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Finally, create the FinancialTransactions table, which references Properties.
 CREATE TABLE FinancialTransactions (
     id SERIAL PRIMARY KEY,
     property_id INT REFERENCES Properties(id),
