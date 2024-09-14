@@ -25,7 +25,7 @@ import "./components/styles/Navbar.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import TenantsManager from "./components/propertyComponents/TenantsManager";
 import CreateLease from "./components/leaseComponents/CreateLease";
-import EditProperty from "./components/pages/EditProperty";
+import EditProperty from "./components/propertyComponents/EditProperty";
 import LeasesListByCompany from "./components/leaseComponents/LeasesListByCompany";
 import RolesManager from "./components/RolesManager";
 import CreateUserForm from "./components/creationComponents/CreateUserForm";

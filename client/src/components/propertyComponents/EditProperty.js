@@ -110,15 +110,6 @@ function EditProperty() {
           />
         </div>
 
-        <div>
-          <label>Description</label>
-          <textarea
-            name="description"
-            value={property.description}
-            onChange={handleChange}
-          />
-        </div>
-
         <button type="submit">Update Property</button>
       </form>
 

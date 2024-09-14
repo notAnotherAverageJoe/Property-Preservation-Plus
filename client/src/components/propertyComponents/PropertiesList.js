@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import SearchBar from "../helper/SearchBar"; // Import the SearchBar component
-import "../styles/PropertyList.css"; // Import the CSS file
+import SearchBar from "../helper/SearchBar";
+import "../styles/PropertyList.css";
 
 function PropertiesList() {
   const [properties, setProperties] = useState([]);
@@ -105,11 +105,27 @@ function PropertiesList() {
   return (
     <div className="container">
       <h1 className="title">Properties List</h1>
+
+      {/* Search Bar */}
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
         placeholderText="Search by property name..."
       />
+
+      {/* Add New Property Button - moved below the search bar */}
+      {canCreate && (
+        <div className="addPropertyButton">
+          <button
+            className="pill-link"
+            onClick={() => navigate("/create-property")}
+          >
+            Add New Property
+          </button>
+        </div>
+      )}
+
+      {/* Conditional Rendering for Loading and Property List */}
       {loading ? (
         <p className="message">Loading...</p>
       ) : filteredProperties.length > 0 ? (
@@ -142,19 +158,11 @@ function PropertiesList() {
         <p className="message">No properties found.</p>
       )}
 
-      {canCreate && (
-        <div className="addPropertyButton">
-          <button
-            className="pill-link"
-            onClick={() => navigate("/create-property")}
-          >
-            Add New Property
-          </button>
-        </div>
-      )}
-
+      {/* Back to Dashboard Link */}
       <div className="backLink">
-        <Link to="/dashboard">Back to Dashboard</Link>
+        <Link to="/dashboard" className="button-link">
+          Back to Dashboard
+        </Link>
       </div>
     </div>
   );
