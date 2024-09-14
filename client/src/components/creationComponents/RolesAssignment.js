@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
+import "../pagesCSS/RoleAssignment.css";
 
 const RoleAssignment = ({ roles, onRoleAssigned }) => {
   const { token } = useAuth();
@@ -52,8 +53,9 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
   };
 
   return (
-    <div>
+    <div className="role-assignment-container">
       <h3>Assign Role to User</h3>
+      <h2>Or Reassign Role to User</h2>
       <div>
         <label htmlFor="user-select">User: </label>
         <select

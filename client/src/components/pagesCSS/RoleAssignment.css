@@ -1,0 +1,55 @@
+/* RoleAssignment.css */
+.role-assignment-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .role-assignment-container h3 {
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .role-assignment-container label {
+    display: block;
+    color: #555;
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 8px;
+  }
+  
+  .role-assignment-container select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .role-assignment-container button {
+    background-color: #343a40;
+    color: white;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .role-assignment-container button:hover {
+    background-color: #4caf50;
+  }
+  
+  .role-assignment-container p {
+    font-family: 'Roboto', sans-serif;
+    color: #ff4d4d;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  

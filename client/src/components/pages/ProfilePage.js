@@ -81,7 +81,7 @@ const ProfilePage = () => {
 
   const handleDeleteProfile = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/api/users/${id}`, {
+      await axios.delete(`http://localhost:3000/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/"); // Redirect after deletion
