@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const CreateLease = () => {
+const CreateLease = ({ onLeaseCreated }) => {
   const [leaseData, setLeaseData] = useState({
     unit_id: "",
     tenant_id: "",
@@ -60,6 +60,11 @@ const CreateLease = () => {
         rent_amount: "",
         company_id: "",
       });
+
+      // Call the callback function to notify parent component
+      if (onLeaseCreated) {
+        onLeaseCreated();
+      }
     } catch (err) {
       console.error(err);
 
@@ -91,7 +96,7 @@ const CreateLease = () => {
 
   return (
     <div>
-      <h1>Create a Lease</h1>
+      <h3>Create a Lease</h3>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

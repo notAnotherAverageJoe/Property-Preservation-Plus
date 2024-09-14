@@ -140,10 +140,17 @@ const LeasesListByCompany = () => {
     setFilteredLeases(filtered);
   };
 
+  // Callback function to refetch leases after creating a new lease
+  const handleLeaseCreated = () => {
+    if (decodedToken) {
+      fetchLeases(decodedToken.company_id);
+    }
+  };
+
   return (
     <div>
-      <CreateLease />
-      <h1>Leases by Company</h1>
+      <CreateLease onLeaseCreated={handleLeaseCreated} />
+      <h3>Leases by Company</h3>
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
@@ -218,8 +225,8 @@ const LeasesListByCompany = () => {
                   <button onClick={() => handleDeleteLease(lease.id)}>
                     Delete Lease
                   </button>
-                  <hr></hr>
-                  <br></br>
+                  <hr />
+                  <br />
                 </li>
               ))}
             </ul>
