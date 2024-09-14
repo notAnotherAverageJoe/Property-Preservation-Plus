@@ -8,7 +8,7 @@ import GoToHome from "../helper/GoTohome";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isCreator, setIsCreator] = useState(false);
+  const [isCreator, setIsCreator] = useState(true);
   const [error, setError] = useState(""); // Added state for error message
   const navigate = useNavigate();
   const { login } = useAuth();
