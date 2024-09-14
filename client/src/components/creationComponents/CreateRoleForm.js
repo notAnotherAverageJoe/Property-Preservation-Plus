@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
+import "../styles/CreateRoleForm.css";
 
 const CreateRoleForm = ({ onRoleCreated }) => {
   const [roleName, setRoleName] = useState("");
@@ -67,6 +68,7 @@ const CreateRoleForm = ({ onRoleCreated }) => {
       setMessage("Error creating role.");
     }
   };
+
   // Handle role deletion
   const handleDelete = async (roleId) => {
     try {
@@ -90,27 +92,33 @@ const CreateRoleForm = ({ onRoleCreated }) => {
   }, [token]);
 
   return (
-    <div>
-      <h2>Create a New Role</h2>
+    <div className="create-role-form-container">
+      <h2 className="create-role-form-title">Create a New Role</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="roleName">Role Name:</label>
+          <label htmlFor="roleName" className="create-role-form-label">
+            Role Name:
+          </label>
           <input
             type="text"
             id="roleName"
             value={roleName}
             onChange={handleInputChange}
             required
+            className="create-role-form-input"
           />
         </div>
 
         <div>
-          <label htmlFor="accessLevel">Access Level (1-5):</label>
+          <label htmlFor="accessLevel" className="create-role-form-label">
+            Access Level (1-5):
+          </label>
           <select
             id="accessLevel"
             value={accessLevel}
             onChange={handleAccessLevelChange}
             required
+            className="create-role-form-select"
           >
             <option value="">Select Access Level</option>
             <option value="1">1 - Lowest</option>
@@ -121,17 +129,32 @@ const CreateRoleForm = ({ onRoleCreated }) => {
           </select>
         </div>
 
-        <button type="submit">Create Role</button>
+        <button type="submit" className="create-role-form-button">
+          Create Role
+        </button>
       </form>
-      {message && <p>{message}</p>}
+      {message && (
+        <p
+          className={`create-role-form-message ${
+            message.startsWith("Error") ? "error" : ""
+          }`}
+        >
+          {message}
+        </p>
+      )}
 
-      <h3>Existing Roles</h3>
-      <ul>
+      <h3 className="create-role-form-roles-title">Existing Roles</h3>
+      <ul className="create-role-form-roles-list">
         {roles.length > 0 ? (
           roles.map((role) => (
-            <li key={role.id}>
+            <li key={role.id} className="create-role-form-role-item">
               {role.name} (ID: {role.id}, Access Level: {role.access_level})
-              <button onClick={() => handleDelete(role.id)}>Delete</button>
+              <button
+                className="create-role-form-delete-button"
+                onClick={() => handleDelete(role.id)}
+              >
+                Delete
+              </button>
             </li>
           ))
         ) : (

@@ -3,6 +3,8 @@ import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import CreateRoleForm from "./creationComponents/CreateRoleForm";
 import RoleAssignment from "./creationComponents/RolesAssignment";
+import "./styles/RoleManager.css";
+
 const RolesManager = () => {
   const { user, token, isAuthenticated } = useAuth();
   const [roles, setRoles] = useState([]);
@@ -31,17 +33,20 @@ const RolesManager = () => {
 
   return (
     <div>
-      <h2>Manage Roles</h2>
+      <h2 className="roles-manager-title">Manage Roles</h2>
       {user ? (
-        <>
-          <CreateRoleForm onRoleCreated={fetchRoles} /> {/* Pass callback */}
-          <RoleAssignment roles={roles} onRoleAssigned={fetchRoles} />{" "}
-          {/* Pass roles and callback */}
-          <p>{message}</p>
-        </>
+        <div className="roles-manager-container">
+          <div className="roles-manager-component">
+            <CreateRoleForm onRoleCreated={fetchRoles} />
+          </div>
+          <div className="roles-manager-component">
+            <RoleAssignment roles={roles} onRoleAssigned={fetchRoles} />
+          </div>
+        </div>
       ) : (
         <p>Please log in.</p>
       )}
+      {message && <p>{message}</p>}
     </div>
   );
 };
