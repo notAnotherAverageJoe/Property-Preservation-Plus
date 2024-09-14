@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "..//../utils/authService";
+import { register } from "../../utils/authService";
 import GoToHome from "../helper/GoTohome";
 
 function Register() {
@@ -11,7 +11,8 @@ function Register() {
     password: "",
   });
 
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const [error, setError] = useState(""); // Added state for error message
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,14 +20,15 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
+
     try {
       const response = await register(formData);
       console.log(response);
-      // Redirect to login page on successful registration
       navigate("/login");
     } catch (error) {
       console.error("Registration failed", error);
-      // Display error message to the user
+      setError(error.message || "Registration failed. Please try again.");
     }
   };
 
@@ -73,6 +75,8 @@ function Register() {
         />
       </label>
       <button type="submit">Register</button>
+      {error && <p className="error-message">{error}</p>}{" "}
+      {/* Display error message */}
       <GoToHome />
     </form>
   );
