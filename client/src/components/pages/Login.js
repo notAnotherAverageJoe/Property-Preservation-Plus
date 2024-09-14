@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isCreator, setIsCreator] = useState(true);
-  const [error, setError] = useState(""); // Added state for error message
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
   const location = useLocation();

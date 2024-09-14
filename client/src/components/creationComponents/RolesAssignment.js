@@ -52,10 +52,25 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMessage("User deleted successfully.");
+      setUsers(users.filter((u) => u.id !== userId)); // Remove deleted user from the state
+    } catch (error) {
+      console.error("Error deleting user:", error.response || error);
+      setMessage("Error deleting user.");
+    }
+  };
+
   return (
     <div className="role-assignment-container">
-      <h3>Assign Role to User</h3>
-      <h2>Or Reassign Role to User</h2>
+      <h3>Assign or Reassign Role to User</h3>
+
       <div>
         <label htmlFor="user-select">User: </label>
         <select
@@ -89,6 +104,17 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
       </div>
 
       <button onClick={handleAssignRole}>Assign Role</button>
+
+      <h3>Delete a User</h3>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            {user.first_name} {user.last_name}{" "}
+            <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+
       <p>{message}</p>
     </div>
   );
