@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { hasFullAccess } from "../../utils/accessUtils";
 import SearchBar from "../helper/SearchBar"; // Import SearchBar component
 
@@ -17,6 +17,7 @@ const UnitsManager = ({ propertyId }) => {
   const [searchTerm, setSearchTerm] = useState(""); // Search term state
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const unitsPerPage = 5; // Define how many units per page
+  const navigate = useNavigate(); // Hook for navigation
 
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -88,12 +89,12 @@ const UnitsManager = ({ propertyId }) => {
 
   // Access control checks
   const isCreator = user.is_owner !== false;
-  const accessLevel = user.access_level || 0;
+  const accessLevel = user.access_level || 5;
 
   const canView = isCreator || accessLevel >= 1;
   const canCreate = canView || accessLevel >= 2;
-  const canEdit = accessLevel >= 3 || isCreator;
-  const canDelete = accessLevel >= 4 || hasFullAccess(accessLevel) || isCreator;
+  const canEdit = accessLevel >= 3;
+  const canDelete = accessLevel >= 4;
 
   // Filter units by search term (both unit_number and type)
   const filteredUnits = units.filter(
@@ -117,7 +118,7 @@ const UnitsManager = ({ propertyId }) => {
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        placeholderText="Search units (1A1, 6B3, etc..."
+        placeholderText="Search units (1A1, 6B3, etc...)"
       />
 
       {canCreate && (
@@ -157,14 +158,20 @@ const UnitsManager = ({ propertyId }) => {
           <ul>
             {currentUnits.map((unit) => (
               <li key={unit.id} className="transaction-item">
-                <Link
-                  to={`/properties/${propertyId}/units/${unit.id}/requests`}
-                  className="transaction-link"
-                >
+                <span>
                   {/* Display unit number, type, rent amount, and unit ID */}
                   {unit.unit_number} ({unit.type}) - ${unit.rent_amount} - Unit
                   ID: {unit.id}
-                </Link>
+                </span>
+                <button
+                  onClick={() =>
+                    navigate(
+                      `/properties/${propertyId}/units/${unit.id}/requests`
+                    )
+                  }
+                >
+                  View Maintenance Requests
+                </button>
                 {canEdit && (
                   <button onClick={() => handleEdit(unit)}>Edit</button>
                 )}
