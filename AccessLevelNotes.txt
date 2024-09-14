@@ -37,7 +37,8 @@ Level 4.
 - Create Units and Update Units.
 - Financial Transaction - View, Create, Edit, Delete
 - Manage Leases - View, Create, Edit, Delete.
-- Role Management - View Roles 
+- Role Management - View Roles Created by That User, 
+  Assign Roles to Users
 - Budget forecast
 
 
@@ -51,7 +52,7 @@ Level 5.
 - Financial Transaction - View, Create, Edit, Delete
 - Manage Leases - View, Create, Edit, Delete.
 - Role Management - View Roles Created by That User, 
-    Assign Roles to Users, Delete Roles
+    Assign Roles to Users
 - Budget forecast
 
 
@@ -67,6 +68,8 @@ Creator
 - Role Management - View Roles Created by That User, 
     Assign Roles to Users, Delete Roles
 - Create Users, Assign them Roles
+- Role Management - View Roles Created by That User, 
+    Assign Roles to Users, Delete users
 - Budget forecast
 
 

@@ -4,7 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import "../pagesCSS/RoleAssignment.css";
 
 const RoleAssignment = ({ roles, onRoleAssigned }) => {
-  const { token } = useAuth();
+  const { token, user } = useAuth(); // Include user context
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [selectedRoleId, setSelectedRoleId] = useState("");
@@ -67,6 +67,9 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
     }
   };
 
+  // Determine if the current user is a creator
+  const isCreator = user.is_owner === true;
+
   return (
     <div className="role-assignment-container">
       <h3>Assign or Reassign Role to User</h3>
@@ -105,15 +108,21 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
 
       <button onClick={handleAssignRole}>Assign Role</button>
 
-      <h3>Delete a User</h3>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.first_name} {user.last_name}{" "}
-            <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      {isCreator && (
+        <>
+          <h3>Delete a User</h3>
+          <ul>
+            {users.map((user) => (
+              <li key={user.id}>
+                {user.first_name} {user.last_name}{" "}
+                <button onClick={() => handleDeleteUser(user.id)}>
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
 
       <p>{message}</p>
     </div>
