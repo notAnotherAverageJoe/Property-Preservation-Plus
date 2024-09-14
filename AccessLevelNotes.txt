@@ -18,7 +18,7 @@ Level 2.
 
 Level 3.
 - Dashboard Access.
-- Property Detail - View only.
+- Property Detail - Edit,
 - maintenance requests - View, Create, Update, Delete.
 - Tenants - Create, Update, Delete
 - Create properties.
@@ -30,7 +30,7 @@ Level 3.
 
 Level 4.
 - Dashboard Access.
-- Property Detail - View only.
+- Property Detail - Edit
 - maintenance requests - View, Create, Update, Delete.
 - Tenants - Create, Update, Delete
 - Create properties.
@@ -44,7 +44,7 @@ Level 4.
 
 Level 5.
 - Dashboard Access.
-- Property Detail - View only.
+- Property Detail - Edit, Delete
 - maintenance requests - View, Create, Update, Delete.
 - Tenants - Create, Update, Delete
 - Create properties.
@@ -54,8 +54,9 @@ Level 5.
 - Role Management - View Roles Created by That User, 
     Assign Roles to Users
 - Budget forecast
+- On par with creators
 
-
+- Not a role you assign it is instead the role you get when you start the company.
 Creator
 - Dashboard Access.
 - Property Detail - View only.

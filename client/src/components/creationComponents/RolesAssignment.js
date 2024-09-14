@@ -68,7 +68,6 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
   };
 
   // Determine if the current user is a creator
-  const isCreator = user.is_owner === true;
 
   return (
     <div className="role-assignment-container">
@@ -108,21 +107,17 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
 
       <button onClick={handleAssignRole}>Assign Role</button>
 
-      {isCreator && (
-        <>
-          <h3>Delete a User</h3>
-          <ul>
-            {users.map((user) => (
-              <li key={user.id}>
-                {user.first_name} {user.last_name}{" "}
-                <button onClick={() => handleDeleteUser(user.id)}>
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      <>
+        <h3>Delete a User</h3>
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>
+              {user.first_name} {user.last_name}{" "}
+              <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </>
 
       <p>{message}</p>
     </div>
