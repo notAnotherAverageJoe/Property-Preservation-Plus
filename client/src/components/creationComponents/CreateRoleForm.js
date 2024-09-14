@@ -61,8 +61,9 @@ const CreateRoleForm = ({ onRoleCreated }) => {
       setMessage(response.data.message);
       setRoleName("");
       setAccessLevel(""); // Reset access level after submission
+      fetchRoles(); // Refresh roles list
       if (onRoleCreated) {
-        onRoleCreated(); // Refresh roles list
+        onRoleCreated(); // Optional: If you need to trigger additional actions
       }
     } catch (error) {
       setMessage("Error creating role.");
