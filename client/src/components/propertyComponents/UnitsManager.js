@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import { hasFullAccess } from "../utils/accessUtils";
-import SearchBar from "./helper/SearchBar"; // Import SearchBar component
+import { hasFullAccess } from "../../utils/accessUtils";
+import SearchBar from "../helper/SearchBar"; // Import SearchBar component
 
 const UnitsManager = ({ propertyId }) => {
   const { token, user } = useAuth();

@@ -1,8 +1,9 @@
 import React from "react";
 import { Outlet, useParams } from "react-router-dom";
-import UnitsManager from "../UnitsManager";
+import UnitsManager from "./UnitsManager";
 import AddTransactionForm from "../financialComponents/AddTransactionForm";
 import "./PropertyDetail.css";
+import { Link } from "react-router-dom";
 
 function PropertyDetail() {
   const { id: propertyId } = useParams();
@@ -10,6 +11,11 @@ function PropertyDetail() {
   return (
     <div>
       <h1>Property Detail</h1>
+      <div>
+        <Link to="/budget-forecast" className="button-link">
+          Budget Forecast
+        </Link>
+      </div>
 
       {/* Flex container for side-by-side layout */}
       <div className="property-detail-container">
@@ -21,12 +27,13 @@ function PropertyDetail() {
 
         {/* Transactions Form */}
         <div className="property-detail-section">
-          <h3>Financial Transactions</h3>
+          <h3>Financial Management</h3>
+          <h2>Property Expenses</h2>
           <AddTransactionForm propertyId={propertyId} />
         </div>
       </div>
 
-      {/* This will render nested routes like MaintenanceRequests */}
+      {/* This is for the nested routes */}
       <Outlet />
     </div>
   );
