@@ -17,7 +17,7 @@ import CreateProperty from "./components/propertyComponents/CreateProperty";
 import PropertyDetail from "./components/propertyComponents/PropertyDetail";
 import UnitsManager from "./components/UnitsManager";
 import AddTransactionForm from "./components/financialComponents/AddTransactionForm";
-import MaintenanceRequests from "./components/MaintenanceRequests";
+import MaintenanceRequests from "./components/maintenanceComponents/MaintenanceRequests";
 import LeasesManager from "./components/leaseComponents/LeasesManager";
 import withAuth from "./components/withAuth";
 import Navbar from "./components/Navbar";
