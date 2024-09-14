@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../styles/TenantsManager.css";
+import Pagination from "../helper/Pagination"; // Import the Pagination component
 
 const TenantsManager = () => {
   const [tenants, setTenants] = useState([]);
@@ -15,6 +17,8 @@ const TenantsManager = () => {
   const [editing, setEditing] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState("");
   const [filteredTenants, setFilteredTenants] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tenantsPerPage] = useState(5); // Adjust as needed
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -61,6 +65,19 @@ const TenantsManager = () => {
     );
     setFilteredTenants(filtered);
   }, [tenants, selectedPropertyId]);
+
+  // Calculate current tenants to display
+  const indexOfLastTenant = currentPage * tenantsPerPage;
+  const indexOfFirstTenant = indexOfLastTenant - tenantsPerPage;
+  const currentTenants = filteredTenants.slice(
+    indexOfFirstTenant,
+    indexOfLastTenant
+  );
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -134,10 +151,11 @@ const TenantsManager = () => {
 
   const handlePropertyFilterChange = (e) => {
     setSelectedPropertyId(e.target.value);
+    setCurrentPage(1); // Reset page number when filtering
   };
 
   return (
-    <div>
+    <div className="tenants-manager-container">
       <h1>Manage Tenants</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -171,7 +189,6 @@ const TenantsManager = () => {
           value={formData.phone}
           onChange={handleInputChange}
         />
-
         <select
           name="property_id"
           value={formData.property_id || ""}
@@ -187,7 +204,6 @@ const TenantsManager = () => {
             </option>
           ))}
         </select>
-
         <button type="submit">
           {editing ? "Update Tenant" : "Add Tenant"}
         </button>
@@ -207,21 +223,37 @@ const TenantsManager = () => {
 
       <h2>Tenants List</h2>
       <ul>
-        {filteredTenants.length > 0 ? (
-          filteredTenants.map((tenant) => (
+        {currentTenants.length > 0 ? (
+          currentTenants.map((tenant) => (
             <li key={tenant.id}>
-              {`First Name: ${tenant.first_name} `}{" "}
-              {`Last Name: ${tenant.last_name} `} -{" "}
-              {`Tenant Email: ${tenant.email} `} -{" "}
-              {`Tenant Phone: ${tenant.phone} `} - {`Tenant ID: ${tenant.id}`}
-              <button onClick={() => handleEdit(tenant)}>Edit</button>
-              <button onClick={() => handleDelete(tenant.id)}>Delete</button>
+              <p>{`First Name: ${tenant.first_name} Last Name: ${tenant.last_name}`}</p>
+              <p>{`Tenant Email: ${tenant.email} Tenant Phone: ${tenant.phone} Tenant ID: ${tenant.id}`}</p>
+              <div>
+                <button
+                  className="pill-link"
+                  onClick={() => handleEdit(tenant)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="pill-link"
+                  onClick={() => handleDelete(tenant.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))
         ) : (
           <p>No tenants found for the selected property.</p>
         )}
       </ul>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(filteredTenants.length / tenantsPerPage)}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
