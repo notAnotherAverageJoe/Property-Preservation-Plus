@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { hasFullAccess } from "../../utils/accessUtils";
-import SearchBar from "../helper/SearchBar"; // Import SearchBar component
+import SearchBar from "../helper/SearchBar";
+import Pagination from "../helper/Pagination"; // Import Pagination component
 
 const UnitsManager = ({ propertyId }) => {
   const { token, user } = useAuth();
@@ -14,10 +15,14 @@ const UnitsManager = ({ propertyId }) => {
     rent_amount: "",
   });
   const [selectedUnit, setSelectedUnit] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // Search term state
-  const [currentPage, setCurrentPage] = useState(1); // Pagination state
-  const unitsPerPage = 5; // Define how many units per page
-  const navigate = useNavigate(); // Hook for navigation
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const unitsPerPage = 5;
+  const navigate = useNavigate();
+
+  const unitNumberRef = useRef(null);
+  const typeRef = useRef(null);
+  const rentAmountRef = useRef(null);
 
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -41,9 +46,13 @@ const UnitsManager = ({ propertyId }) => {
   }, [fetchUnits]);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "rent_amount" && (value < 0 || isNaN(value))) {
+      return;
+    }
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
@@ -76,6 +85,7 @@ const UnitsManager = ({ propertyId }) => {
       type: unit.type,
       rent_amount: unit.rent_amount,
     });
+    if (unitNumberRef.current) unitNumberRef.current.focus();
   };
 
   const handleDelete = async (id) => {
@@ -87,7 +97,6 @@ const UnitsManager = ({ propertyId }) => {
     }
   };
 
-  // Access control checks
   const isCreator = user.is_owner !== false;
   const accessLevel = user.access_level || 5;
 
@@ -96,14 +105,13 @@ const UnitsManager = ({ propertyId }) => {
   const canEdit = accessLevel >= 3;
   const canDelete = accessLevel >= 4;
 
-  // Filter units by search term (both unit_number and type)
   const filteredUnits = units.filter(
     (unit) =>
       unit.unit_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
       unit.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination logic
+  const totalPages = Math.ceil(filteredUnits.length / unitsPerPage);
   const indexOfLastUnit = currentPage * unitsPerPage;
   const indexOfFirstUnit = indexOfLastUnit - unitsPerPage;
   const currentUnits = filteredUnits.slice(indexOfFirstUnit, indexOfLastUnit);
@@ -114,7 +122,6 @@ const UnitsManager = ({ propertyId }) => {
     <div>
       <h2>Manage Units for Property {propertyId}</h2>
 
-      {/* Search Bar */}
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
@@ -130,6 +137,7 @@ const UnitsManager = ({ propertyId }) => {
             value={formData.unit_number}
             onChange={handleChange}
             required
+            ref={unitNumberRef}
           />
           <input
             type="text"
@@ -137,6 +145,7 @@ const UnitsManager = ({ propertyId }) => {
             placeholder="Type (e.g., 1B1B)"
             value={formData.type}
             onChange={handleChange}
+            ref={typeRef}
           />
           <input
             type="number"
@@ -145,6 +154,8 @@ const UnitsManager = ({ propertyId }) => {
             value={formData.rent_amount}
             onChange={handleChange}
             required
+            ref={rentAmountRef}
+            min="0"
           />
           <button type="submit">
             {selectedUnit ? "Update Unit" : "Create Unit"}
@@ -159,7 +170,6 @@ const UnitsManager = ({ propertyId }) => {
             {currentUnits.map((unit) => (
               <li key={unit.id} className="transaction-item">
                 <span>
-                  {/* Display unit number, type, rent amount, and unit ID */}
                   {unit.unit_number} ({unit.type}) - ${unit.rent_amount} - Unit
                   ID: {unit.id}
                 </span>
@@ -182,28 +192,11 @@ const UnitsManager = ({ propertyId }) => {
             ))}
           </ul>
 
-          {/* Pagination */}
-          <div className="pagination-container">
-            <ul className="pagination">
-              {Array.from({
-                length: Math.ceil(filteredUnits.length / unitsPerPage),
-              }).map((_, index) => (
-                <li
-                  key={index}
-                  className={`page-item ${
-                    currentPage === index + 1 ? "active" : ""
-                  }`}
-                >
-                  <button
-                    onClick={() => paginate(index + 1)}
-                    className="page-link"
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={paginate}
+          />
         </>
       ) : (
         <p>You do not have permission to view units for this property.</p>

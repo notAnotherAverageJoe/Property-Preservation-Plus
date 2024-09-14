@@ -1,4 +1,4 @@
-import { React } from "react";
+import React, { useRef } from "react";
 import "../styles/TransactionForm.css";
 
 const TransactionForm = ({
@@ -7,10 +7,15 @@ const TransactionForm = ({
   onSubmit,
   editingTransactionId,
 }) => {
+  const typeRef = useRef(null);
+  const amountRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const transactionDateRef = useRef(null);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Validate the amount field no need fir negatives the system always subtracts
+    // Validate the amount field
     if (name === "amount") {
       // Allow only numeric input (including decimals)
       if (/^\d*\.?\d*$/.test(value)) {
@@ -34,6 +39,14 @@ const TransactionForm = ({
     onSubmit(e);
   };
 
+  // Focus the appropriate field when editing
+  React.useEffect(() => {
+    if (editingTransactionId) {
+      // Adjust focus as needed
+      if (typeRef.current) typeRef.current.focus();
+    }
+  }, [editingTransactionId]);
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -42,6 +55,7 @@ const TransactionForm = ({
         value={transaction.type}
         onChange={handleInputChange}
         placeholder="Type"
+        ref={typeRef} // Attach ref
       />
       <input
         type="number"
@@ -51,6 +65,7 @@ const TransactionForm = ({
         placeholder="Amount"
         min="0"
         step="0.01"
+        ref={amountRef} // Attach ref
       />
       <input
         type="text"
@@ -58,6 +73,7 @@ const TransactionForm = ({
         value={transaction.description}
         onChange={handleInputChange}
         placeholder="Description"
+        ref={descriptionRef} // Attach ref
       />
       <input
         type="date"
@@ -65,6 +81,7 @@ const TransactionForm = ({
         value={transaction.transactionDate}
         onChange={handleInputChange}
         placeholder="Transaction Date"
+        ref={transactionDateRef} // Attach ref
       />
       <button type="submit">
         {editingTransactionId ? "Update Transaction" : "Add Transaction"}
