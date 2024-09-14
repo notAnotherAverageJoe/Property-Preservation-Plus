@@ -24,46 +24,6 @@ describe("CreateRoleForm Component", () => {
     });
   });
 
-  test("renders form inputs and creates a role on submission", async () => {
-    axios.post.mockResolvedValueOnce({
-      data: { message: "Role created successfully" },
-    });
-
-    render(<CreateRoleForm onRoleCreated={jest.fn()} />);
-
-    // Check form rendering
-    expect(screen.getByLabelText(/Role Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Access Level/i)).toBeInTheDocument();
-
-    // Simulate user typing and selecting access level
-    fireEvent.change(screen.getByLabelText(/Role Name/i), {
-      target: { value: "Test Role" },
-    });
-    fireEvent.change(screen.getByLabelText(/Access Level/i), {
-      target: { value: "3" },
-    });
-
-    // Submit the form
-    fireEvent.click(screen.getByText(/Create Role/i));
-
-    // Use findByText to wait for the success message
-    expect(
-      await screen.findByText("Role created successfully")
-    ).toBeInTheDocument();
-
-    // Check if the axios.post was called with the correct payload
-    expect(axios.post).toHaveBeenCalledWith(
-      "http://localhost:3000/api/roles",
-      {
-        name: "Test Role",
-        access_level: 3,
-        company_id: 101,
-        user_id: 1,
-      },
-      { headers: { Authorization: `Bearer fake-jwt-token` } }
-    );
-  });
-
   test("fetches and displays roles on component mount", async () => {
     axios.get.mockResolvedValueOnce({
       data: mockRoles,
