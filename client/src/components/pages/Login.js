@@ -9,6 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isCreator, setIsCreator] = useState(false);
+  const [error, setError] = useState(""); // Added state for error message
   const navigate = useNavigate();
   const { login } = useAuth();
   const location = useLocation();
@@ -24,6 +25,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
 
     try {
       const endpoint = isCreator
@@ -37,10 +39,11 @@ const Login = () => {
         navigate("/dashboard");
       }
     } catch (error) {
-      console.error(
-        "Login failed:",
-        error.response ? error.response.data : error.message
-      );
+      // Set error message based on the response
+      const errorMessage =
+        error.response?.data?.message || "Login failed. Please try again.";
+      setError(errorMessage);
+      console.error("Login failed:", errorMessage);
     }
   };
 
@@ -49,7 +52,8 @@ const Login = () => {
       <div className="login-form">
         <h2>Login</h2>
         {message && <p className="alert alert-info">{message}</p>}
-
+        {error && <p className="alert alert-danger">{error}</p>}{" "}
+        {/* Display error message */}
         <div className="login-type">
           <label>
             <input
@@ -70,7 +74,6 @@ const Login = () => {
             Creator
           </label>
         </div>
-
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email">Email:</label>
