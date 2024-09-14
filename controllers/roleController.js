@@ -1,4 +1,4 @@
-const pool = require("../config/db"); // Assuming you're using pg pool for database connections
+const pool = require("../config/db");
 
 // Create a new role
 exports.createRole = async (req, res) => {
@@ -23,7 +23,6 @@ exports.createRole = async (req, res) => {
   }
 };
 
-// Fetch roles by user ID (this assumes you're associating roles with users)
 exports.getRolesByUserId = async (req, res) => {
   const userId = req.user.id; // Assuming you've got authentication middleware that sets req.user
   try {

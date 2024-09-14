@@ -30,12 +30,10 @@ const getRolesByUserId = async (req, res) => {
     const roles = await userRoleModel.getRolesByUserId(userId);
     res.json(roles);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error retrieving roles for user",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error retrieving roles for user",
+      error: error.message,
+    });
   }
 };
 
