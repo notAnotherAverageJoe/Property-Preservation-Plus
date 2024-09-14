@@ -17,13 +17,21 @@ function PropertiesList() {
 
   const canView = isCreator || accessLevel >= 1;
   const canCreate = accessLevel >= 2;
-
   const canEditOrDelete = (property) => {
     return (
       isCreator ||
       accessLevel >= 4 ||
       (accessLevel === 3 && property.created_by === user.id)
     );
+  };
+
+  // Adjusted accessLevel check to exclude level 1 from editing or deleting
+  const canEdit = (property) => {
+    return accessLevel >= 2 && canEditOrDelete(property);
+  };
+
+  const canDelete = (property) => {
+    return accessLevel >= 2 && canEditOrDelete(property);
   };
 
   useEffect(() => {
@@ -135,20 +143,24 @@ function PropertiesList() {
               <Link to={`/property/${property.id}`} className="propertyLink">
                 {property.name} - {property.address}
               </Link>
-              {canEditOrDelete(property) && (
+              {(canEdit(property) || canDelete(property)) && (
                 <div className="actionButtons">
-                  <button
-                    className="pill-link"
-                    onClick={() => handleEdit(property.id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="pill-link"
-                    onClick={() => handleDelete(property.id)}
-                  >
-                    Delete
-                  </button>
+                  {canEdit(property) && (
+                    <button
+                      className="pill-link"
+                      onClick={() => handleEdit(property.id)}
+                    >
+                      Edit
+                    </button>
+                  )}
+                  {canDelete(property) && (
+                    <button
+                      className="pill-link"
+                      onClick={() => handleDelete(property.id)}
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               )}
             </li>
