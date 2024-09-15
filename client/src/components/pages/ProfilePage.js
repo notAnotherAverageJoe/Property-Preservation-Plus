@@ -94,7 +94,7 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <h1>Profile</h1>
+      <h1>Profileffff</h1>
       {editMode ? (
         <div>
           <input
