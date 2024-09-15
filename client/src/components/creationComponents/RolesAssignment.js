@@ -67,16 +67,17 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
     }
   };
 
-  // Determine if the current user is a creator
-
   return (
-    <div className="role-assignment-container">
-      <h3>Assign or Reassign Role to User</h3>
+    <div className="create-role-form-container">
+      <h2>Assign a Role to User</h2>
 
       <div>
-        <label htmlFor="user-select">User: </label>
+        <label htmlFor="user-select" className="create-role-form-label">
+          User:
+        </label>
         <select
           id="user-select"
+          className="create-role-form-select"
           value={selectedUserId}
           onChange={(e) => setSelectedUserId(e.target.value)}
         >
@@ -90,9 +91,12 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
       </div>
 
       <div>
-        <label htmlFor="role-select">Role: </label>
+        <label htmlFor="role-select" className="create-role-form-label">
+          Role:
+        </label>
         <select
           id="role-select"
+          className="create-role-form-select"
           value={selectedRoleId}
           onChange={(e) => setSelectedRoleId(e.target.value)}
         >
@@ -105,21 +109,27 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
         </select>
       </div>
 
-      <button onClick={handleAssignRole}>Assign Role</button>
+      <button className="create-role-form-button" onClick={handleAssignRole}>
+        Assign Role
+      </button>
 
-      <>
-        <h3>Delete a User</h3>
-        <ul>
-          {users.map((user) => (
-            <li key={user.id}>
-              {user.first_name} {user.last_name}{" "}
-              <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      </>
+      <h3 className="create-role-form-roles-title">Delete a User</h3>
+      <ul className="create-role-form-roles-list">
+        {users.map((user) => (
+          <li key={user.id} className="create-role-form-role-item">
+            {user.first_name} {user.last_name}{" "}
+            <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
 
-      <p>{message}</p>
+      <p
+        className={`create-role-form-message ${
+          message.includes("Error") ? "error" : ""
+        }`}
+      >
+        {message}
+      </p>
     </div>
   );
 };

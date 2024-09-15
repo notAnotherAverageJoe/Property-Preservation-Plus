@@ -8,14 +8,8 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
-  /* Form title */
-  .create-role-form-title {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
+
+  
   
   /* Labels */
   .create-role-form-label {
@@ -75,17 +69,18 @@
   
   /* Roles list styling */
   .create-role-form-roles-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     margin-top: 2rem;
     text-align: center;
-    color: #333;
+    color: #28a745;
   }
   
   .create-role-form-roles-list {
     list-style-type: none;
     padding: 0;
     margin: 1rem 0;
+    color: #28a745;
   }
   
   .create-role-form-role-item {

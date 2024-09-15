@@ -191,7 +191,7 @@ hr {
 h1 {
   font-size: 3rem;
   margin: 0;
-  color: #cb1111;
+  color: #343a40;
   align-self: center;
    text-align: center;
    
@@ -204,9 +204,10 @@ h2{
 
 h3 {
   font-size: 1.5rem;
-  color: #666;
+  color: #343a40;
   align-self: center;
   text-align: center;
+  margin: 4px
 }
 
 
@@ -221,4 +222,35 @@ h2 a {
 h2 a:hover {
   color: #333;
   border-bottom: 2px solid #333;
+}
+h2 {
+  font-size: 1.5rem;
+  margin: 10px;
+  color: #4caf50;
+  transition: color 0.3s ease;
+}
+
+
+/* Button link styling */
+.button-link {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #4caf50;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 1; /* Ensure the button is above other elements */
+}
+
+.button-link:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.loading-message {
+  font-size: 1.2rem;
+  color: #999;
 }

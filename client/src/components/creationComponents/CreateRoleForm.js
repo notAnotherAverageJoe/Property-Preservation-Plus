@@ -130,9 +130,7 @@ const CreateRoleForm = ({ onRoleCreated }) => {
           </select>
         </div>
 
-        <button type="submit" className="create-role-form-button">
-          Create Role
-        </button>
+        <button type="submit">Create Role</button>
       </form>
       {message && (
         <p

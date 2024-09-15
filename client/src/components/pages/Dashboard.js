@@ -136,7 +136,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <h1>Dashboard</h1>
+      <h3>Dashboard</h3>
 
       {/* Render conditional content */}
       {renderLinks()}
