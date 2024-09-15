@@ -125,7 +125,7 @@ const UnitsManager = ({ propertyId }) => {
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        placeholderText="Search units (1A1, 6B3, etc...)"
+        placeholderText="Search units (By Type, 1A1, 6B3, etc...)"
       />
 
       {canCreate && (
@@ -133,7 +133,7 @@ const UnitsManager = ({ propertyId }) => {
           <input
             type="text"
             name="unit_number"
-            placeholder="Unit Number"
+            placeholder="Unit / Bldg type(APT/BLDG/334..etc)"
             value={formData.unit_number}
             onChange={handleChange}
             required
