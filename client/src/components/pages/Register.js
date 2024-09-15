@@ -11,7 +11,8 @@ function Register() {
     password: "",
   });
 
-  const [error, setError] = useState(""); // Added state for error message
+  const [error, setError] = useState(""); // State for error message
+  const [success, setSuccess] = useState(false); // State for success message
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,6 +22,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Clear previous errors
+    setSuccess(false); // Clear previous success message
 
     // Check password length
     if (formData.password.length < 10) {
@@ -31,7 +33,8 @@ function Register() {
     try {
       const response = await register(formData);
       console.log(response);
-      navigate("/login");
+      setSuccess(true); // Set success message
+      setTimeout(() => navigate("/login"), 3000); // Redirect after 2 seconds
     } catch (error) {
       console.error("Registration failed", error);
       setError(error.message || "Registration failed. Please try again.");
@@ -41,7 +44,14 @@ function Register() {
   return (
     <form onSubmit={handleSubmit}>
       {error && <p className="error-message">{error}</p>}{" "}
-      {/* Display error message at the top */}
+      {/* Display error message */}
+      {success && (
+        <p className="success-message">
+          Congratulations! You have successfully registered.
+        </p>
+      )}{" "}
+      {/* Display success message */}
+      <h3>Register</h3>
       <label>
         First Name:
         <input
