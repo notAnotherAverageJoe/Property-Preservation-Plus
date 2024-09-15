@@ -26,7 +26,7 @@ Admin panel for role and user management
 Tech Stack
 Frontend:
 
-React (Assumed for the client-side)
+React
 Backend:
 
 Node.js
