@@ -22,6 +22,12 @@ function Register() {
     e.preventDefault();
     setError(""); // Clear previous errors
 
+    // Check password length
+    if (formData.password.length < 10) {
+      setError("Password must be at least 10 characters long.");
+      return;
+    }
+
     try {
       const response = await register(formData);
       console.log(response);
@@ -34,6 +40,8 @@ function Register() {
 
   return (
     <form onSubmit={handleSubmit}>
+      {error && <p className="error-message">{error}</p>}{" "}
+      {/* Display error message at the top */}
       <label>
         First Name:
         <input
@@ -72,11 +80,10 @@ function Register() {
           value={formData.password}
           onChange={handleChange}
           required
+          minLength="10" // HTML validation
         />
       </label>
       <button type="submit">Register</button>
-      {error && <p className="error-message">{error}</p>}{" "}
-      {/* Display error message */}
       <GoToHome />
     </form>
   );
