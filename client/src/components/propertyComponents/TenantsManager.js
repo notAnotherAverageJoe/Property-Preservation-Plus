@@ -156,7 +156,7 @@ const TenantsManager = () => {
 
   return (
     <div className="tenants-manager-container">
-      <h1>Manage Tenants</h1>
+      <h3>Manage Tenants</h3>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

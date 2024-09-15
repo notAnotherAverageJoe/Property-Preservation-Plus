@@ -20,7 +20,7 @@ import AddTransactionForm from "./components/financialComponents/AddTransactionF
 import MaintenanceRequests from "./components/maintenanceComponents/MaintenanceRequests";
 import LeasesManager from "./components/leaseComponents/LeasesManager";
 import withAuth from "./components/withAuth";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/pages/Navbar";
 import "./components/styles/Navbar.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import TenantsManager from "./components/propertyComponents/TenantsManager";

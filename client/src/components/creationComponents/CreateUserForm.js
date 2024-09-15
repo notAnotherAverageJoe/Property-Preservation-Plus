@@ -60,7 +60,7 @@ const CreateUserForm = () => {
 
   return (
     <div>
-      <h2>Create New User</h2>
+      <h3>Create New User</h3>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email:</label>
         <input

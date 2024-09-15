@@ -112,7 +112,7 @@ function PropertiesList() {
 
   return (
     <div className="container">
-      <h1 className="title">Properties List</h1>
+      <h3>Properties List</h3>
 
       {/* Search Bar */}
       <SearchBar
