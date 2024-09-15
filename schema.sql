@@ -60,7 +60,7 @@ CREATE TABLE Units (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create the Tenants table (no dependencies).
+-- Create the Tenants table 
 CREATE TABLE Tenants (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -69,8 +69,10 @@ CREATE TABLE Tenants (
     phone VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    property_id INT
+    property_id INT,
+    company_id INT 
 );
+
 
 -- Create the Leases table, which references Units, Tenants, and Companies.
 CREATE TABLE Leases (
