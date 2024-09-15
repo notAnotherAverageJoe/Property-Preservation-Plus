@@ -31,6 +31,9 @@ const Navbar = () => {
           <li>
             <Link to="/">Home</Link>
           </li>
+          <li>
+            <Link to="/tutorial">Tutorial</Link>
+          </li>
           {!isLoggedIn && (
             <>
               <li>

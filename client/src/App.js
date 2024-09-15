@@ -33,6 +33,7 @@ import Unauthorized from "./components/Unauthorized";
 import BudgetForecast from "./components/Budgets/BudgetForecast";
 import "./components/styles/Pagination.css";
 import ProfilePage from "./components/pages/ProfilePage";
+import Tutorial from "./components/pages/Tutorial";
 
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
@@ -63,6 +64,7 @@ function AppLayout() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/tutorial" element={<Tutorial />} />
         <Route path="/profile/:id" element={<ProtectedProfilePage />} />{" "}
         <Route path="/create-company" element={<ProtectedCreateCompany />} />
         <Route path="/budget-forecast" element={<ProtectedBudgetForecast />} />
