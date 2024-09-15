@@ -96,8 +96,8 @@
 /* Alert message */
 .alert {
   background-color: #f9f9f9;
-  border: 1px solid #007bff;
-  color: #007bff;
+  border: 1px solid #777e86;
+  color: #75b043;
   padding: 0.75rem;
   margin-bottom: 1rem;
   border-radius: 5px;
