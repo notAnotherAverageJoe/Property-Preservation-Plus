@@ -147,7 +147,7 @@ function PropertiesList() {
                 <div className="actionButtons">
                   {canEdit(property) && (
                     <button
-                      className="pill-link"
+                      className="pill-link-edit"
                       onClick={() => handleEdit(property.id)}
                     >
                       Edit

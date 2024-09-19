@@ -324,3 +324,32 @@ button.pill-link-delete:active {
 button.pill-link-delte:focus {
   outline: 2px solid #910303;
 }
+
+button.pill-link-edit {
+  display: inline-block;
+  padding: 10px 20px; /* Adjust padding for the pill shape */
+  background-color: #ff9900;
+  color: #fff; 
+  text-align: center;
+  text-decoration: none; 
+  border-radius: 50px; /* Makes the shape a pill */
+  font-size: 1em; /* Adjust text size */
+  font-weight: 500; 
+  transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+
+button.pill-link-edit:hover {
+  background-color: #c47602;
+  transform: translateY(-2px); 
+}
+
+button.pill-link-edit:active {
+  background-color: #c47602;
+  transform: translateY(0); 
+}
+
+
+button.pill-link-edit:focus {
+  outline: 2px solid #c47602;
+}
