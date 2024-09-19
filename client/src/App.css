@@ -266,3 +266,61 @@ h2 {
   margin-bottom: 1rem;
   text-align: center; /* Center align the success message */
 }
+
+button.pill-link-create {
+  display: inline-block;
+  padding: 10px 20px; /* Adjust padding for the pill shape */
+  background-color: #1eaf8b;
+  color: #fff; 
+  text-align: center;
+  text-decoration: none; 
+  border-radius: 50px; /* Makes the shape a pill */
+  font-size: 1em; /* Adjust text size */
+  font-weight: 500; 
+  transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+
+button.pill-link-create:hover {
+  background-color: #126f58;
+  transform: translateY(-2px); 
+}
+
+button.pill-link-create:active {
+  background-color: #126f58;
+  transform: translateY(0); 
+}
+
+
+button.pill-link-create:focus {
+  outline: 2px solid #126f58;
+}
+
+button.pill-link-delete {
+  display: inline-block;
+  padding: 10px 20px; /* Adjust padding for the pill shape */
+  background-color: #ef0000;
+  color: #fff; 
+  text-align: center;
+  text-decoration: none; 
+  border-radius: 50px; /* Makes the shape a pill */
+  font-size: 1em; /* Adjust text size */
+  font-weight: 500; 
+  transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+
+button.pill-link-delete:hover {
+  background-color: #910303;
+  transform: translateY(-2px); 
+}
+
+button.pill-link-delete:active {
+  background-color: #910303;;
+  transform: translateY(0); 
+}
+
+
+button.pill-link-delte:focus {
+  outline: 2px solid #910303;
+}

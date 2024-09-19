@@ -125,7 +125,7 @@ function PropertiesList() {
       {canCreate && (
         <div className="addPropertyButton">
           <button
-            className="pill-link"
+            className="pill-link-create"
             onClick={() => navigate("/create-property")}
           >
             Add New Property
@@ -155,7 +155,7 @@ function PropertiesList() {
                   )}
                   {canDelete(property) && (
                     <button
-                      className="pill-link"
+                      className="pill-link-delete"
                       onClick={() => handleDelete(property.id)}
                     >
                       Delete
