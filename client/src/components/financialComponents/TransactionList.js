@@ -20,9 +20,21 @@ const TransactionList = ({
           <br />
           {(canEdit || canDelete) && (
             <div className="button-container">
-              {canEdit && <button onClick={() => onEdit(trans)}>Edit</button>}
+              {canEdit && (
+                <button
+                  className="pill-link-edit"
+                  onClick={() => onEdit(trans)}
+                >
+                  Edit
+                </button>
+              )}
               {canDelete && (
-                <button onClick={() => onDelete(trans.id)}>Delete</button>
+                <button
+                  className="pill-link-delete"
+                  onClick={() => onDelete(trans.id)}
+                >
+                  Delete
+                </button>
               )}
             </div>
           )}

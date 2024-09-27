@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { hasFullAccess } from "../../utils/accessUtils";
 import SearchBar from "../helper/SearchBar";
 import Pagination from "../helper/Pagination"; // Import Pagination component
 
