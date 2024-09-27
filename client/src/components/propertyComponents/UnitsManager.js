@@ -16,6 +16,7 @@ const UnitsManager = ({ propertyId }) => {
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeRequests, setActiveRequests] = useState({}); // Store active requests by unit
   const unitsPerPage = 5;
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ const UnitsManager = ({ propertyId }) => {
 
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+  // Fetch units and their active requests
   const fetchUnits = useCallback(async () => {
     try {
       if (!propertyId) {
@@ -34,7 +36,23 @@ const UnitsManager = ({ propertyId }) => {
       const response = await axios.get(
         `http://localhost:3000/api/properties/${propertyId}/units`
       );
-      setUnits(response.data);
+      const unitsData = response.data;
+      setUnits(unitsData);
+
+      // Fetch active requests for each unit
+      const activeRequestsData = {};
+      await Promise.all(
+        unitsData.map(async (unit) => {
+          const requestsResponse = await axios.get(
+            `http://localhost:3000/api/units/${unit.id}/requests`
+          );
+          const hasPendingRequests = requestsResponse.data.some(
+            (request) => request.status === "Pending"
+          );
+          activeRequestsData[unit.id] = hasPendingRequests;
+        })
+      );
+      setActiveRequests(activeRequestsData); // Update state with active requests per unit
     } catch (error) {
       console.error("Error fetching units:", error);
     }
@@ -181,7 +199,12 @@ const UnitsManager = ({ propertyId }) => {
                 >
                   View Maintenance Requests
                 </button>
-                <br></br>
+                <br />
+                {activeRequests[unit.id] && (
+                  <span style={{ color: "red" }}>
+                    🛠️ Active Maintenance Request
+                  </span>
+                )}
                 {canEdit && (
                   <button
                     className="pill-link-edit"
