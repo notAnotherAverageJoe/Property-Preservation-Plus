@@ -182,11 +182,22 @@ const UnitsManager = ({ propertyId }) => {
                 >
                   View Maintenance Requests
                 </button>
+                <br></br>
                 {canEdit && (
-                  <button onClick={() => handleEdit(unit)}>Edit</button>
+                  <button
+                    className="pill-link-edit"
+                    onClick={() => handleEdit(unit)}
+                  >
+                    Edit
+                  </button>
                 )}
                 {canDelete && (
-                  <button onClick={() => handleDelete(unit.id)}>Delete</button>
+                  <button
+                    className="pill-link-delete"
+                    onClick={() => handleDelete(unit.id)}
+                  >
+                    Delete
+                  </button>
                 )}
               </li>
             ))}
