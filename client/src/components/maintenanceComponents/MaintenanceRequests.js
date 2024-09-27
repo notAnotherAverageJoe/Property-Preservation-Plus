@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import "../styles/MaintenanceRequests.css";
 
 const MaintenanceRequests = () => {
   const { propertyId, unitId } = useParams();
@@ -12,6 +13,8 @@ const MaintenanceRequests = () => {
     status: "Pending",
   });
   const [selectedRequest, setSelectedRequest] = useState(null);
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Set axios default headers for authentication
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -34,8 +37,6 @@ const MaintenanceRequests = () => {
   useEffect(() => {
     fetchRequests();
   }, [fetchRequests]);
-
-  // The rest of your component code remains the same...
 
   const handleChange = (e) => {
     setFormData({
@@ -86,8 +87,9 @@ const MaintenanceRequests = () => {
   };
 
   return (
-    <div>
+    <div className="maintenance-requests-container">
       <h2>Maintenance Requests for Unit {unitId}</h2>
+
       <form onSubmit={handleSubmit}>
         <textarea
           name="request_description"
@@ -103,23 +105,35 @@ const MaintenanceRequests = () => {
         <button type="submit">
           {selectedRequest ? "Update Request" : "Create Request"}
         </button>
+        <button onClick={() => navigate(-1)} className="back-button">
+          Back to Current Property
+        </button>
       </form>
       <ul>
         {requests.map((request) => (
-          <li key={request.id}>
-            {request.request_description} - {request.status}{" "}
-            <button
-              className="pill-link-edit"
-              onClick={() => handleEdit(request)}
-            >
-              Edit
-            </button>{" "}
-            <button
-              className="pill-link-delete"
-              onClick={() => handleDelete(request.id)}
-            >
-              Delete
-            </button>
+          <li key={request.id} className="maintenance-request-item">
+            <span className="request-description">
+              {request.request_description} -{" "}
+              <span
+                className={`request-status ${request.status.toLowerCase()}`}
+              >
+                {request.status}
+              </span>
+            </span>
+            <div className="request-actions">
+              <button
+                className="pill-link-edit"
+                onClick={() => handleEdit(request)}
+              >
+                Edit
+              </button>
+              <button
+                className="pill-link-delete"
+                onClick={() => handleDelete(request.id)}
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>

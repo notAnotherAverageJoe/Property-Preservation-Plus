@@ -1,0 +1,76 @@
+/* Add some basic styling to the container */
+.maintenance-requests-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling for each request item */
+  .maintenance-request-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    margin: 8px;
+  }
+  
+  /* Add some hover effect */
+  .maintenance-request-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0;
+  }
+  
+  /* Description styling */
+  .request-description {
+    flex: 1;
+    margin-right: 20px;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  /* Status styling */
+  .request-status {
+    font-weight: bold;
+    color: #ff9800;
+  }
+  
+  /* Button styling */
+  .pill-link-edit,
+  .pill-link-delete {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+  }
+  
+  .pill-link-edit:hover {
+    background-color: #0056b3;
+  }
+  
+  .pill-link-delete {
+    background-color: #dc3545;
+  }
+  
+  .pill-link-delete:hover {
+    background-color: #b02a37;
+  }
+  
+  /* Add spacing between buttons */
+  .request-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  

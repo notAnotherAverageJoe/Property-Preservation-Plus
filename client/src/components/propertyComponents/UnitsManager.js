@@ -205,6 +205,7 @@ const UnitsManager = ({ propertyId }) => {
                     🛠️ Active Maintenance Request
                   </span>
                 )}
+                <br></br>
                 {canEdit && (
                   <button
                     className="pill-link-edit"
