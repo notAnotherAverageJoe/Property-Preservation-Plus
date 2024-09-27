@@ -108,8 +108,18 @@ const MaintenanceRequests = () => {
         {requests.map((request) => (
           <li key={request.id}>
             {request.request_description} - {request.status}{" "}
-            <button onClick={() => handleEdit(request)}>Edit</button>{" "}
-            <button onClick={() => handleDelete(request.id)}>Delete</button>
+            <button
+              className="pill-link-edit"
+              onClick={() => handleEdit(request)}
+            >
+              Edit
+            </button>{" "}
+            <button
+              className="pill-link-delete"
+              onClick={() => handleDelete(request.id)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
