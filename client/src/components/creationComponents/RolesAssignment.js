@@ -118,7 +118,12 @@ const RoleAssignment = ({ roles, onRoleAssigned }) => {
         {users.map((user) => (
           <li key={user.id} className="create-role-form-role-item">
             {user.first_name} {user.last_name}{" "}
-            <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+            <button
+              className="pill-link-delete"
+              onClick={() => handleDeleteUser(user.id)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>

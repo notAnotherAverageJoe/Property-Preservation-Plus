@@ -149,7 +149,7 @@ const CreateRoleForm = ({ onRoleCreated }) => {
             <li key={role.id} className="create-role-form-role-item">
               {role.name} (ID: {role.id}, Access Level: {role.access_level})
               <button
-                className="create-role-form-delete-button"
+                className="pill-link-delete"
                 onClick={() => handleDelete(role.id)}
               >
                 Delete

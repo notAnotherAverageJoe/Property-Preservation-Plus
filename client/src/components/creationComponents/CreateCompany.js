@@ -35,8 +35,8 @@ function CreateCompany() {
       );
 
       // Clear user session
-      localStorage.removeItem("token"); // Assuming you store token in localStorage
-      localStorage.removeItem("userId"); // Remove other relevant items
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
       localStorage.removeItem("companyId");
 
       // Redirect to login page with a prompt message
