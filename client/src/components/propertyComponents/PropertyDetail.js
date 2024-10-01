@@ -33,7 +33,6 @@ function PropertyDetail() {
         </div>
       </div>
 
-      {/* This is for the nested routes */}
       <Outlet />
     </div>
   );

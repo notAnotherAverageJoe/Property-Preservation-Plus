@@ -17,6 +17,7 @@ const UnitsManager = ({ propertyId }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [activeRequests, setActiveRequests] = useState({}); // Store active requests by unit
+  const [propertyName, setPropertyName] = useState(""); // State for property name
   const unitsPerPage = 5;
   const navigate = useNavigate();
 
@@ -26,7 +27,18 @@ const UnitsManager = ({ propertyId }) => {
 
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  // Fetch units and their active requests
+  // Fetch property name and units
+  const fetchPropertyDetails = useCallback(async () => {
+    try {
+      const propertyResponse = await axios.get(
+        `http://localhost:3000/api/properties/${propertyId}`
+      );
+      setPropertyName(propertyResponse.data.name);
+    } catch (error) {
+      console.error("Error fetching property details:", error);
+    }
+  }, [propertyId]);
+
   const fetchUnits = useCallback(async () => {
     try {
       if (!propertyId) {
@@ -59,8 +71,9 @@ const UnitsManager = ({ propertyId }) => {
   }, [propertyId, token]);
 
   useEffect(() => {
-    fetchUnits();
-  }, [fetchUnits]);
+    fetchPropertyDetails(); // Fetch property details on component mount
+    fetchUnits(); // Fetch units
+  }, [fetchPropertyDetails, fetchUnits]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -137,14 +150,13 @@ const UnitsManager = ({ propertyId }) => {
 
   return (
     <div>
-      <h2>Manage Units for Property {propertyId}</h2>
-
+      <h2>Manage Units for Property: {propertyName || "Loading..."}</h2>{" "}
+      {/* Display Property Name */}
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         placeholderText="Search units (By Type, 1A1, 6B3, etc...)"
       />
-
       {canCreate && (
         <form onSubmit={handleSubmit}>
           <input
@@ -179,7 +191,6 @@ const UnitsManager = ({ propertyId }) => {
           </button>
         </form>
       )}
-
       {canView ? (
         <>
           <h2>Units</h2>
@@ -205,7 +216,7 @@ const UnitsManager = ({ propertyId }) => {
                     🛠️ Active Maintenance Request
                   </span>
                 )}
-                <br></br>
+                <br />
                 {canEdit && (
                   <button
                     className="pill-link-edit"
