@@ -4,7 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import "../pagesCSS/RoleAssignment.css";
 
 const RoleAssignment = ({ roles, onRoleAssigned }) => {
-  const { token, user } = useAuth(); // Include user context
+  const { token, user } = useAuth();
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [selectedRoleId, setSelectedRoleId] = useState("");

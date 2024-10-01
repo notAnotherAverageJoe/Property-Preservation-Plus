@@ -230,13 +230,13 @@ const TenantsManager = () => {
               <p>{`Tenant Email: ${tenant.email} Tenant Phone: ${tenant.phone} Tenant ID: ${tenant.id}`}</p>
               <div>
                 <button
-                  className="pill-link"
+                  className="pill-link-edit"
                   onClick={() => handleEdit(tenant)}
                 >
                   Edit
                 </button>
                 <button
-                  className="pill-link"
+                  className="pill-link-delete"
                   onClick={() => handleDelete(tenant.id)}
                 >
                   Delete
