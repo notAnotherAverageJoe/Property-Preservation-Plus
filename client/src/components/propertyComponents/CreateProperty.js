@@ -31,7 +31,7 @@ function CreateProperty() {
     const property = {
       name: propertyName,
       address: propertyAddress,
-      company_id: companyId, // Include company_id
+      company_id: companyId,
     };
 
     try {

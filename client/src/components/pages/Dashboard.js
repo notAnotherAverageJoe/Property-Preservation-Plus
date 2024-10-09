@@ -138,7 +138,6 @@ function Dashboard() {
     <div className="dashboard-container">
       <h3>Dashboard</h3>
 
-      {/* Render conditional content */}
       {renderLinks()}
 
       {loading && <p>Loading...</p>}

@@ -43,7 +43,6 @@ function Weather() {
         "Error details:",
         error.response ? error.response.data : error
       );
-      // Provide user feedback if needed
     }
   };
 

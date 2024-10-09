@@ -4,7 +4,7 @@ import "../pagesCSS/Tutorial.css";
 
 function Tutorial() {
   const [step, setStep] = useState(1);
-  const navigate = useNavigate(); // Add this line
+  const navigate = useNavigate();
 
   const nextStep = () => {
     setStep((prevStep) => prevStep + 1);

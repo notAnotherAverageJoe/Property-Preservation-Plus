@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../helper/SearchBar";
-import Pagination from "../helper/Pagination"; // Import Pagination component
+import Pagination from "../helper/Pagination";
 
 const UnitsManager = ({ propertyId }) => {
   const { token, user } = useAuth();

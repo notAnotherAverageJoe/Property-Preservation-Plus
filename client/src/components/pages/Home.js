@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../pagesCSS/Home.css"; // Ensure this path is correct
+import "../pagesCSS/Home.css";
 
 const Main = () => {
   return (

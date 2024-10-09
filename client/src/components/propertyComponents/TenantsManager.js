@@ -18,7 +18,8 @@ const TenantsManager = () => {
   const [selectedPropertyId, setSelectedPropertyId] = useState("");
   const [filteredTenants, setFilteredTenants] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [tenantsPerPage] = useState(5); // Adjust as needed
+  const [tenantsPerPage] = useState(5); // Adjust as needed Number - can change if user wishes it, up to client
+  //demand or preferences.
 
   useEffect(() => {
     const fetchProperties = async () => {

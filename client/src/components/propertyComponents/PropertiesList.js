@@ -121,7 +121,6 @@ function PropertiesList() {
         placeholderText="Search by property name..."
       />
 
-      {/* Add New Property Button - moved below the search bar */}
       {canCreate && (
         <div className="addPropertyButton">
           <button
