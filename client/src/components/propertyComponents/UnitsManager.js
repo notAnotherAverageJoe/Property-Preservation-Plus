@@ -151,7 +151,6 @@ const UnitsManager = ({ propertyId }) => {
   return (
     <div>
       <h2>Manage Units for Property: {propertyName || "Loading..."}</h2>{" "}
-      {/* Display Property Name */}
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}

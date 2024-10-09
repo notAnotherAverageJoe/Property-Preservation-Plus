@@ -1,6 +1,5 @@
-// components/TransactionList.js
 import React from "react";
-import "../styles/TransactionsList.css"; // Make sure you import the CSS file
+import "../styles/TransactionsList.css";
 
 const TransactionList = ({
   transactions,

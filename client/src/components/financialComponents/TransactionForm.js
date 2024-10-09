@@ -42,7 +42,6 @@ const TransactionForm = ({
   // Focus the appropriate field when editing
   React.useEffect(() => {
     if (editingTransactionId) {
-      // Adjust focus as needed
       if (typeRef.current) typeRef.current.focus();
     }
   }, [editingTransactionId]);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UnitRentDisplay from "./UnitRentDisplay";
 import FinancialTransactionDisplay from "./FinancialTransactionDisplay";
-import "../styles/BudgetForecast.css"; // Ensure correct path to CSS
+import "../styles/BudgetForecast.css";
 
 function BudgetForecast() {
   const [budget, setBudget] = useState(0);

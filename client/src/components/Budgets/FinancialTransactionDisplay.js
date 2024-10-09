@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/FinancialTransactionDisplay.css"; // Create this CSS file for styling
+import "../styles/FinancialTransactionDisplay.css";
 
 function FinancialTransactionDisplay({ transactions }) {
   // Calculate total transactions (including negatives)
