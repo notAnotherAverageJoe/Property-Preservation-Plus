@@ -3,6 +3,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import CreateLease from "./CreateLease";
 import SearchBar from "../helper/SearchBar";
+import Pagination from "../helper/Pagination"; // Import Pagination component
 
 const LeasesListByCompany = () => {
   const [leases, setLeases] = useState([]);
@@ -12,6 +13,10 @@ const LeasesListByCompany = () => {
   const [submitted, setSubmitted] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const [decodedToken, setDecodedToken] = useState(null); // State for decoded token
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const leasesPerPage = 5; // Number of leases per page
 
   const fetchLeases = async (companyId) => {
     setLoading(true);
@@ -26,6 +31,7 @@ const LeasesListByCompany = () => {
       });
       setLeases(response.data);
       setFilteredLeases(response.data); // Initialize filteredLeases with all leases
+      setCurrentPage(1); // Reset to first page after fetching
     } catch (error) {
       setError(
         "Error fetching leases: " +
@@ -74,21 +80,18 @@ const LeasesListByCompany = () => {
         start_date: toISODate(updatedLease.start_date),
         end_date: toISODate(updatedLease.end_date),
       };
-      console.log("Payload to update lease:", updatedLeaseWithISO); // Log payload for debugging
-      const response = await axios.put(
+      await axios.put(
         `http://localhost:3000/api/leases/${leaseId}`,
         updatedLeaseWithISO,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add Authorization header
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      console.log("Update response:", response); // Log response for debugging
       alert("Lease updated successfully");
       fetchLeases(decodedToken.company_id); // Refetch leases after update
     } catch (error) {
-      console.error("Error updating lease:", error); // Log error for debugging
       setError(
         "Error updating lease: " +
           (error.response?.data?.message || error.message)
@@ -138,9 +141,22 @@ const LeasesListByCompany = () => {
       String(lease.unit_id).toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredLeases(filtered);
+    setCurrentPage(1); // Reset to first page on new search
   };
 
-  // Callback function to refetch leases after creating a new lease
+  // Pagination logic
+  const totalPages = Math.ceil(filteredLeases.length / leasesPerPage);
+  const indexOfLastLease = currentPage * leasesPerPage;
+  const indexOfFirstLease = indexOfLastLease - leasesPerPage;
+  const currentLeases = filteredLeases.slice(
+    indexOfFirstLease,
+    indexOfLastLease
+  );
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   const handleLeaseCreated = () => {
     if (decodedToken) {
       fetchLeases(decodedToken.company_id);
@@ -160,9 +176,9 @@ const LeasesListByCompany = () => {
         <>
           {loading && <p>Loading...</p>}
           {error && <p>{error}</p>}
-          {filteredLeases.length > 0 ? (
+          {currentLeases.length > 0 ? (
             <ul>
-              {filteredLeases.map((lease) => (
+              {currentLeases.map((lease) => (
                 <li key={lease.id}>
                   <label>
                     Unit ID:
@@ -219,16 +235,10 @@ const LeasesListByCompany = () => {
                     </select>
                   </label>
 
-                  <button
-                    className="pill-link-edit"
-                    onClick={() => handleUpdateLease(lease.id, lease)}
-                  >
+                  <button onClick={() => handleUpdateLease(lease.id, lease)}>
                     Update Lease
                   </button>
-                  <button
-                    className="pill-link-delete"
-                    onClick={() => handleDeleteLease(lease.id)}
-                  >
+                  <button onClick={() => handleDeleteLease(lease.id)}>
                     Delete Lease
                   </button>
                   <hr />
@@ -238,6 +248,15 @@ const LeasesListByCompany = () => {
             </ul>
           ) : (
             !loading && <p>No leases found for this company.</p>
+          )}
+
+          {/* Pagination Component */}
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           )}
         </>
       )}
