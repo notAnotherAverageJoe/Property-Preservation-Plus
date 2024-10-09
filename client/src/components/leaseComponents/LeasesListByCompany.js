@@ -235,10 +235,16 @@ const LeasesListByCompany = () => {
                     </select>
                   </label>
 
-                  <button onClick={() => handleUpdateLease(lease.id, lease)}>
+                  <button
+                    className="pill-link-edit"
+                    onClick={() => handleUpdateLease(lease.id, lease)}
+                  >
                     Update Lease
                   </button>
-                  <button onClick={() => handleDeleteLease(lease.id)}>
+                  <button
+                    className="pill-link-delete"
+                    onClick={() => handleDeleteLease(lease.id)}
+                  >
                     Delete Lease
                   </button>
                   <hr />
