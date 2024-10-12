@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const CreateLease = ({ onLeaseCreated }) => {
   const [leaseData, setLeaseData] = useState({
@@ -8,8 +9,20 @@ const CreateLease = ({ onLeaseCreated }) => {
     start_date: "",
     end_date: "",
     rent_amount: "",
-    company_id: "",
+    company_id: "", // This will be set automatically
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Replace with wherever you're storing the token
+    if (token) {
+      const decodedToken = jwtDecode(token); // Use jwtDecode instead of jwt_decode
+      const companyIdFromToken = decodedToken.company_id;
+      setLeaseData((prevData) => ({
+        ...prevData,
+        company_id: companyIdFromToken,
+      }));
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -25,14 +38,13 @@ const CreateLease = ({ onLeaseCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all fields are filled
+    // Check if all fields are filled except company_id (which is auto-filled)
     if (
       !leaseData.unit_id ||
       !leaseData.tenant_id ||
       !leaseData.start_date ||
       !leaseData.end_date ||
-      !leaseData.rent_amount ||
-      !leaseData.company_id /// remove if i can find a way to use
+      !leaseData.rent_amount
     ) {
       alert("All fields are required.");
       return;
@@ -44,7 +56,6 @@ const CreateLease = ({ onLeaseCreated }) => {
       unit_id: Number(leaseData.unit_id),
       tenant_id: Number(leaseData.tenant_id),
       rent_amount: parseFloat(leaseData.rent_amount),
-      company_id: Number(leaseData.company_id),
     };
 
     try {
@@ -58,7 +69,7 @@ const CreateLease = ({ onLeaseCreated }) => {
         start_date: "",
         end_date: "",
         rent_amount: "",
-        company_id: "",
+        company_id: leaseData.company_id, // Keep the company_id from the token
       });
 
       // Call the callback function to notify parent component
@@ -137,17 +148,10 @@ const CreateLease = ({ onLeaseCreated }) => {
           onChange={handleInputChange}
           placeholder="Rent Amount"
           required
-          min="0" // Prevent negative values
-          step="0.01" // Allow decimal values
+          min="0"
+          step="0.01"
         />
-        <input
-          type="text"
-          name="company_id"
-          value={leaseData.company_id}
-          onChange={handleInputChange}
-          placeholder="Company ID"
-          required
-        />
+        {/* The company_id input field is removed since it is auto-filled */}
         <button type="submit">Create Lease</button>
       </form>
     </div>

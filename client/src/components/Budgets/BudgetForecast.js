@@ -53,8 +53,8 @@ function BudgetForecast() {
           setUnits([]); // Reset units state
           setTransactions([]); // Reset transactions state
         } else {
-          console.error("Error fetching data", error); // Log other errors
-          setError("Failed to fetch data"); // Set generic error message
+          console.error("Error fetching data", error);
+          setError("Failed to fetch data");
         }
       }
     };
