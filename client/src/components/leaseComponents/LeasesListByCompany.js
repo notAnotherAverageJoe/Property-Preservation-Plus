@@ -3,7 +3,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import CreateLease from "./CreateLease";
 import SearchBar from "../helper/SearchBar";
-import Pagination from "../helper/Pagination"; // Import Pagination component
+import Pagination from "../helper/Pagination";
 
 const LeasesListByCompany = () => {
   const [leases, setLeases] = useState([]);
@@ -75,6 +75,8 @@ const LeasesListByCompany = () => {
     }
 
     try {
+      //international standard for representing date and time.
+      // The format is: YYYY-MM-DDTHH:MM:SSZ
       const updatedLeaseWithISO = {
         ...updatedLease,
         start_date: toISODate(updatedLease.start_date),
@@ -101,12 +103,17 @@ const LeasesListByCompany = () => {
 
   const handleDeleteLease = async (leaseId) => {
     try {
+      // Make a DELETE request to the backend API to delete the lease with the given leaseId
+      // We include an Authorization header with a Bearer token stored in localStorage
       await axios.delete(`http://localhost:3000/api/leases/${leaseId}`, {
         headers: {
+          // Retrieving the token from localStorage to authenticate the request
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       alert("Lease deleted successfully");
+      // Update the leases state by filtering out the deleted lease (matching leaseId)
+      // This ensures that the UI updates to reflect the deletion without needing a full refresh
       setLeases(leases.filter((lease) => lease.id !== leaseId));
       setFilteredLeases(filteredLeases.filter((lease) => lease.id !== leaseId));
     } catch (error) {
