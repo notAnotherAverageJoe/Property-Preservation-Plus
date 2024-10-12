@@ -62,9 +62,8 @@ function BudgetForecast() {
     fetchData(); // Call the fetch function when selectedProperty changes
   }, [selectedProperty]); // Dependency array includes selectedProperty
 
-  // Handler for changing the selected property
   const handlePropertyChange = (e) => {
-    setSelectedProperty(e.target.value); // Update selected property based on user input
+    setSelectedProperty(e.target.value);
   };
 
   // Calculate the budget forecast
@@ -83,7 +82,7 @@ function BudgetForecast() {
     <div className="budget-forecast">
       {" "}
       {/* Main container for the budget forecast */}
-      <h2>Budget Forecast</h2> {/* Heading for the budget forecast section */}
+      <h2>Budget Forecast</h2>
       {error && <p className="error">{error}</p>}{" "}
       {/* Display error message if exists */}
       <form onSubmit={(e) => e.preventDefault()}>
@@ -116,7 +115,7 @@ function BudgetForecast() {
       </form>
       {selectedProperty && ( // Render additional info if a property is selected
         <div className="forecast-info">
-          <UnitRentDisplay units={units} /> {/* Display unit rents */}
+          <UnitRentDisplay units={units} />
           <FinancialTransactionDisplay transactions={transactions} />{" "}
           {/* Display financial transactions */}
           <div className="summary-box">

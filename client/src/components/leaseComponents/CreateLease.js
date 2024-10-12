@@ -32,7 +32,7 @@ const CreateLease = ({ onLeaseCreated }) => {
       !leaseData.start_date ||
       !leaseData.end_date ||
       !leaseData.rent_amount ||
-      !leaseData.company_id
+      !leaseData.company_id /// remove if i can find a way to use
     ) {
       alert("All fields are required.");
       return;
