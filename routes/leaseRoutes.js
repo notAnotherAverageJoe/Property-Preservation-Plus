@@ -89,7 +89,7 @@ router.put("/leases/:id", leaseController.updateLease);
 // Delete a lease by ID
 router.delete("/leases/:id", leaseController.deleteLease);
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = process.env; // Make sure to set this in your environment
+const { JWT_SECRET } = process.env;
 
 const verifyTokenAndCompanyId = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1]; // Extract token from header

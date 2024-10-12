@@ -97,8 +97,6 @@ app.get("/api/weather", async (req, res) => {
   }
 });
 
-// Your middleware and routes here
-
 // Start server only if not in test environment
 if (require.main === module) {
   app.listen(port, () => {

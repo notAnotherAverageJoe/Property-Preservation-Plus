@@ -17,7 +17,7 @@ function FinancialTransactionDisplay({ transactions }) {
   return (
     <div className="financial-transaction-display">
       {" "}
-      <h3>Total Transactions</h3>
+      <h3 id="ExpensesTitle">Total Property Expenses</h3>
       <p>${totalTransactions.toFixed(2) || "No transactions available"}</p>{" "}
       {/* Display the total formatted to 2 decimal places or a message if there are no transactions */}
     </div>

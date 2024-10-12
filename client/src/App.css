@@ -353,3 +353,7 @@ button.pill-link-edit:active {
 button.pill-link-edit:focus {
   outline: 2px solid #c47602;
 }
+
+#ExpensesTitle{
+  color: red;
+}
