@@ -13,7 +13,7 @@ const CreateLease = ({ onLeaseCreated }) => {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Replace with wherever you're storing the token
+    const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token); // Use jwtDecode instead of jwt_decode
       const companyIdFromToken = decodedToken.company_id;
@@ -79,7 +79,6 @@ const CreateLease = ({ onLeaseCreated }) => {
     } catch (err) {
       console.error(err);
 
-      // Handle foreign key errors or other validation issues
       if (err.response && err.response.data && err.response.data.detail) {
         const errorMessage = err.response.data.detail;
         if (errorMessage.includes("violates foreign key constraint")) {
@@ -151,7 +150,7 @@ const CreateLease = ({ onLeaseCreated }) => {
           min="0"
           step="0.01"
         />
-        {/* The company_id input field is removed since it is auto-filled */}
+
         <button type="submit">Create Lease</button>
       </form>
     </div>

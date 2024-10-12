@@ -128,4 +128,19 @@ router.get("/api/leases", verifyTokenAndCompanyId, async (req, res) => {
   }
 });
 
+// Assuming you're using pg or some ORM in Express.js
+router.get("/api/leases/company/:companyId", async (req, res) => {
+  const { companyId } = req.params;
+  try {
+    const result = await db.query(
+      `SELECT * FROM leases WHERE company_id = $1 AND (end_date IS NULL OR end_date >= NOW())`,
+      [companyId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching active leases", err);
+    res.status(500).send("Error fetching leases");
+  }
+});
+
 module.exports = router;
