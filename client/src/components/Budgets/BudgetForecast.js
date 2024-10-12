@@ -122,12 +122,12 @@ function BudgetForecast() {
           <div className="summary-box">
             {" "}
             {/* Summary of budget and forecast */}
-            <p>
-              <strong>Budget:</strong> ${budget.toFixed(2)}{" "}
+            <p className="summary-display-final">
+              <h3 id="TotalRent">Budget:</h3> ${budget.toFixed(2)}{" "}
               {/* Display formatted budget */}
             </p>
-            <p>
-              <strong>Forecast:</strong> ${forecast.toFixed(2)}{" "}
+            <p className="summary-display-final">
+              <h3 id="TotalRent">Forecast:</h3> ${forecast.toFixed(2)}{" "}
               {/* Display formatted forecast */}
             </p>
           </div>

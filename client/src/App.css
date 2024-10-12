@@ -357,3 +357,51 @@ button.pill-link-edit:focus {
 #ExpensesTitle{
   color: red;
 }
+#TotalRent{
+  color:#28a745;
+}
+
+
+.unit-rent-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center;
+  height: 100%; /* Optional: Make sure the div takes full height of the parent */
+}
+
+#TotalRent {
+  margin-bottom: 10px; /* Add spacing between heading and total rent */
+}
+
+.unit-rent-display p {
+  font-size: 24px; /* Adjust font size if needed */
+}
+
+.financial-transaction-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center;
+  height: 100%; /* Optional: Full height of the parent container */
+}
+
+#ExpensesTitle {
+  margin-bottom: 10px; /* Add spacing between the title and the total amount */
+}
+
+.financial-transaction-display p {
+  font-size: 24px; /* Adjust font size as needed */
+}
+
+
+.summary-display-final {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center;
+  height: 100%; /* Optional: Full height of the parent container */
+}

@@ -2,7 +2,6 @@ import React from "react";
 import "../styles/UnitRentDisplay.css";
 
 function UnitRentDisplay({ units }) {
-  // Calculate total rent
   const totalRent = units.length
     ? units.reduce((sum, unit) => {
         const rent = parseFloat(unit.rent_amount);
@@ -12,7 +11,7 @@ function UnitRentDisplay({ units }) {
 
   return (
     <div className="unit-rent-display">
-      <h3>Total Rent</h3>
+      <h3 id="TotalRent">Total Rent</h3>
       <p>${totalRent.toFixed(2) || "No units available"}</p>
     </div>
   );
