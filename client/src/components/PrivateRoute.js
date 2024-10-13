@@ -2,7 +2,6 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-// Define the PrivateRoute component
 const PrivateRoute = ({ children }) => {
   // Get the authentication status from the AuthContext
   const { isAuthenticated } = useAuth();

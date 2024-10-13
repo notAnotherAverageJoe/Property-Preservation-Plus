@@ -8,14 +8,9 @@ const withAuth = (Component, requiredAccessLevel) => {
   return (props) => {
     const { isAuthenticated, user } = useAuth(); // Destructure authentication state and user from the context
 
-    // If the user is not authenticated, redirect to the login page
-    if (!isAuthenticated) {
-      return <Navigate to="/login" />;
-    }
-
-    // If the user's access level is lower than the required level, redirect to the unauthorized page
-    if (user.access_level < requiredAccessLevel) {
-      return <Navigate to="/unauthorized" />; // Redirect to an unauthorized page
+    // Ensure that user exists before checking access_level
+    if (!isAuthenticated || !user || user.access_level < requiredAccessLevel) {
+      return <Navigate to="/unauthorized" />;
     }
 
     // If authenticated and has the required access level, render the specified component
@@ -23,4 +18,4 @@ const withAuth = (Component, requiredAccessLevel) => {
   };
 };
 
-export default withAuth; // Export the higher-order component for use in routing
+export default withAuth;

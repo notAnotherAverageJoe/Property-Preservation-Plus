@@ -34,7 +34,7 @@ import BudgetForecast from "./components/Budgets/BudgetForecast";
 import "./components/styles/Pagination.css";
 import ProfilePage from "./components/pages/ProfilePage";
 import Tutorial from "./components/pages/Tutorial";
-
+// An example of using withAuth to limite access
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
 const ProtectedPropertiesList = withAuth(PropertiesList);
@@ -48,7 +48,7 @@ const ProtectedLeasesManager = withAuth(LeasesManager);
 const ProtectedEditProperty = withAuth(EditProperty);
 const ProtectedLeasesListByTenant = withAuth(LeasesListByCompany);
 const ProtectedRolesManager = withAuth(RolesManager);
-const ProtectedCreateUserForm = withAuth(CreateUserForm);
+const ProtectedCreateUserForm = withAuth(CreateUserForm, 4);
 const ProtectedBudgetForecast = withAuth(BudgetForecast);
 const ProtectedProfilePage = withAuth(ProfilePage);
 
@@ -85,7 +85,7 @@ function AppLayout() {
           element={<ProtectedMaintenanceRequests />}
         />
         <Route path="/leases" element={<ProtectedLeasesManager />} />
-        <Route path="/create-lease" element={<CreateLease />} />
+        {/* <Route path="/create-lease" element={<CreateLease />} /> */}
         <Route
           path="/leases-by-tenant/:tenantId"
           element={<ProtectedLeasesListByTenant />}
