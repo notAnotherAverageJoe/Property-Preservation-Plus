@@ -9,6 +9,7 @@ function Weather() {
   const [state, setState] = useState("");
   const [weather, setWeather] = useState(null);
   const [time, setTime] = useState(new Date());
+  const [loading, setLoading] = useState(false); // Loading state
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -34,6 +35,7 @@ function Weather() {
 
   const handleWeatherFetch = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
     try {
       const data = await fetchWeatherData(city, state);
       setWeather(data);
@@ -43,6 +45,8 @@ function Weather() {
         "Error details:",
         error.response ? error.response.data : error
       );
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -62,12 +66,10 @@ function Weather() {
   return (
     <div className="weather-dashboard">
       <h2>Maintenance Guide</h2>
-
       {/* Clock */}
       <div className="clock">
         <h3>{time.toLocaleTimeString()}</h3>
       </div>
-
       {/* Weather Form */}
       <form onSubmit={handleWeatherFetch}>
         <label htmlFor="city">Enter City Name: </label>
@@ -88,7 +90,8 @@ function Weather() {
         />
         <button type="submit">Get Weather</button>
       </form>
-
+      {/* Loading Indicator */}
+      {loading && <p>Loading weather data...</p>} {/* Loading message */}
       {/* Weather Info */}
       {weather && (
         <>
