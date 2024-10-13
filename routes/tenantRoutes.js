@@ -2,21 +2,22 @@ const express = require("express");
 const router = express.Router();
 const tenantController = require("../controllers/tenantController");
 const db = require("../config/db");
-const Tenant = require("../models/tenantModel");
+const authenticate = require("../middleware/authenticate");
+
 // Route to get all tenants
-router.get("/tenants", tenantController.getAllTenants);
+router.get("/tenants", authenticate, tenantController.getAllTenants);
 
 // Route to create a new tenant
-router.post("/tenants", tenantController.createTenant);
+router.post("/tenants", authenticate, tenantController.createTenant);
 
 // Route to update a tenant
-router.put("/tenants/:id", tenantController.updateTenant);
+router.put("/tenants/:id", authenticate, tenantController.updateTenant);
 
 // Route to delete a tenant
-router.delete("/tenants/:id", tenantController.deleteTenant);
+router.delete("/tenants/:id", authenticate, tenantController.deleteTenant);
 
-// routes/tenants.js
-router.get("/api/tenants", async (req, res) => {
+// Route to get tenants based on property_id query
+router.get("/api/tenants", authenticate, async (req, res) => {
   const { property_id } = req.query;
   try {
     let tenants;
@@ -33,7 +34,8 @@ router.get("/api/tenants", async (req, res) => {
   }
 });
 
-router.post("/api/tenants", async (req, res) => {
+// Route to create a new tenant with property validation
+router.post("/api/tenants", authenticate, async (req, res) => {
   const { first_name, last_name, email, phone, property_id } = req.body;
   const { companyId } = req.user; // Assuming you attach company ID to req.user in middleware
 
@@ -60,7 +62,12 @@ router.post("/api/tenants", async (req, res) => {
     res.status(500).json({ error: "Failed to create tenant" });
   }
 });
-// this route is allowing all tenants to appear
-router.get("/tenants/:company_id", tenantController.getAllTenants);
+
+// Route to get all tenants for a specific company
+router.get(
+  "/tenants/:company_id",
+  authenticate,
+  tenantController.getAllTenants
+);
 
 module.exports = router;

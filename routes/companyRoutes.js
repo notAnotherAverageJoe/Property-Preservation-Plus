@@ -62,11 +62,11 @@ router.get("/user/company", authenticate, async (req, res) => {
 // Route to update an existing company
 router.put("/companies/:id", authenticate, companyController.updateCompany);
 
-// Route to get all companies
-router.get("/companies", companyController.getAllCompanies);
+// // Route to get all companies
+// router.get("/companies", companyController.getAllCompanies);
 
-// Route to get a specific company by ID
-router.get("/companies/:id", companyController.getCompanyById);
+// // Route to get a specific company by ID
+// router.get("/companies/:id", companyController.getCompanyById);
 
 // Route to delete a company
 router.delete("/companies/:id", authenticate, companyController.deleteCompany);

@@ -1,8 +1,9 @@
--- psql -U your_username -d your_database
+
 --\i /path/to/your/schema.sql
 
 
--- First, create the Companies table, as it is referenced by other tables.
+-- First, we create the Companies table, as it is referenced by other tables.
+-- One-many- mutiple properties, units ..etc
 CREATE TABLE Companies (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -12,6 +13,8 @@ CREATE TABLE Companies (
 );
 
 -- Next, create the Users table, which references the Companies table.
+ -- Initially the creator will have no company ID, after they create a company, all users will be made with it.
+ -- users can have mutiple roles - many-to-many
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     company_id INT REFERENCES Companies(id),
@@ -24,6 +27,7 @@ CREATE TABLE Users (
 );
 
 -- Now create the Roles table, which references Users and Companies.
+    -- This will handle security level access
 CREATE TABLE Roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -33,6 +37,7 @@ CREATE TABLE Roles (
 );
 
 -- Then create the UserRoles table, which references Users and Roles.
+-- many-to-many relationship
 CREATE TABLE UserRoles (
     user_id INT REFERENCES Users(id) ON DELETE CASCADE,
     role_id INT REFERENCES Roles(id) ON DELETE CASCADE,
@@ -40,6 +45,7 @@ CREATE TABLE UserRoles (
 );
 
 -- Create the Properties table, which references Companies.
+-- one-to-many  Properties can have mutiple units
 CREATE TABLE Properties (
     id SERIAL PRIMARY KEY,
     company_id INT REFERENCES Companies(id),
@@ -50,6 +56,7 @@ CREATE TABLE Properties (
 );
 
 -- Create the Units table, which references Properties.
+-- One-Many
 CREATE TABLE Units (
     id SERIAL PRIMARY KEY,
     property_id INT REFERENCES Properties(id),
@@ -61,6 +68,8 @@ CREATE TABLE Units (
 );
 
 -- Create the Tenants table 
+-- Capable of using Company ID or property-id.
+-- For this project I went with Property_id
 CREATE TABLE Tenants (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -75,6 +84,9 @@ CREATE TABLE Tenants (
 
 
 -- Create the Leases table, which references Units, Tenants, and Companies.
+-- One-to-many with Units: Each unit can have many leases, but each lease can only belong to one unit.
+-- One-to-many with Tenants: Each tenant can have many leases, but each lease can only belong to one tenant. 
+-- One-to-many with Companies: Each company can have many leases, but each lease can only belong to one company. 
 CREATE TABLE Leases (
     id SERIAL PRIMARY KEY,
     unit_id INT REFERENCES Units(id),

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const restrictToAccessLevel = (requiredAccessLevel) => (req, res, next) => {
-  const user = req.user; // Assuming user info is attached to the request by authentication middleware
+  const user = req.user;
 
   if (
     !user ||
