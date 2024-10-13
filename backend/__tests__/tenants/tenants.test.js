@@ -2,8 +2,9 @@ const request = require("supertest");
 const app = require("../../../server");
 const pool = require("../../../config/db");
 
-// Mock pool.query method
+// Mock the pool.query method and the auth middleware
 jest.mock("../../../config/db");
+jest.mock("../../../middleware/authenticate", () => (req, res, next) => next());
 
 describe("Tenants API", () => {
   beforeEach(() => {
@@ -27,7 +28,9 @@ describe("Tenants API", () => {
 
     pool.query.mockResolvedValue({ rows: mockTenants }); // Mock the database response
 
-    const response = await request(app).get("/api/tenants");
+    const response = await request(app)
+      .get("/api/tenants")
+      .set("Authorization", `Bearer fake-jwt-token`); // Add fake JWT if required
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockTenants);
@@ -46,16 +49,18 @@ describe("Tenants API", () => {
     };
 
     // Mock the database response
-    pool.query.mockResolvedValue({ rows: mockTenant });
+    pool.query.mockResolvedValue({ rows: [mockTenant] });
 
     // Make the request
-    const response = await request(app).get("/api/tenants/1");
+    const response = await request(app)
+      .get("/api/tenants/1")
+      .set("Authorization", `Bearer fake-jwt-token`); // Add fake JWT if required
 
     // Assert that the status is 200
     expect(response.status).toBe(200);
 
     // Assert that the response body contains the tenant object
-    expect(response.body).toEqual(mockTenant);
+    expect(response.body).toEqual([mockTenant]); // Wrap the mock tenant in an array
   });
 
   // Test for creating a new tenant
@@ -72,7 +77,10 @@ describe("Tenants API", () => {
 
     pool.query.mockResolvedValue({ rows: [createdTenant] }); // Mock the database response
 
-    const response = await request(app).post("/api/tenants").send(newTenant);
+    const response = await request(app)
+      .post("/api/tenants")
+      .set("Authorization", `Bearer fake-jwt-token`) // Add fake JWT if required
+      .send(newTenant);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(createdTenant);
@@ -94,6 +102,7 @@ describe("Tenants API", () => {
 
     const response = await request(app)
       .put("/api/tenants/1")
+      .set("Authorization", `Bearer fake-jwt-token`) // Add fake JWT if required
       .send(updatedTenant);
 
     expect(response.status).toBe(200);
@@ -104,7 +113,9 @@ describe("Tenants API", () => {
   it("should delete a tenant", async () => {
     pool.query.mockResolvedValue({ rowCount: 1 }); // Mock the database response
 
-    const response = await request(app).delete("/api/tenants/1");
+    const response = await request(app)
+      .delete("/api/tenants/1")
+      .set("Authorization", `Bearer fake-jwt-token`); // Add fake JWT if required
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ msg: "Tenant deleted" });

@@ -117,7 +117,6 @@ function BudgetForecast() {
         <div className="forecast-info">
           <UnitRentDisplay units={units} />
           <FinancialTransactionDisplay transactions={transactions} />{" "}
-          {/* Display financial transactions */}
           <div className="summary-box">
             {" "}
             {/* Summary of budget and forecast */}

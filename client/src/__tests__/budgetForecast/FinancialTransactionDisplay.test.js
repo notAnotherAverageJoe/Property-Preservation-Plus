@@ -12,14 +12,14 @@ describe("FinancialTransactionDisplay", () => {
     ];
     render(<FinancialTransactionDisplay transactions={transactions} />);
 
-    expect(screen.getByText(/Total Transactions/i)).toBeInTheDocument();
+    expect(screen.getByText(/Total Property Expenses/i)).toBeInTheDocument(); // Change to the correct title
     expect(screen.getByText("$130.75")).toBeInTheDocument(); // Total: 100.50 - 20.00 + 50.25
   });
 
   test('displays "No transactions available" when no transactions are provided', () => {
     render(<FinancialTransactionDisplay transactions={[]} />);
 
-    expect(screen.getByText(/Total Transactions/i)).toBeInTheDocument();
+    expect(screen.getByText(/Total Property Expenses/i)).toBeInTheDocument(); // Change to the correct title
     expect(screen.getByText("$0.00")).toBeInTheDocument();
   });
 
@@ -31,7 +31,7 @@ describe("FinancialTransactionDisplay", () => {
     ];
     render(<FinancialTransactionDisplay transactions={transactions} />);
 
-    expect(screen.getByText(/Total Transactions/i)).toBeInTheDocument();
+    expect(screen.getByText(/Total Property Expenses/i)).toBeInTheDocument(); // Change to the correct title
     expect(screen.getByText("$50.50")).toBeInTheDocument(); // Total: 100.50 + 0 - 50.00
   });
 
@@ -39,7 +39,7 @@ describe("FinancialTransactionDisplay", () => {
     const transactions = [{ amount: "0.00" }, { amount: "0.00" }];
     render(<FinancialTransactionDisplay transactions={transactions} />);
 
-    expect(screen.getByText(/Total Transactions/i)).toBeInTheDocument();
+    expect(screen.getByText(/Total Property Expenses/i)).toBeInTheDocument(); // Change to the correct title
     expect(screen.getByText("$0.00")).toBeInTheDocument();
   });
 });

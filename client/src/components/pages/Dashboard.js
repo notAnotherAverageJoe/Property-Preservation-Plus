@@ -50,6 +50,7 @@ function Dashboard() {
   }, [accessLevel, navigate]);
 
   // Helper function to determine the visibility of links based on access level and company data
+  // O(1) operation with a O(n) space complexity worst case.
   const renderLinks = () => {
     const links = [];
 

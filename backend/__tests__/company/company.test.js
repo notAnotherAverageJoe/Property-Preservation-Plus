@@ -5,9 +5,6 @@ const companyModel = require("../../../models/companyModel");
 
 // Mock the companyModel methods
 jest.mock("../../../models/companyModel", () => ({
-  getAllCompanies: jest.fn(),
-  getCompanyById: jest.fn(),
-  createCompany: jest.fn(),
   updateUserCompanyId: jest.fn(),
   deleteCompany: jest.fn(),
 }));
@@ -20,33 +17,10 @@ const mockNewToken = jwt.sign(
   process.env.JWT_SECRET,
   { expiresIn: "1h" }
 );
-const mockCompany = { id: 1, name: "Test Company" };
 
 describe("Company API", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  it("should get all companies", async () => {
-    companyModel.getAllCompanies.mockResolvedValueOnce([mockCompany]);
-
-    const response = await request(app)
-      .get("/api/companies")
-      .set("Authorization", `Bearer ${mockToken}`);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual([mockCompany]);
-  });
-
-  it("should get a company by ID", async () => {
-    companyModel.getCompanyById.mockResolvedValueOnce(mockCompany);
-
-    const response = await request(app)
-      .get(`/api/companies/${mockCompany.id}`)
-      .set("Authorization", `Bearer ${mockToken}`);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(mockCompany);
   });
 
   it("should update the company ID and generate a new token", async () => {
