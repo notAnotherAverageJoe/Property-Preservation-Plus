@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true); // Track whether the auth check is still loading
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }) => {
         console.error("Error decoding token", err);
       }
     }
+    setLoading(false); // Finish the auth check
   }, []);
 
   const login = (newToken) => {
@@ -53,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, token, login, logout }}
+      value={{ isAuthenticated, user, token, login, logout, loading }}
     >
       {children}
     </AuthContext.Provider>

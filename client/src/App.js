@@ -24,7 +24,6 @@ import Navbar from "./components/pages/Navbar";
 import "./components/styles/Navbar.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import TenantsManager from "./components/propertyComponents/TenantsManager";
-import CreateLease from "./components/leaseComponents/CreateLease";
 import EditProperty from "./components/propertyComponents/EditProperty";
 import LeasesListByCompany from "./components/leaseComponents/LeasesListByCompany";
 import RolesManager from "./components/RolesManager";
@@ -34,23 +33,23 @@ import BudgetForecast from "./components/Budgets/BudgetForecast";
 import "./components/styles/Pagination.css";
 import ProfilePage from "./components/pages/ProfilePage";
 import Tutorial from "./components/pages/Tutorial";
-// An example of using withAuth to limited access
+// using withAuth to limited access
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
-const ProtectedPropertiesList = withAuth(PropertiesList);
-const ProtectedCreateProperty = withAuth(CreateProperty);
-const ProtectedPropertyDetail = withAuth(PropertyDetail);
-const ProtectedUnitsManager = withAuth(UnitsManager);
-const ProtectedAddTransactionForm = withAuth(AddTransactionForm);
-const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests);
-const ProtectedTenantsManager = withAuth(TenantsManager);
-const ProtectedLeasesManager = withAuth(LeasesManager);
-const ProtectedEditProperty = withAuth(EditProperty);
-const ProtectedLeasesListByTenant = withAuth(LeasesListByCompany);
-const ProtectedRolesManager = withAuth(RolesManager);
-const ProtectedCreateUserForm = withAuth(CreateUserForm, 4);
-const ProtectedBudgetForecast = withAuth(BudgetForecast);
-const ProtectedProfilePage = withAuth(ProfilePage);
+const ProtectedPropertiesList = withAuth(PropertiesList, 1);
+const ProtectedCreateProperty = withAuth(CreateProperty, 3);
+const ProtectedPropertyDetail = withAuth(PropertyDetail, 1);
+const ProtectedUnitsManager = withAuth(UnitsManager, 3);
+const ProtectedAddTransactionForm = withAuth(AddTransactionForm, 1);
+const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests, 1);
+const ProtectedTenantsManager = withAuth(TenantsManager, 3);
+const ProtectedLeasesManager = withAuth(LeasesManager, 3);
+const ProtectedEditProperty = withAuth(EditProperty, 3);
+const ProtectedLeasesListByTenant = withAuth(LeasesListByCompany, 3);
+const ProtectedRolesManager = withAuth(RolesManager, 4);
+const ProtectedCreateUserForm = withAuth(CreateUserForm, 5);
+const ProtectedBudgetForecast = withAuth(BudgetForecast, 1);
+const ProtectedProfilePage = withAuth(ProfilePage, 1);
 
 function AppLayout() {
   const location = useLocation(); // useLocation inside the Router context
