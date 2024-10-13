@@ -4,6 +4,7 @@ Level 1.
 - Dashboard Access.
 - Property Detail - View only.
 - maintenance requests - View, Create, Update, Delete
+- Financial edits
 - Budget forecast
 
 Level 2.

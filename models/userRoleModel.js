@@ -4,6 +4,9 @@ const pool = require("../config/db");
 const assignRoleToUser = async (userId, roleId) => {
   try {
     const result = await pool.query(
+      // RETURNING * in the INSERT query immediately returns
+      //  the newly inserted row, which is a more efficient way to
+      //   retrieve new data compared to running a second query.
       "INSERT INTO UserRoles (user_id, role_id) VALUES ($1, $2) RETURNING *",
       [userId, roleId]
     );
@@ -27,6 +30,10 @@ const removeRoleFromUser = async (userId, roleId) => {
 };
 
 // Function to get roles for a user
+// The JOIN in the getRolesByUserId query
+//  illustrates an effective use of relationships
+//   between tables, showing how multiple tables
+//   can work together to provide complex information.
 const getRolesByUserId = async (userId) => {
   try {
     const result = await pool.query(

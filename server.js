@@ -20,8 +20,6 @@ const axios = require("axios");
 // Middleware to parse JSON
 app.use(express.json());
 
-// app.use(accessLevel);
-
 app.use(
   cors({
     origin: "http://localhost:3001",
@@ -84,8 +82,6 @@ app.get("/api/weather", async (req, res) => {
     );
 
     const weatherData = weatherResponse.data;
-
-    // Optionally, you can verify if the temperature is correct here
 
     res.json(weatherData);
   } catch (error) {

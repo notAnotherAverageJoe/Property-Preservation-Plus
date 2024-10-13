@@ -34,7 +34,7 @@ import BudgetForecast from "./components/Budgets/BudgetForecast";
 import "./components/styles/Pagination.css";
 import ProfilePage from "./components/pages/ProfilePage";
 import Tutorial from "./components/pages/Tutorial";
-// An example of using withAuth to limite access
+// An example of using withAuth to limited access
 const ProtectedDashboard = withAuth(Dashboard, 1);
 const ProtectedCreateCompany = withAuth(CreateCompany);
 const ProtectedPropertiesList = withAuth(PropertiesList);
