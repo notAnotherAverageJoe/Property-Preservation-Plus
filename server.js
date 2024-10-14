@@ -20,6 +20,7 @@ const axios = require("axios");
 // Middleware to parse JSON
 app.use(express.json());
 
+// React runs on 3001
 app.use(
   cors({
     origin: "http://localhost:3001",

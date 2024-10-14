@@ -33,23 +33,55 @@ import BudgetForecast from "./components/Budgets/BudgetForecast";
 import "./components/styles/Pagination.css";
 import ProfilePage from "./components/pages/ProfilePage";
 import Tutorial from "./components/pages/Tutorial";
-// using withAuth to limited access
-const ProtectedDashboard = withAuth(Dashboard, 1);
-const ProtectedCreateCompany = withAuth(CreateCompany);
-const ProtectedPropertiesList = withAuth(PropertiesList, 1);
-const ProtectedCreateProperty = withAuth(CreateProperty, 3);
-const ProtectedPropertyDetail = withAuth(PropertyDetail, 1);
-const ProtectedUnitsManager = withAuth(UnitsManager, 3);
-const ProtectedAddTransactionForm = withAuth(AddTransactionForm, 1);
-const ProtectedMaintenanceRequests = withAuth(MaintenanceRequests, 1);
-const ProtectedTenantsManager = withAuth(TenantsManager, 3);
-const ProtectedLeasesManager = withAuth(LeasesManager, 3);
-const ProtectedEditProperty = withAuth(EditProperty, 3);
-const ProtectedLeasesListByTenant = withAuth(LeasesListByCompany, 3);
-const ProtectedRolesManager = withAuth(RolesManager, 4);
-const ProtectedCreateUserForm = withAuth(CreateUserForm, 5);
-const ProtectedBudgetForecast = withAuth(BudgetForecast, 1);
-const ProtectedProfilePage = withAuth(ProfilePage, 1);
+import withSanitization from "./utils/withSanitization"; // Import your sanitization HOC
+
+// Wrap components with both withSanitization and withAuth
+const ProtectedSanitizedDashboard = withSanitization(withAuth(Dashboard, 1));
+const ProtectedSanitizedCreateCompany = withSanitization(
+  withAuth(CreateCompany)
+);
+const ProtectedSanitizedPropertiesList = withSanitization(
+  withAuth(PropertiesList, 1)
+);
+const ProtectedSanitizedCreateProperty = withSanitization(
+  withAuth(CreateProperty, 3)
+);
+const ProtectedSanitizedPropertyDetail = withSanitization(
+  withAuth(PropertyDetail, 1)
+);
+const ProtectedSanitizedUnitsManager = withSanitization(
+  withAuth(UnitsManager, 3)
+);
+const ProtectedSanitizedAddTransactionForm = withSanitization(
+  withAuth(AddTransactionForm, 1)
+);
+const ProtectedSanitizedMaintenanceRequests = withSanitization(
+  withAuth(MaintenanceRequests, 1)
+);
+const ProtectedSanitizedTenantsManager = withSanitization(
+  withAuth(TenantsManager, 3)
+);
+const ProtectedSanitizedLeasesManager = withSanitization(
+  withAuth(LeasesManager, 3)
+);
+const ProtectedSanitizedEditProperty = withSanitization(
+  withAuth(EditProperty, 3)
+);
+const ProtectedSanitizedLeasesListByTenant = withSanitization(
+  withAuth(LeasesListByCompany, 3)
+);
+const ProtectedSanitizedRolesManager = withSanitization(
+  withAuth(RolesManager, 4)
+);
+const ProtectedSanitizedCreateUserForm = withSanitization(
+  withAuth(CreateUserForm, 5)
+);
+const ProtectedSanitizedBudgetForecast = withSanitization(
+  withAuth(BudgetForecast, 1)
+);
+const ProtectedSanitizedProfilePage = withSanitization(
+  withAuth(ProfilePage, 1)
+);
 
 function AppLayout() {
   const location = useLocation(); // useLocation inside the Router context
@@ -64,47 +96,75 @@ function AppLayout() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/tutorial" element={<Tutorial />} />
-        <Route path="/profile/:id" element={<ProtectedProfilePage />} />{" "}
-        <Route path="/create-company" element={<ProtectedCreateCompany />} />
-        <Route path="/budget-forecast" element={<ProtectedBudgetForecast />} />
-        <Route path="/dashboard" element={<ProtectedDashboard />} />
-        <Route path="/properties" element={<ProtectedPropertiesList />} />
-        <Route path="/tenants" element={<ProtectedTenantsManager />} />
-        <Route path="/edit-property/:id" element={<ProtectedEditProperty />} />
-        <Route path="/create-property" element={<ProtectedCreateProperty />} />
-        <Route path="/property/:id" element={<ProtectedPropertyDetail />}>
-          <Route path="units" element={<ProtectedUnitsManager />} />
+        <Route
+          path="/profile/:id"
+          element={<ProtectedSanitizedProfilePage />}
+        />
+        <Route
+          path="/create-company"
+          element={<ProtectedSanitizedCreateCompany />}
+        />
+        <Route
+          path="/budget-forecast"
+          element={<ProtectedSanitizedBudgetForecast />}
+        />
+        <Route path="/dashboard" element={<ProtectedSanitizedDashboard />} />
+        <Route
+          path="/properties"
+          element={<ProtectedSanitizedPropertiesList />}
+        />
+        <Route path="/tenants" element={<ProtectedSanitizedTenantsManager />} />
+        <Route
+          path="/edit-property/:id"
+          element={<ProtectedSanitizedEditProperty />}
+        />
+        <Route
+          path="/create-property"
+          element={<ProtectedSanitizedCreateProperty />}
+        />
+        <Route
+          path="/property/:id"
+          element={<ProtectedSanitizedPropertyDetail />}
+        >
+          <Route path="units" element={<ProtectedSanitizedUnitsManager />} />
           <Route
             path="transactions"
-            element={<ProtectedAddTransactionForm />}
+            element={<ProtectedSanitizedAddTransactionForm />}
           />
         </Route>
         <Route
           path="/properties/:propertyId/units/:unitId/requests"
-          element={<ProtectedMaintenanceRequests />}
+          element={<ProtectedSanitizedMaintenanceRequests />}
         />
-        <Route path="/leases" element={<ProtectedLeasesManager />} />
-        {/* <Route path="/create-lease" element={<CreateLease />} /> */}
+        <Route path="/leases" element={<ProtectedSanitizedLeasesManager />} />
         <Route
           path="/leases-by-tenant/:tenantId"
-          element={<ProtectedLeasesListByTenant />}
+          element={<ProtectedSanitizedLeasesListByTenant />}
         />
-        <Route path="/dashboard/roles" element={<ProtectedRolesManager />} />
-        <Route path="/create-user" element={<ProtectedCreateUserForm />} />
+        <Route
+          path="/dashboard/roles"
+          element={<ProtectedSanitizedRolesManager />}
+        />
+        <Route
+          path="/create-user"
+          element={<ProtectedSanitizedCreateUserForm />}
+        />
         <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
     </>
   );
 }
 
-function App() {
+const SanitizedAppLayout = withSanitization(AppLayout);
+
+const App = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <AppLayout />
-      </Router>
-    </AuthProvider>
+    <Router>
+      <AuthProvider>
+        <SanitizedAppLayout />
+      </AuthProvider>
+    </Router>
   );
-}
+};
 
 export default App;
