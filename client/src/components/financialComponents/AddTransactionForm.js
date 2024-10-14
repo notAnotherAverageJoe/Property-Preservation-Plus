@@ -7,6 +7,7 @@ import SearchBar from "../helper/SearchBar";
 import TransactionForm from "./TransactionForm";
 import Pagination from "../helper/Pagination";
 import TransactionList from "./TransactionList";
+import withSanitization from "../../utils/withSanitization"; // sanitization function
 import "../styles/Pagination.css";
 
 function AddTransactionForm() {
@@ -69,11 +70,17 @@ function AddTransactionForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Sanitize the description
+    const sanitizedTransaction = {
+      ...transaction,
+      description: withSanitization(transaction.description),
+    };
+
     try {
       if (editingTransactionId) {
         const response = await axios.put(
           `http://localhost:3000/api/properties/${id}/financial-transactions/${editingTransactionId}`,
-          transaction,
+          sanitizedTransaction,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -89,7 +96,7 @@ function AddTransactionForm() {
       } else {
         const response = await axios.post(
           `http://localhost:3000/api/properties/${id}/financial-transactions`,
-          transaction,
+          sanitizedTransaction,
           {
             headers: {
               Authorization: `Bearer ${token}`,
