@@ -99,6 +99,10 @@ CREATE TABLE Leases (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     company_id INT
 );
+-- CREATE INDEX ON Leases (id) WHERE status = 'Inactive';
+-- EXPLAIN ANALYZE SELECT * FROM Leases WHERE status = 'Inactive';
+
+
 
 -- Create the MaintenanceRequests table, which references Units.
 CREATE TABLE MaintenanceRequests (

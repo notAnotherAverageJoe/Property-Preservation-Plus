@@ -27,7 +27,7 @@ const MaintenanceRequests = () => {
         return;
       }
       const response = await axios.get(
-        `http://localhost:3000/api/units/${unitId}/requests`
+        `http://localhost:3000/api/${unitId}/requests`
       );
       setRequests(response.data);
     } catch (error) {
@@ -68,7 +68,7 @@ const MaintenanceRequests = () => {
       } else {
         // Create request
         await axios.post(
-          `http://localhost:3000/api/units/${unitId}/requests`,
+          `http://localhost:3000/api/${unitId}/requests`,
           dataToSend
         );
       }

@@ -56,7 +56,7 @@ const UnitsManager = ({ propertyId }) => {
       await Promise.all(
         unitsData.map(async (unit) => {
           const requestsResponse = await axios.get(
-            `http://localhost:3000/api/units/${unit.id}/requests`
+            `http://localhost:3000/api/${unit.id}/requests`
           );
           const hasPendingRequests = requestsResponse.data.some(
             (request) => request.status === "Pending"
@@ -91,7 +91,7 @@ const UnitsManager = ({ propertyId }) => {
     try {
       if (selectedUnit) {
         await axios.put(
-          `http://localhost:3000/api/units/${selectedUnit.id}`,
+          `http://localhost:3000/api/${selectedUnit.id}`,
           formData
         );
       } else {
@@ -120,7 +120,7 @@ const UnitsManager = ({ propertyId }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/units/${id}`);
+      await axios.delete(`http://localhost:3000/api/${id}`);
       fetchUnits();
     } catch (error) {
       console.error("Error deleting unit:", error);

@@ -52,12 +52,6 @@ app.use("/api", userRoleRoutes);
 // Auth routes
 app.use("/api/auth", authRoutes);
 
-app.use("/api/units", maintenanceRoutes);
-
-app.use("api/tenants", tenantRoutes);
-
-app.use("/api/admin", adminRoutes);
-
 // Weather route
 
 const API_KEY = process.env.API_KEY;

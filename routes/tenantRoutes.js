@@ -17,7 +17,7 @@ router.put("/tenants/:id", authenticate, tenantController.updateTenant);
 router.delete("/tenants/:id", authenticate, tenantController.deleteTenant);
 
 // Route to get tenants based on property_id query
-router.get("/api/tenants", authenticate, async (req, res) => {
+router.get("/tenants", authenticate, async (req, res) => {
   const { property_id } = req.query;
   try {
     let tenants;
@@ -35,7 +35,7 @@ router.get("/api/tenants", authenticate, async (req, res) => {
 });
 
 // Route to create a new tenant with property validation
-router.post("/api/tenants", authenticate, async (req, res) => {
+router.post("/tenants", authenticate, async (req, res) => {
   const { first_name, last_name, email, phone, property_id } = req.body;
   const { companyId } = req.user; // Assuming you attach company ID to req.user in middleware
 
