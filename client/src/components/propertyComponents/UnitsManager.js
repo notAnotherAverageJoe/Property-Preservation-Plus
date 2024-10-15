@@ -91,7 +91,7 @@ const UnitsManager = ({ propertyId }) => {
     try {
       if (selectedUnit) {
         await axios.put(
-          `http://localhost:3000/api/${selectedUnit.id}`,
+          `http://localhost:3000/api/units/${selectedUnit.id}`,
           formData
         );
       } else {
@@ -120,7 +120,7 @@ const UnitsManager = ({ propertyId }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/${id}`);
+      await axios.delete(`http://localhost:3000/api/units/${id}`);
       fetchUnits();
     } catch (error) {
       console.error("Error deleting unit:", error);

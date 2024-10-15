@@ -7,7 +7,7 @@ import SearchBar from "../helper/SearchBar";
 import TransactionForm from "./TransactionForm";
 import Pagination from "../helper/Pagination";
 import TransactionList from "./TransactionList";
-import withSanitization from "../../utils/withSanitization"; // sanitization function
+import DOMPurify from "dompurify"; // Import DOMPurify for sanitization
 import "../styles/Pagination.css";
 
 function AddTransactionForm() {
@@ -177,6 +177,14 @@ function AddTransactionForm() {
   );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Sanitization function
+  const withSanitization = (input) => {
+    return DOMPurify.sanitize(input, {
+      ALLOWED_TAGS: [], // No HTML tags allowed
+      ALLOWED_ATTR: [], // No attributes allowed
+    });
+  };
 
   return (
     <div>
